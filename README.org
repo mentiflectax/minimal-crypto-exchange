@@ -1,1 +1,9 @@
-Hello
+* Minimal Crypto Exchange
+
+** How to start the whole thing  
+
+*** Step 1: Start Docker
+   
+Under MacOS once Docker has started you will see the lettering ~Docker Desktop is running~.
+
+[[file:docs/img/2021-09-16_01.png]]
