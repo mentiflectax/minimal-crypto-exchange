@@ -7,3 +7,13 @@
 Under MacOS once Docker has started you will see the lettering ~Docker Desktop is running~.
 
 [[file:docs/img/2021-09-16_01.png]]
+
+*** Step 2: Start the container
+
+Run ~docker-compose up -d~ in the same directory as the ~docker-compose.yml~ file.
+
+*** Step 3: Verify that you can reach the explorer of the BTC testnet
+
+When you enter ~http://localhost:3002~ in your browser, you should see this:
+
+TBD
