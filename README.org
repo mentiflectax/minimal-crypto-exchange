@@ -98,3 +98,19 @@ Click on the ~New address~ button.
 
 [[file:docs/img/2021-09-18_04.png]]
 
+The red rectangle in the screenshot above shows the address of the Electrum wallet.
+
+**** Step 4: Open the BTC testnet shell
+
+See *Step 1: Open the shell of BTC testnet* in section *How to check the balance* above.
+
+**** Step 5: Send test BTC to the Electrum wallet
+
+Run ~bitcoin-cli sendtoaddress <Address> 1~ in the BTC testnet shell where ~<Address>~ is the address from step 3.
+
+[[file:docs/img/2021-09-18_05.png]]
+
+Thereafter the sent amount should appear in the Electrum wallet.
+
+[[file:docs/img/2021-09-18_06.png]]
+
