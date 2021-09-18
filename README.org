@@ -19,3 +19,17 @@ When you enter ~http://localhost:3002~ in your browser, you should see something
 [[file:docs/img/2021-09-16_02.png]]
 
 This is the frontend of the [[https://bitcoinexplorer.org][BTC Explorer]] application.
+
+** Miscellaneous
+
+*** How to check the balance
+
+**** Step 1: Open the shell of BTC testnet
+     
+[[file:docs/img/2021-09-18_01.png]]
+
+**** Step 2: Run the CLI command
+
+In the shell window that appears thereafter, enter ~bitcoin-cli getbalance~.
+
+[[file:docs/img/2021-09-18_02.png]]
