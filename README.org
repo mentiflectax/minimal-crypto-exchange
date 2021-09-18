@@ -73,4 +73,21 @@ where ~<address>~ is the address you generated with ~bitcoin-cli getnewaddress~.
 
 This time it should be larger than at step 1.
 
+*** How to send test Bitcoins to an Electrum wallet
 
+**** Preconditions
+
+ * Steps in section *How to start the whole thing* executed.
+ * Electrum Wallet application installed
+
+**** Step 1: Start the Electrum wallet in ~regtest~ mode
+
+On MacOS you can do it using ~open /Applications/Electrum.app --args --regtest~.     
+
+**** Step 2: Set up a wallet in Electrum (if not done already)
+
+Follow the wizard after the startup.
+
+**** Step 3: Determine the address of the Electrum wallet
+
+     
