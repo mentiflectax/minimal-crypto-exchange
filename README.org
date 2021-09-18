@@ -33,3 +33,39 @@ This is the frontend of the [[https://bitcoinexplorer.org][BTC Explorer]] applic
 In the shell window that appears thereafter, enter ~bitcoin-cli getbalance~.
 
 [[file:docs/img/2021-09-18_02.png]]
+
+*** How to generate a new Bitcoin address
+
+**** Preconditions    
+
+ * BTC testnet shell is open (see step 1 of the section *How to check balance* on how to do this).
+
+**** Process
+
+Run ~bitcoin-cli getnewaddress~ in the BTC testnet shell.
+
+The output will be something like ~2N5Yngd2nDX4pur3Wec9WeL4xmSvBCyMsqi~.
+
+*** How to generate test Bitcoins
+
+**** Preconditions    
+
+ * BTC testnet shell is open (see step 1 of the section *How to check balance* on how to do this).
+
+**** Process
+
+***** Step 1: Check balance
+
+See section *How to check the balance* above. Note the amount.
+      
+***** Step 2: Generate test Bitcoins
+     
+~bitcoin-cli generatetoaddress 200 <address>~
+
+where ~<address>~ is the address you generated with ~bitcoin-cli getnewaddress~.
+
+***** Step 3: Check the balance again
+
+This time it should be larger than at step 1.
+
+
