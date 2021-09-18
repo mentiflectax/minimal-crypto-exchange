@@ -90,4 +90,11 @@ Follow the wizard after the startup.
 
 **** Step 3: Determine the address of the Electrum wallet
 
-     
+Go to the ~Receive~ tab.
+
+[[file:docs/img/2021-09-18_03.png]]
+
+Click on the ~New address~ button.
+
+[[file:docs/img/2021-09-18_04.png]]
+
