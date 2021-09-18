@@ -2,6 +2,11 @@
 
 ** How to start the whole thing  
 
+*** Preconditions
+
+ * Docker
+ * [[https://electrum.org/#download][Electrum Wallet]]
+    
 *** Step 1: Start Docker
    
 Under MacOS once Docker has started you will see the lettering ~Docker Desktop is running~.
