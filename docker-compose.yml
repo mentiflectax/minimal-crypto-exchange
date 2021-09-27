@@ -49,6 +49,12 @@ services:
     volumes:
       - ./genesis.json:/app/genesis.json
 
+  postgres_eth:
+    image: postgres:12
+    command: postgres -c 'max_connections=500'
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
   blockscout:
     image: ulamlabs/blockscout:latest
     links:
@@ -66,12 +72,6 @@ services:
       - COIN=eth
       - NETWORK=POA
       - SUBNETWORK=Local Testnet
-
-  postgres_eth:
-    image: postgres:12
-    command: postgres -c 'max_connections=500'
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
 
 #
 # ETH testnet setup (end)
