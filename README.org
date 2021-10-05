@@ -33,6 +33,45 @@ When you enter ~http://localhost:4000~ in your browser, you should see something
 
 This is the frontend of the [[https://github.com/blockscout/blockscout][Blockscout]] application.
 
+*** Step 5: Import the private key of the buffer account
+
+Execute the following commands in the ~geth~ shell:
+
+#+begin_src bash
+echo carsdrivefasterbecausetheyhavebrakes > buffer-pw.txt
+echo 766df34218d5a715018d54789d6383798a1885088d525670802ed8cf152db5b4 > buffer-private-key.txt
+geth account import --datadir /data  --password buffer-pw.txt buffer-private-key.txt
+#+end_src
+
+*** Step 6: Import the private key of the exchange account
+
+#+begin_src bash
+echo a-turkey-is-a-chicken-designed-by-a-committee > exchange-pw.txt
+echo b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e > exchange-private-key.txt
+geth account import --datadir /data  --password exchange-pw.txt exchange-private-key.txt
+#+end_src
+
+** ETH Addresses
+
+*** Buffer
+
+ * Address: ~0x411167FeFecAD12Da17F9063143706C39528aa28~
+ * Private Key: ~0x766df34218d5a715018d54789d6383798a1885088d525670802ed8cf152db5b4~
+ * Password: ~carsdrivefasterbecausetheyhavebrakes~
+    
+*** Signer
+
+ * Address: ~0x0c56352F05De44C9b5BA8bcF9BDEc7e654993339~
+ * Private key: ~0x0d0b4c455973c883bb0fa584f0078178aa90c571a8f1d40f28d2339f4e757dde~
+
+*** Exchange    
+
+ * Address: ~0x190FD61ED8fE0067f0f09EA992C1BF96209bab66~
+ * Private key: ~b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e~
+ * Password: ~a-turkey-is-a-chicken-designed-by-a-committee~
+
+
+ 
 ** Miscellaneous
 
 *** How to check the balance
