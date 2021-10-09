@@ -33,24 +33,6 @@ When you enter ~http://localhost:4000~ in your browser, you should see something
 
 This is the frontend of the [[https://github.com/blockscout/blockscout][Blockscout]] application.
 
-*** Step 5: Import the private key of the buffer account
-
-Execute the following commands in the ~geth~ shell:
-
-#+begin_src bash
-echo carsdrivefasterbecausetheyhavebrakes > buffer-pw.txt
-echo 766df34218d5a715018d54789d6383798a1885088d525670802ed8cf152db5b4 > buffer-private-key.txt
-geth account import --datadir /data  --password buffer-pw.txt buffer-private-key.txt
-#+end_src
-
-*** Step 6: Import the private key of the exchange account
-
-#+begin_src bash
-echo a-turkey-is-a-chicken-designed-by-a-committee > exchange-pw.txt
-echo b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e > exchange-private-key.txt
-geth account import --datadir /data  --password exchange-pw.txt exchange-private-key.txt
-#+end_src
-
 ** ETH Addresses
 
 *** Buffer
@@ -70,8 +52,6 @@ geth account import --datadir /data  --password exchange-pw.txt exchange-private
  * Private key: ~b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e~
  * Password: ~a-turkey-is-a-chicken-designed-by-a-committee~
 
-
- 
 ** Miscellaneous
 
 *** How to check the balance
@@ -161,3 +141,6 @@ Thereafter the sent amount should appear in the Electrum wallet.
 
 [[file:docs/img/2021-09-18_06.png]]
 
+*** How to send test ETH to the exchange account
+
+See [[https://dpisarenko.com/posts/eth-transfers/][this blog post]].    
