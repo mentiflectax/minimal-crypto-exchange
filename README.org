@@ -25,6 +25,33 @@ When you enter ~http://localhost:3002~ in your browser, you should see something
 
 This is the frontend of the [[https://bitcoinexplorer.org][BTC Explorer]] application.
 
+*** Step 4: Verify that you can reach the frontend of the ETH testnet (Blockscout)
+
+When you enter ~http://localhost:4000~ in your browser, you should see something like this:
+
+[[file:docs/img/2021-09-27_01.png]]
+
+This is the frontend of the [[https://github.com/blockscout/blockscout][Blockscout]] application.
+
+** ETH Addresses
+
+*** Buffer
+
+ * Address: ~0x411167FeFecAD12Da17F9063143706C39528aa28~
+ * Private Key: ~0x766df34218d5a715018d54789d6383798a1885088d525670802ed8cf152db5b4~
+ * Password: ~carsdrivefasterbecausetheyhavebrakes~
+    
+*** Signer
+
+ * Address: ~0x0c56352F05De44C9b5BA8bcF9BDEc7e654993339~
+ * Private key: ~0x0d0b4c455973c883bb0fa584f0078178aa90c571a8f1d40f28d2339f4e757dde~
+
+*** Exchange    
+
+ * Address: ~0x190FD61ED8fE0067f0f09EA992C1BF96209bab66~
+ * Private key: ~b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e~
+ * Password: ~a-turkey-is-a-chicken-designed-by-a-committee~
+
 ** Miscellaneous
 
 *** How to check the balance
@@ -114,3 +141,6 @@ Thereafter the sent amount should appear in the Electrum wallet.
 
 [[file:docs/img/2021-09-18_06.png]]
 
+*** How to send test ETH to the exchange account
+
+See [[https://dpisarenko.com/posts/eth-transfers/][this blog post]].    
