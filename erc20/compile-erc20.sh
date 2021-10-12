@@ -1,7 +1,8 @@
-docker run -v /local/path:/sources \
+docker run -v /local/path:/src \
        ethereum/solc:stable \
-       -o /sources/output \
+       -o target \
        --abi \
        --bin \
-       /sources/Contract.sol
+       src/contracts/token/ERC20/ERC20.sol
+
 
