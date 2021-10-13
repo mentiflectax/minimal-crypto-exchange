@@ -1,4 +1,4 @@
-docker run -v .:/sources \
+docker run -v /Users/dp118m/dev/misc/minimal-crypto-exchange/erc20:/sources \
        ethereum/solc:stable \
        -o /sources/target \
        --abi \
