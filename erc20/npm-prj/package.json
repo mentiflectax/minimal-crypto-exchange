@@ -1,0 +1,11 @@
+{
+  "name": "deploy-erc20",
+  "version": "1.0.0",
+  "description": "This project deploys ERC20 smart contract to a local testnet.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
