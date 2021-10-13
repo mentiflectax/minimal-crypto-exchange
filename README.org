@@ -6,7 +6,8 @@
 
  * Docker
  * [[https://electrum.org/#download][Electrum Wallet]]
-    
+ * [[https://hardhat.org][HardHat]]
+   
 *** Step 1: Start Docker
    
 Under MacOS once Docker has started you will see the lettering ~Docker Desktop is running~.
@@ -33,6 +34,10 @@ When you enter ~http://localhost:4000~ in your browser, you should see something
 
 This is the frontend of the [[https://github.com/blockscout/blockscout][Blockscout]] application.
 
+*** Step 5: Deploy the ERC20 contract
+
+TODO
+    
 ** ETH Addresses
 
 *** Buffer
