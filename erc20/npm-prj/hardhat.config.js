@@ -20,7 +20,8 @@ module.exports = {
   solidity: "0.8.4",
   networks: {
       localTestnet: {
-        url: `https://localhost:8178`,
+	  //     url: `https://localhost:8178`,
+        url: `https://localhost:4000/api`,
         accounts: [`0x766df34218d5a715018d54789d6383798a1885088d525670802ed8cf152db5b4`],
       },
   },
