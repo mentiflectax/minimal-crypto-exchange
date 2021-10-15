@@ -1,1 +1,1 @@
-npx hardhat run --network localhost:8178 scripts/deploy.js
+npx hardhat run --network localTestnet scripts/deploy.js
