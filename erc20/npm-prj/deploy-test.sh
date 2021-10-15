@@ -1,1 +1,1 @@
-npx hardhat run --network localhost scripts/deploy.js
+npx hardhat run --network localhost:8178 scripts/deploy.js
