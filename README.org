@@ -46,7 +46,7 @@ Then, navigate to the transactions view in Blockscout at ~http://localhost:4000/
 
 **** Troubleshooting
 
-You will need to install Hardhat for this. In order for the installation to go smoothly, you may need to delete the ~erc20/npm-prj/node_modules/.bin~.
+You will need to install Hardhat for this. In order for the installation to go smoothly, you may need to delete the Hardhat folder from ~erc20/npm-prj/node_modules/.bin~.
      
 ** ETH Addresses
 
