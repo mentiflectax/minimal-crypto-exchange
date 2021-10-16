@@ -6,7 +6,8 @@
 
  * Docker
  * [[https://electrum.org/#download][Electrum Wallet]]
-    
+ * [[https://hardhat.org][HardHat]]
+   
 *** Step 1: Start Docker
    
 Under MacOS once Docker has started you will see the lettering ~Docker Desktop is running~.
@@ -33,6 +34,20 @@ When you enter ~http://localhost:4000~ in your browser, you should see something
 
 This is the frontend of the [[https://github.com/blockscout/blockscout][Blockscout]] application.
 
+*** Step 5: Deploy the ERC20 contract
+
+In the shell, navigate to the directory ~erc20/npm-prj~. There, run ~./deploy-ERC20.sh~.
+
+This should result in an output like ~ERC20 deployed to: 0x86c58D398fF7EF4cA13BdD216D0973f37fA0D25b~.
+
+Then, navigate to the transactions view in Blockscout at ~http://localhost:4000/txs~. You should see a ~Contract Creation~ entry.
+
+[[file:docs/img/2021-10-16_01.png]]
+
+**** Troubleshooting
+
+You will need to install Hardhat for this. In order for the installation to go smoothly, you may need to delete the ~erc20/npm-prj/node_modules/.bin~.
+     
 ** ETH Addresses
 
 *** Buffer
