@@ -8,6 +8,9 @@ camunda.bpm:
 accounts:
   eth:
     exchange:
-      address: 0x190FD61ED8fE0067f0f09EA992C1BF96209bab66
+      address: '0x190FD61ED8fE0067f0f09EA992C1BF96209bab66'
       private-key: b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e
       password: a-turkey-is-a-chicken-designed-by-a-committee
+networks:
+  eth:
+    url: http://localhost:8178
