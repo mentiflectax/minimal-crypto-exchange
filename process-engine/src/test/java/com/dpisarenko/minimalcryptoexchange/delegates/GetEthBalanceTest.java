@@ -19,16 +19,6 @@ import static org.mockito.Mockito.when;
 import static org.web3j.protocol.core.DefaultBlockParameterName.LATEST;
 
 public class GetEthBalanceTest {
-
-    @Test
-    public void manualTest() throws Exception {
-        final GetEthBalance sut = new GetEthBalance();
-
-        final DelegateExecution delEx = mock(DelegateExecution.class);
-
-        sut.execute(delEx);
-    }
-
     @Test
     public void givenAddress_whenExecute_thenSetProcessVariableToBalance() throws Exception {
         // Given
@@ -63,12 +53,13 @@ public class GetEthBalanceTest {
         sut.execute(delEx);
 
         // Then
+        verify(sut).execute(delEx);
         verify(sut).createWeb3If(ethNetworkUrl);
         verify(web3).ethGetBalance(exchangeAddressEth, LATEST);
         verify(request).sendAsync();
         verify(completableFuture).get();
         verify(response).getBalance();
-        verify(logger).info("");
+        verify(logger).info("Balance of account 'exchangeAddressEth' is equal to 1 wei (network 'ethNetworkUrl')");
         verify(delEx).setVariable("EXCHANGE_ACCOUNT_BALANCE_WEI",
                 balanceWei);
         verifyNoMoreInteractions(sut, web3, request,
