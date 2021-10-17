@@ -14,7 +14,7 @@
       <bpmn:incoming>Flow_1yor9sw</bpmn:incoming>
       <bpmn:outgoing>Flow_0n68knk</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_0qkx4f4" name="Get balance of exchange&#39;s ETH account" camunda:asyncBefore="true">
+    <bpmn:serviceTask id="Activity_0qkx4f4" name="Get balance of exchange&#39;s ETH account" camunda:asyncBefore="true" camunda:class="com.dpisarenko.minimalcryptoexchange.delegates.GetEthBalance">
       <bpmn:incoming>Flow_0i4nuiu</bpmn:incoming>
       <bpmn:outgoing>Flow_1yor9sw</bpmn:outgoing>
     </bpmn:serviceTask>
