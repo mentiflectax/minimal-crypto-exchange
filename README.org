@@ -54,6 +54,8 @@ You will need to install Hardhat for this. In order for the installation to go s
 
 Start the Java application by running the main class ~com.dpisarenko.minimalcryptoexchange.MinimalCryptoExchangeProcessApplication~. Once it has started you can use it as described in the section "How to use Camunda" below.
 
+If you are not familiar with Java, please watch the video [[https://youtu.be/bioe5Hg4eOE][How to build and launch Camunda process engine]] first.
+
 ** ETH Addresses
 
 *** Buffer
