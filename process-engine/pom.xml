@@ -6,7 +6,7 @@
 
     <groupId>com.dpisarenko</groupId>
     <artifactId>process-engine</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <camunda.spring-boot.version>7.16.0</camunda.spring-boot.version>
