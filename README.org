@@ -7,7 +7,9 @@
  * Docker
  * [[https://electrum.org/#download][Electrum Wallet]]
  * [[https://hardhat.org][HardHat]]
-   
+ * [[https://openjdk.java.net][JDK]]
+ * [[https://www.jetbrains.com/idea/download/][IntelliJ Idea]] Community Edition
+ 
 *** Step 1: Start Docker
    
 Under MacOS once Docker has started you will see the lettering ~Docker Desktop is running~.
@@ -48,6 +50,12 @@ Then, navigate to the transactions view in Blockscout at ~http://localhost:4000/
 
 You will need to install Hardhat for this. In order for the installation to go smoothly, you may need to delete the Hardhat folder from ~erc20/npm-prj/node_modules/.bin~.
      
+*** Step 6: Start Camunda
+
+Start the Java application by running the main class ~com.dpisarenko.minimalcryptoexchange.MinimalCryptoExchangeProcessApplication~. Once it has started you can use it as described in the section "How to use Camunda" below.
+
+If you are not familiar with Java, please watch the video [[https://youtu.be/bioe5Hg4eOE][How to build and launch Camunda process engine]] first.
+
 ** ETH Addresses
 
 *** Buffer
@@ -69,7 +77,57 @@ You will need to install Hardhat for this. In order for the installation to go s
 
 ** Miscellaneous
 
-*** How to check the balance
+*** How to use Camunda
+
+**** Step 1: Login
+
+Navigate to `http://localhost:8080` and login into the cockpit using ~demo~ as password and username.
+
+**** Step 2: Start a process
+
+Go to the tasklist by clicking on ~Tasklist~ in the dashboard.
+
+[[file:docs/img/2021-10-17_01.png]]
+    
+Click on the ~Start process~ button.
+
+[[file:docs/img/2021-10-17_02.png]]
+
+Click on one of the processes from the list in the window that appears thereafter.
+
+[[file:docs/img/2021-10-17_03.png]]
+
+Enter any text as business key and press ~OK~.
+
+[[file:docs/img/2021-10-17_04.png]]
+
+**** Step 3: Observe the process in the cockpit
+
+Go back to cockpit by clicking on ~Cockpit~ in the dropdown list next to the home icon:
+     
+[[file:docs/img/2021-10-17_05.png]]
+
+In dashboard, click on ~Process Definitions~.
+
+[[file:docs/img/2021-10-17_06.png]]
+
+You should see a list like this:
+
+[[file:docs/img/2021-10-17_07.png]]
+
+Click on the process instance ID in the list.
+
+Thereafter you will see the diagram of that process instance.
+
+[[file:docs/img/2021-10-17_08.png]]
+
+Click on ~java.math.BigInteger~. Following window will appear:
+
+[[file:docs/img/2021-10-17_09.png]]
+
+This is the amount of wei in the Ethereum exchange account.
+
+*** How to check the BTC balance
 
 **** Step 1: Open the shell of BTC testnet
      
