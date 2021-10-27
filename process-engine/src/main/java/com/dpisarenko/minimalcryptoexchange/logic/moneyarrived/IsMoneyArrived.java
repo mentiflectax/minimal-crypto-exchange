@@ -12,7 +12,7 @@ public class IsMoneyArrived implements Function<IsMoneyArrivedInput, IsMoneyArri
         if (!Currency.BTC.equals(input.getCurrency())) {
             throw new IllegalArgumentException("Currently only BTC is supported");
         }
-
+/*
         try {
             //initialize files and stuff here
             WalletAppKit kit = new WalletAppKit(input.getNetworkParameters(), new File("."), "_minimalCryptoExchangeBtcWallet");
@@ -37,7 +37,7 @@ public class IsMoneyArrived implements Function<IsMoneyArrivedInput, IsMoneyArri
         } catch (AddressFormatException e) {
             e.printStackTrace();
         }
-
+*/
         return new IsMoneyArrivedResult();
     }
 }
