@@ -9,11 +9,12 @@ import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 
 public class WalletObserver {
     public void init() {
-        final NetworkParameters netParams = NetworkParameters.fromID(NetworkParameters.ID_TESTNET);
+        final NetworkParameters netParams = NetworkParameters.fromID(NetworkParameters.ID_REGTEST);
+
         try {
             final Wallet wallet = Wallet.createBasic(netParams);
 
-            wallet.addWatchedAddress(Address.fromString(netParams, "1NxxxxxxxxxxxxxxxxC4"));
+            wallet.addWatchedAddress(Address.fromString(netParams, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
 
             wallet.addCoinsReceivedEventListener(new WalletCoinsReceivedEventListener() {
                 @Override
