@@ -14,6 +14,9 @@ public class WalletObserver {
         try {
             final Wallet wallet = Wallet.createBasic(netParams);
 
+            // TODO: Try out the approach from here:
+            // https://stackoverflow.com/questions/27727439/how-to-watch-for-transactions-for-an-address-in-bitcoinj-java?rq=1
+
             wallet.addWatchedAddress(Address.fromString(netParams, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
 
             wallet.addCoinsReceivedEventListener(new WalletCoinsReceivedEventListener() {
