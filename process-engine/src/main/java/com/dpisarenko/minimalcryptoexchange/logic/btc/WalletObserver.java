@@ -15,7 +15,7 @@ import java.net.InetSocketAddress;
 public class WalletObserver {
     public void init() {
         final LocalTestNetParams netParams = new LocalTestNetParams();
-        netParams.setPort(19001);
+        netParams.setPort(50001);
         try {
             //
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
@@ -24,9 +24,9 @@ public class WalletObserver {
 
             kit.startAsync();
             kit.awaitRunning();
-            kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", 19001));
+            //kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", 19001));
 
-            //kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
+            kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
 
 
             //final Wallet wallet = Wallet.createBasic(netParams);
