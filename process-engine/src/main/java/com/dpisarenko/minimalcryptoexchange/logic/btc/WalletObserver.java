@@ -10,19 +10,22 @@ import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 
 import java.io.File;
+import java.net.InetSocketAddress;
 
 public class WalletObserver {
     public void init() {
-        final NetworkParameters netParams = NetworkParameters.fromID(NetworkParameters.ID_REGTEST);
-
+        final LocalTestNetParams netParams = new LocalTestNetParams();
+        netParams.setPort(19001);
         try {
             //
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
             kit.setAutoSave(true);
+            kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", 19001));
             kit.connectToLocalHost();
+
             kit.startAsync();
             kit.awaitRunning();
-            kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
+            //kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
 
 
             //final Wallet wallet = Wallet.createBasic(netParams);
