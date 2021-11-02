@@ -5,6 +5,7 @@ import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.kits.WalletAppKit;
+import org.bitcoinj.net.discovery.DnsDiscovery;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 
@@ -16,17 +17,22 @@ public class WalletObserver {
 
         try {
             //
-            WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
+            final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
+            kit.setAutoSave(true);
             kit.connectToLocalHost();
-            //WalletAppKit wak = new WalletAppKit(netParams)
-            final Wallet wallet = Wallet.createBasic(netParams);
+            kit.startAsync();
+            kit.awaitRunning();
+            kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
+
+
+            //final Wallet wallet = Wallet.createBasic(netParams);
 
             // TODO: Try out the approach from here:
             // https://stackoverflow.com/questions/27727439/how-to-watch-for-transactions-for-an-address-in-bitcoinj-java?rq=1
 
-            wallet.addWatchedAddress(Address.fromString(netParams, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
+            kit.wallet().addWatchedAddress(Address.fromString(netParams, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
 
-            wallet.addCoinsReceivedEventListener(new WalletCoinsReceivedEventListener() {
+            kit.wallet().addCoinsReceivedEventListener(new WalletCoinsReceivedEventListener() {
                 @Override
                 public void onCoinsReceived(final Wallet wallet, final Transaction transaction, final Coin prevBalance, final Coin newBalance) {
                     System.out.println("Heyo!");
