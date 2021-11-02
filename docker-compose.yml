@@ -10,9 +10,13 @@ services:
     image: lukechilds/electrumx:latest
     links:
       - node
+# Port settings see https://github.com/ulamlabs/bitcoind-custom-regtest
     ports:
       - "51001:50001"
       - "51002:50002"
+      - "19001:19001"
+      - "19000:19000"
+      - "28332:28332"
     environment:
       - NET=regtest
       - COIN=BitcoinSegwit

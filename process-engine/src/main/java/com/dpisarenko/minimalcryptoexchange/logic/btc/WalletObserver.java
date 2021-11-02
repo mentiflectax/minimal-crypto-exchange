@@ -20,11 +20,12 @@ public class WalletObserver {
             //
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
             kit.setAutoSave(true);
-            kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", 19001));
             kit.connectToLocalHost();
 
             kit.startAsync();
             kit.awaitRunning();
+            kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", 19001));
+
             //kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
 
 
