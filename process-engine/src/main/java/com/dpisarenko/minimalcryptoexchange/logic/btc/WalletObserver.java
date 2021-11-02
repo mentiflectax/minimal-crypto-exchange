@@ -4,14 +4,21 @@ import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
+
+import java.io.File;
 
 public class WalletObserver {
     public void init() {
         final NetworkParameters netParams = NetworkParameters.fromID(NetworkParameters.ID_REGTEST);
 
         try {
+            //
+            WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
+            kit.connectToLocalHost();
+            //WalletAppKit wak = new WalletAppKit(netParams)
             final Wallet wallet = Wallet.createBasic(netParams);
 
             // TODO: Try out the approach from here:
