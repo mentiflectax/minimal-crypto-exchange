@@ -55,6 +55,11 @@
             <artifactId>bitcoinj-core</artifactId>
             <version>0.15.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
+        </dependency>
         <!-- Bitcoin (end) -->
         <!-- Ethereum (start) -->
         <dependency>
