@@ -60,6 +60,11 @@
             <artifactId>guava</artifactId>
             <version>28.2-jre</version>
         </dependency>
+        <dependency>
+            <groupId>org.btc4j</groupId>
+            <artifactId>btc4j-daemon</artifactId>
+            <version>0.0.3</version>
+        </dependency>
         <!-- Bitcoin (end) -->
         <!-- Ethereum (start) -->
         <dependency>
