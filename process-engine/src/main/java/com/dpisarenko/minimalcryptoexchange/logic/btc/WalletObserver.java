@@ -5,6 +5,7 @@ import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.net.discovery.DnsDiscovery;
+import org.bitcoinj.params.RegTestParams;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
@@ -27,8 +28,11 @@ public class WalletObserver {
 
     public void init() {
         BriefLogFormatter.init();
-        final LocalTestNetParams netParams = new LocalTestNetParams();
-        netParams.setPort(CUR_PORT);
+        //final LocalTestNetParams netParams = new LocalTestNetParams();
+        //netParams.setPort(CUR_PORT);
+
+        RegTestParams netParams = RegTestParams.get();
+
         try {
             //
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
