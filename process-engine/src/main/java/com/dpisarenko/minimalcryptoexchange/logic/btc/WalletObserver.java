@@ -23,7 +23,7 @@ public class WalletObserver {
             51002
     };
 
-    final Integer CUR_PORT = POTENTIAL_PORTS[0];
+    final Integer CUR_PORT = POTENTIAL_PORTS[6];
 
     public void init() {
         BriefLogFormatter.init();
