@@ -2,10 +2,10 @@ package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.net.discovery.DnsDiscovery;
+import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 
@@ -13,18 +13,32 @@ import java.io.File;
 import java.net.InetSocketAddress;
 
 public class WalletObserver {
+    final Integer[] POTENTIAL_PORTS = {
+            19000,
+            19001,
+            28332,
+            50001,
+            50002,
+            51001,
+            51002
+    };
+
+    final Integer CUR_PORT = POTENTIAL_PORTS[0];
+
     public void init() {
+        BriefLogFormatter.init();
         final LocalTestNetParams netParams = new LocalTestNetParams();
-        netParams.setPort(50001);
+        netParams.setPort(CUR_PORT);
         try {
             //
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
-            kit.setAutoSave(true);
             kit.connectToLocalHost();
-
+            kit.setAutoSave(false);
             kit.startAsync();
             kit.awaitRunning();
-            //kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", 19001));
+
+            System.out.println("Port works");
+
 
             kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
 
@@ -45,6 +59,16 @@ public class WalletObserver {
         }
         catch (Exception exception) {
             exception.printStackTrace();
+        }
+    }
+
+    private void testConn(WalletAppKit kit, int port) {
+        try {
+            kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", port));
+            System.out.println("Port " + port + " works");
+        }
+        catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 }
