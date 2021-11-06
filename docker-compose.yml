@@ -6,7 +6,6 @@ services:
 #
   node:
     image: ulamlabs/bitcoind-custom-regtest:latest
-    network_mode: "host"
   electrumx:
     image: lukechilds/electrumx:latest
     links:
