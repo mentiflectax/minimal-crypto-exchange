@@ -6,6 +6,12 @@ services:
 #
   node:
     image: ulamlabs/bitcoind-custom-regtest:latest
+# For ports used by node see
+# https://github.com/ulamlabs/bitcoind-custom-regtest/blob/master/bitcoin.conf
+    ports:
+      - "19001:19001"
+      - "19000:19000"
+      - "28332:28332"
   electrumx:
     image: lukechilds/electrumx:latest
     links:
