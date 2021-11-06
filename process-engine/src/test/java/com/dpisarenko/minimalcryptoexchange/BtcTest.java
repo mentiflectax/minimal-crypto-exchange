@@ -11,7 +11,7 @@ import java.net.URL;
 public class BtcTest {
     @Test
     public void manualTest() throws MalformedURLException, BtcException {
-        BtcDaemon daemon = new BtcDaemon(new URL("http://127.0.0.1:19000"));
+        BtcDaemon daemon = new BtcDaemon(new URL("http://127.0.0.1:19001"));
         BtcInfo info = daemon.getInformation();
         System.out.println("Hello");
     }

@@ -24,14 +24,14 @@ public class WalletObserver {
             51002
     };
 
-    final Integer CUR_PORT = POTENTIAL_PORTS[6];
+    final Integer CUR_PORT = POTENTIAL_PORTS[0];
 
     public void init() {
         BriefLogFormatter.init();
-        //final LocalTestNetParams netParams = new LocalTestNetParams();
-        //netParams.setPort(CUR_PORT);
+        final LocalTestNetParams netParams = new LocalTestNetParams();
+        netParams.setPort(CUR_PORT);
 
-        RegTestParams netParams = RegTestParams.get();
+        //RegTestParams netParams = RegTestParams.get();
 
         try {
             //
