@@ -15,14 +15,14 @@ public class BtcWalletObservationSpike {
 
     private synchronized void run() {
         final LocalTestNetParams params = new LocalTestNetParams();
-        params.setPort(WalletObserver.CUR_PORT);
+        params.setPort(18444/*WalletObserver.CUR_PORT*/);
         WalletAppKit kit = new WalletAppKit(params, new File("."), "walletappkit-example");
         kit.connectToLocalHost();
 
         kit.startAsync();
         kit.awaitRunning();
 
-        kit.wallet().addWatchedAddress(Address.fromString(params, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
+        kit.wallet().addWatchedAddress(Address.fromString(params, "2NFUwJcEWZvB77MUzSTD12ea5R6Mbw9dmtD"));
 
         kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
             System.out.println("-----> coins resceived: " + tx.getTxId());
