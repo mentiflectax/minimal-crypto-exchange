@@ -14,7 +14,7 @@ import java.io.File;
 import java.net.InetSocketAddress;
 
 public class WalletObserver {
-    final Integer[] POTENTIAL_PORTS = {
+    final static Integer[] POTENTIAL_PORTS = {
             19000,
             19001,
             28332,
@@ -24,7 +24,7 @@ public class WalletObserver {
             51002
     };
 
-    final Integer CUR_PORT = POTENTIAL_PORTS[0];
+    public final static Integer CUR_PORT = POTENTIAL_PORTS[0];
 
     public void init() {
         BriefLogFormatter.init();
