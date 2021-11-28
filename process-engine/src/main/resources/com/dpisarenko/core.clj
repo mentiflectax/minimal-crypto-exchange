@@ -31,5 +31,7 @@
    tx
    prev-balance
    new-balance]
+  (. logger info (str "state: "
+                      @state))
   (. logger info (str "btcTxReceived"))
   )
