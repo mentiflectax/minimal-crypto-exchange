@@ -7,6 +7,10 @@
 
 (defonce state (atom {}))
 
+; Macros (start)
+; (defmacro log-info)
+; Macros (end)
+
 (defn init
   [logger]
   (let [
@@ -16,13 +20,13 @@
         new-state (swap! state assoc :start-time cur-time)
         ;new-state nil
         ]
-    (defonce logger logger)
-    (. logger info "Hello")
-    (. logger info (str "cur-time: "
+    (defonce *logger* logger)
+    (. *logger* info "Hello")
+    (. *logger* info (str "cur-time: "
                         cur-time))
-    (. logger info (str "Old state: "
+    (. *logger* info (str "Old state: "
                         old-state))
-    (. logger info (str "New state: " new-state))
+    (. *logger* info (str "New state: " new-state))
 
     ))
 
@@ -31,7 +35,7 @@
    tx
    prev-balance
    new-balance]
-  (. logger info (str "state: "
+  (. *logger* info (str "state: "
                       @state))
-  (. logger info (str "btcTxReceived"))
+  (. *logger* info (str "btcTxReceived"))
   )
