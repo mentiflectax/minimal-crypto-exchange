@@ -5,7 +5,7 @@
     )
   )
 
-(defonce state {})
+(defonce state (atom {}))
 
 (defn init
   [logger]
@@ -13,7 +13,8 @@
         cur-time (new java.util.Date)
         old-state state
         ; new-state (assoc state :start-time cur-time)
-        new-state (swap! state assoc state :start-time cur-time)
+        new-state (swap! state assoc :start-time cur-time)
+        ;new-state nil
         ]
 
     (. logger info "Hello")
@@ -21,7 +22,6 @@
                         cur-time))
     (. logger info (str "Old state: "
                         old-state))
-    (. logger info (str "New state: "
-                        new-state))
+    (. logger info (str "New state: " new-state))
 
     ))
