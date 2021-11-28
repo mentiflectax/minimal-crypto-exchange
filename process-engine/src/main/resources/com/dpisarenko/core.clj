@@ -1,4 +1,8 @@
-(ns com.dpisarenko.core)
+(ns com.dpisarenko.core
+  (:import
+    (org.slf4j Logger)
+    )
+  )
 
 (defonce state {})
 

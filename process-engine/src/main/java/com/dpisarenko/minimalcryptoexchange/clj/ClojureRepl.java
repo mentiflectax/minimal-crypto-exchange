@@ -11,12 +11,15 @@ import javax.annotation.PreDestroy;
 
 @Service
 public class ClojureRepl {
-    private final Logger logger = LoggerFactory.getLogger("CLJ");
+    private final Logger logger = LoggerFactory.getLogger("CLOJURE");
 
     @PostConstruct
     public void init() {
         final IFn require = Clojure.var("clojure.core", "require");
         require.invoke(Clojure.read("com.dpisarenko.core"));
+
+        Clojure.var("com.dpisarenko.core", "init")
+                .invoke(logger);
 
         Clojure.var("clojure.core.server", "start-server").invoke(
                 Clojure.read("{:port 5555 :name spring-repl :accept clojure.core.server/repl}")
