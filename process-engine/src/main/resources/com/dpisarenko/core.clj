@@ -1,6 +1,7 @@
 (ns com.dpisarenko.core
   (:import
     (org.slf4j Logger)
+    (java.util Date)
     )
   )
 
@@ -8,6 +9,13 @@
 
 (defn init
   [logger]
-  (let []
+  (let [
+        cur-time (new java.util.Date)
+        ]
     (. logger info "Hello")
+    (. logger info (str "cur-time: "
+                        cur-time))
+    (. logger info (str "Old state: "
+                        state))
+
     ))
