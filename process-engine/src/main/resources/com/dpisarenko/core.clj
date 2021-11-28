@@ -7,12 +7,16 @@
   [msg]
   (list '. 'logger 'info msg)
   )
+
+(defmacro now
+  []
+  (list 'new 'java.util.Date))
 ; Macros (end)
 
 (defn init
   [logger]
   (let [
-        cur-time (new java.util.Date)
+        cur-time (now)
         old-state @state
         new-state (swap! state assoc :start-time cur-time)
         ]
@@ -24,6 +28,17 @@
                         old-state))
     (log-info (str "New state: " new-state))
 
+    ))
+
+(defn create-btc-tx
+  [wallet
+   tx
+   prev-balance
+   new-balance]
+  (let [
+
+        ]
+    []
     ))
 
 (defn btcTxReceived
