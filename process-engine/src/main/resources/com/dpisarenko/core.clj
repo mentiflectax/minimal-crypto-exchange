@@ -1,6 +1,9 @@
 (ns com.dpisarenko.core)
 
-(defonce state (atom {}))
+(defonce state
+         (atom {
+                :txs []
+                }))
 
 ; Macros (start)
 (defmacro log-info
@@ -23,9 +26,9 @@
     (defonce logger logger)
     (log-info "Hello")
     (log-info (str "cur-time: "
-                        cur-time))
+                   cur-time))
     (log-info (str "Old state: "
-                        old-state))
+                   old-state))
     (log-info (str "New state: " new-state))
 
     ))
@@ -35,10 +38,11 @@
    tx
    prev-balance
    new-balance]
-  (let [
-
-        ]
-    []
+  (let []
+    {
+     :currency   "BTC"
+     :created-at (now)
+     }
     ))
 
 (defn btcTxReceived
@@ -46,6 +50,14 @@
    tx
    prev-balance
    new-balance]
-  (log-info (str "state: " @state))
-  (log-info (str "btcTxReceived"))
+  (let [
+        new-tx (create-btc-tx
+                 wallet
+                 tx
+                 prev-balance
+                 new-balance)
+        ]
+    (log-info (str "state: " @state))
+    (log-info (str "btcTxReceived"))
+    )
   )
