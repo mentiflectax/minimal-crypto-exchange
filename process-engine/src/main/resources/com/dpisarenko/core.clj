@@ -1,16 +1,10 @@
-(ns com.dpisarenko.core
-  (:import
-    (org.slf4j Logger)
-    (java.util Date)
-    )
-  )
+(ns com.dpisarenko.core)
 
 (defonce state (atom {}))
 
 ; Macros (start)
 (defmacro log-info
   [msg]
-;  (. logger info (str "btcTxReceived"))
   (list '. 'logger 'info msg)
   )
 ; Macros (end)
@@ -19,19 +13,16 @@
   [logger]
   (let [
         cur-time (new java.util.Date)
-        old-state state
-        ; new-state (assoc state :start-time cur-time)
+        old-state @state
         new-state (swap! state assoc :start-time cur-time)
-        ;new-state nil
         ]
     (defonce logger logger)
-    (. logger info "Hello")
-    (log-info "Hello, again!")
-    (. logger info (str "cur-time: "
+    (log-info "Hello")
+    (log-info (str "cur-time: "
                         cur-time))
-    (. logger info (str "Old state: "
+    (log-info (str "Old state: "
                         old-state))
-    (. logger info (str "New state: " new-state))
+    (log-info (str "New state: " new-state))
 
     ))
 
@@ -40,7 +31,6 @@
    tx
    prev-balance
    new-balance]
-  (. logger info (str "state: "
-                      @state))
-  (. logger info (str "btcTxReceived"))
+  (log-info (str "state: " @state))
+  (log-info (str "btcTxReceived"))
   )
