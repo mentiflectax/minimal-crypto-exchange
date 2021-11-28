@@ -18,19 +18,10 @@
 
 (defn init
   [logger]
-  (let [
-        cur-time (now)
-        old-state @state
-        new-state (swap! state assoc :start-time cur-time)
-        ]
+  (let [cur-time (now)]
     (defonce logger logger)
-    (log-info "Hello")
-    (log-info (str "cur-time: "
-                   cur-time))
-    (log-info (str "Old state: "
-                   old-state))
-    (log-info (str "New state: " new-state))
-
+    (swap! state assoc :start-time cur-time)
+    (log-info "Clojure subsystem started.")
     ))
 
 (defn create-btc-tx
@@ -71,3 +62,30 @@
     (log-info (str "btcTxReceived"))
     )
   )
+
+;; Various functions (start)
+
+(defn tx-present?
+  [state address amt currency]
+  false)
+
+;; Various functions (end)
+
+;; Delegates (start)
+
+(defn check-btc-arrived
+  [del-ex]
+  (let [
+       exp-source-address nil ;; TODO: Read from the process variables
+       exp-amount nil ;; TODO: Read from the process variables
+        btc-arrived (tx-present?
+                      state
+                      exp-source-address
+                      exp-amount
+                      "BTC")
+        ]
+    ;; TODO: Update the "btc arrived" process variable
+    (log-info "check-btc-arrived")
+    ))
+
+;; Delegates (end)

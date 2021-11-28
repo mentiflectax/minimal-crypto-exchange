@@ -16,7 +16,7 @@ public class ClojureService {
         return (BigDecimal) Clojure.var("com.dpisarenko.camundarepl", "add").invoke(a, b);
     }
 
-    void runClojureCode(final DelegateExecution delEx, final String clojureFunctionName) {
+    public void runClojureCode(final DelegateExecution delEx, final String clojureFunctionName) {
         Clojure.var("com.dpisarenko.camundarepl", clojureFunctionName)
                 .invoke(delEx);
     }
