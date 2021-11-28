@@ -16,6 +16,9 @@
   (list 'new 'java.util.Date))
 ; Macros (end)
 
+; Camunda stuff (start)
+; Camunda stuff (end)
+
 (defn init
   [logger]
   (let [cur-time (now)]
