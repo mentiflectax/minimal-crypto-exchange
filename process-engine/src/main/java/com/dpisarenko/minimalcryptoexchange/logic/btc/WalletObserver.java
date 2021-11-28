@@ -1,5 +1,6 @@
 package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
+import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.Transaction;
@@ -9,6 +10,7 @@ import org.bitcoinj.params.RegTestParams;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -25,6 +27,9 @@ public class WalletObserver {
     };
 
     public final static Integer CUR_PORT = POTENTIAL_PORTS[0];
+
+    @Autowired
+    ClojureService clojureService;
 
     public void init() {
         BriefLogFormatter.init();
@@ -43,10 +48,7 @@ public class WalletObserver {
 
             System.out.println("Port works");
 
-
             kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
-
-
             //final Wallet wallet = Wallet.createBasic(netParams);
 
             // TODO: Try out the approach from here:
@@ -54,11 +56,9 @@ public class WalletObserver {
 
             kit.wallet().addWatchedAddress(Address.fromString(netParams, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
 
-            kit.wallet().addCoinsReceivedEventListener(new WalletCoinsReceivedEventListener() {
-                @Override
-                public void onCoinsReceived(final Wallet wallet, final Transaction transaction, final Coin prevBalance, final Coin newBalance) {
-                    System.out.println("Heyo!");
-                }
+            kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
+                clojureService.btcTxReceived(wallet, tx, prevBalance, newBalance);
+                // System.out.println("-----> coins resceived: " + tx.getTxId());
             });
         }
         catch (Exception exception) {

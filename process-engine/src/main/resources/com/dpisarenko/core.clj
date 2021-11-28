@@ -16,7 +16,7 @@
         new-state (swap! state assoc :start-time cur-time)
         ;new-state nil
         ]
-
+    (defonce logger logger)
     (. logger info "Hello")
     (. logger info (str "cur-time: "
                         cur-time))
@@ -25,3 +25,11 @@
     (. logger info (str "New state: " new-state))
 
     ))
+
+(defn btcTxReceived
+  [wallet
+   tx
+   prev-balance
+   new-balance]
+  (. logger info (str "btcTxReceived"))
+  )
