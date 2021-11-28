@@ -45,6 +45,15 @@
      }
     ))
 
+(defn append-tx
+  [old-state new-tx]
+  (let [
+        old-tx-list (get old-state :txs)
+        new-tx-list (conj old-tx-list new-tx)
+        ]
+    (assoc old-state :txs new-tx-list)
+    ))
+
 (defn btcTxReceived
   [wallet
    tx
@@ -57,6 +66,7 @@
                  prev-balance
                  new-balance)
         ]
+    (swap! state append-tx new-tx)
     (log-info (str "state: " @state))
     (log-info (str "btcTxReceived"))
     )
