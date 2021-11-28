@@ -92,6 +92,13 @@
             <scope>test</scope>
         </dependency>
         <!-- Testing (end) -->
+        <!-- Clojure (start) -->
+        <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>clojure</artifactId>
+            <version>1.10.3</version>
+        </dependency>
+        <!-- Clojure (end) -->
     </dependencies>
 
     <build>
