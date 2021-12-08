@@ -28,6 +28,6 @@ public class ClojureService {
 
     @PostConstruct
     void test() {
-        btcTxReceived(null, null, null, null);
+        //btcTxReceived(null, null, null, null);
     }
 }

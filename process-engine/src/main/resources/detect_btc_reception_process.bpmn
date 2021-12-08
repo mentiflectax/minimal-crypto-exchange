@@ -31,7 +31,9 @@
     <bpmn:intermediateCatchEvent id="Event_1q9sge3" name="Wait" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_11lpl4p</bpmn:incoming>
       <bpmn:outgoing>Flow_10d0u24</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_12gf3v9" />
+      <bpmn:timerEventDefinition id="TimerEventDefinition_12gf3v9">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_14azlkm" name="No" sourceRef="have_btc_arrived_open" targetRef="Activity_09z6iwa" />
     <bpmn:task id="Activity_09z6iwa" name="Increment wait counter" camunda:asyncBefore="true">
