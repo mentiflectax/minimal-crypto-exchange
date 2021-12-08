@@ -25,20 +25,16 @@ public class WalletObserver {
         final LocalTestNetParams netParams = new LocalTestNetParams();
         netParams.setPort(18444);
 
-        //RegTestParams netParams = RegTestParams.get();
-
         try {
-            //
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
             kit.connectToLocalHost();
             kit.startAsync();
             kit.awaitRunning();
 
-            kit.wallet().addWatchedAddress(Address.fromString(netParams, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
+            kit.wallet().addWatchedAddress(Address.fromString(netParams,  exchangeAddress));
 
             kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
                 clojureService.btcTxReceived(wallet, tx, prevBalance, newBalance);
-                // System.out.println("-----> coins resceived: " + tx.getTxId());
             });
         }
         catch (Exception exception) {
