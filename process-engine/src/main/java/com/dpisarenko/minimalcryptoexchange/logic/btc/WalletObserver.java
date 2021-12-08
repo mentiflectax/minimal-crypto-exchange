@@ -3,7 +3,6 @@ package com.dpisarenko.minimalcryptoexchange.logic.btc;
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +51,7 @@ public class WalletObserver {
                     Coin amount = relevantTxOutput.get().getAmount();
                     System.out.println(String.format("Received %s BTC", amount.toFriendlyString()));
                     // TODO: Add comments here (to the transaction)
+                    // bitcoin-cli -regtest sendtoaddress 2MwnQZ9zqU7hH9h4DVWiudGeuPS1GbQRGrx 1 "Comment 5"
                     // TODO: Adapt this call
                     clojureService.btcTxReceived(wallet, tx, prevBalance, newBalance);
                 }
