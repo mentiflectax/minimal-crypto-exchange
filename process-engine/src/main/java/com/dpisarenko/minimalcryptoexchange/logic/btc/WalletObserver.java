@@ -2,6 +2,8 @@ package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.bitcoinj.core.Address;
+import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,17 @@ public class WalletObserver {
             kit.wallet().addWatchedAddress(Address.fromString(netParams,  exchangeAddress));
 
             kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
+                // tx.getOutputs().get(0).getValue()
+                System.out.println("---");
+                for (final TransactionOutput output : tx.getOutputs()) {
+                    final Address targetAddress = output.getScriptPubKey().getToAddress(netParams);
+                    Coin amount = output.getValue();
+
+                    System.out.println(String.format("Recipient '%s', amount '%s'",
+                            targetAddress, amount.toFriendlyString()));
+                }
+                System.out.println("---");
+
                 clojureService.btcTxReceived(wallet, tx, prevBalance, newBalance);
             });
         }
