@@ -26,7 +26,7 @@ public class WalletObserver {
             51002
     };
 
-    public final static Integer CUR_PORT = POTENTIAL_PORTS[0];
+    public final static Integer CUR_PORT = POTENTIAL_PORTS[1];
 
     @Autowired
     ClojureService clojureService;
@@ -34,7 +34,7 @@ public class WalletObserver {
     public void init() {
         BriefLogFormatter.init();
         final LocalTestNetParams netParams = new LocalTestNetParams();
-        netParams.setPort(CUR_PORT);
+        netParams.setPort(18444);
 
         //RegTestParams netParams = RegTestParams.get();
 
@@ -42,13 +42,11 @@ public class WalletObserver {
             //
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
             kit.connectToLocalHost();
-            kit.setAutoSave(false);
             kit.startAsync();
             kit.awaitRunning();
 
             System.out.println("Port works");
 
-            kit.peerGroup().addPeerDiscovery(new DnsDiscovery(netParams));
             //final Wallet wallet = Wallet.createBasic(netParams);
 
             // TODO: Try out the approach from here:
@@ -63,16 +61,6 @@ public class WalletObserver {
         }
         catch (Exception exception) {
             exception.printStackTrace();
-        }
-    }
-
-    private void testConn(WalletAppKit kit, int port) {
-        try {
-            kit.peerGroup().connectTo(new InetSocketAddress("127.0.0.1", port));
-            System.out.println("Port " + port + " works");
-        }
-        catch (Throwable t) {
-            t.printStackTrace();
         }
     }
 }
