@@ -11,25 +11,18 @@ import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.net.InetSocketAddress;
 
+
 public class WalletObserver {
-    final static Integer[] POTENTIAL_PORTS = {
-            19000,
-            19001,
-            28332,
-            50001,
-            50002,
-            51001,
-            51002
-    };
-
-    public final static Integer CUR_PORT = POTENTIAL_PORTS[1];
-
     @Autowired
     ClojureService clojureService;
+
+    @Value("${accounts.btc.exchange.address}")
+    String exchangeAddress;
 
     public void init() {
         BriefLogFormatter.init();

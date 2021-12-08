@@ -6,6 +6,9 @@ camunda.bpm:
   filter:
     create: All tasks
 accounts:
+  btc:
+    exchange:
+      address: '2N8PHiQ446WDTHcbGEVjVDVPxD41zuzFAbU'
   eth:
     exchange:
       address: '0x190FD61ED8fE0067f0f09EA992C1BF96209bab66'

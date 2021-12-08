@@ -16,7 +16,7 @@ public class MinimalCryptoExchangeProcessApplication {
 
     @PostConstruct
     void startWalletObserver() {
-        final WalletObserver walletObserver = new WalletObserver();
-        walletObserver.init();
+        // final WalletObserver walletObserver = new WalletObserver();
+        // walletObserver.init();
     }
 }
