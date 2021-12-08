@@ -3,19 +3,19 @@ package com.dpisarenko.minimalcryptoexchange.logic.btc;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 
-class LogicalTransactionOutput {
+public class LogicalTransactionOutput {
     private Address targetAddress;
     private Coin amount;
 
     public LogicalTransactionOutput() {
     }
 
-    LogicalTransactionOutput withTargetAddress(final Address newAddress) {
+    public LogicalTransactionOutput withTargetAddress(final Address newAddress) {
         this.targetAddress = newAddress;
         return this;
     }
 
-    LogicalTransactionOutput withAmount(final Coin newAmount) {
+    public LogicalTransactionOutput withAmount(final Coin newAmount) {
         this.amount = newAmount;
         return this;
     }

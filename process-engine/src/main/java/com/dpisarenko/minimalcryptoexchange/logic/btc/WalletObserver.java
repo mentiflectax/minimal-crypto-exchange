@@ -24,6 +24,7 @@ public class WalletObserver {
 
     @PostConstruct
     public void init() {
+        //final String exchangeAddress = this.exchangeAddress;
         BriefLogFormatter.init();
         final LocalTestNetParams netParams = new LocalTestNetParams();
         netParams.setPort(18444);
@@ -44,7 +45,7 @@ public class WalletObserver {
                         .map(output -> new LogicalTransactionOutput()
                                 .withTargetAddress(output.getScriptPubKey().getToAddress(netParams))
                                 .withAmount(output.getValue()))
-                        .filter(logicalTransactionOutput -> exchangeAddress.equals(logicalTransactionOutput.getTargetAddress()))
+                        .filter(logicalTransactionOutput -> exchangeAddress.equals(logicalTransactionOutput.getTargetAddress().toString()))
                         .findFirst();
 
                 if (relevantTxOutput.isPresent()) {
