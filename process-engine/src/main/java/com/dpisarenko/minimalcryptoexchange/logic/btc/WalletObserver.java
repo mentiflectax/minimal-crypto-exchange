@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.util.Optional;
 
 @Component
 public class WalletObserver {
@@ -38,16 +39,22 @@ public class WalletObserver {
             kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
                 // tx.getOutputs().get(0).getValue()
                 System.out.println("---");
-                for (final TransactionOutput output : tx.getOutputs()) {
-                    final Address targetAddress = output.getScriptPubKey().getToAddress(netParams);
-                    Coin amount = output.getValue();
+                Optional<LogicalTransactionOutput> relevantTxOutput = tx.getOutputs()
+                        .stream()
+                        .map(output -> new LogicalTransactionOutput()
+                                .withTargetAddress(output.getScriptPubKey().getToAddress(netParams))
+                                .withAmount(output.getValue()))
+                        .filter(logicalTransactionOutput -> exchangeAddress.equals(logicalTransactionOutput.getTargetAddress()))
+                        .findFirst();
 
-                    System.out.println(String.format("Recipient '%s', amount '%s'",
-                            targetAddress, amount.toFriendlyString()));
+                if (relevantTxOutput.isPresent()) {
+                    Coin amount = relevantTxOutput.get().getAmount();
+                    System.out.println(String.format("Received %s BTC", amount.toFriendlyString()));
+                    // TODO: Add comments here (to the transaction)
+                    // TODO: Adapt this call
+                    clojureService.btcTxReceived(wallet, tx, prevBalance, newBalance);
                 }
                 System.out.println("---");
-
-                clojureService.btcTxReceived(wallet, tx, prevBalance, newBalance);
             });
         }
         catch (Exception exception) {
