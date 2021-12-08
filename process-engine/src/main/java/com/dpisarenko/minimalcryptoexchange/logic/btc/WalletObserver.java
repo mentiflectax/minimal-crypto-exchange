@@ -2,21 +2,16 @@ package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.net.discovery.DnsDiscovery;
-import org.bitcoinj.params.RegTestParams;
 import org.bitcoinj.utils.BriefLogFormatter;
-import org.bitcoinj.wallet.Wallet;
-import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
-import java.net.InetSocketAddress;
 
-
+@Component
 public class WalletObserver {
     @Autowired
     ClojureService clojureService;
@@ -24,6 +19,7 @@ public class WalletObserver {
     @Value("${accounts.btc.exchange.address}")
     String exchangeAddress;
 
+    @PostConstruct
     public void init() {
         BriefLogFormatter.init();
         final LocalTestNetParams netParams = new LocalTestNetParams();
@@ -37,13 +33,6 @@ public class WalletObserver {
             kit.connectToLocalHost();
             kit.startAsync();
             kit.awaitRunning();
-
-            System.out.println("Port works");
-
-            //final Wallet wallet = Wallet.createBasic(netParams);
-
-            // TODO: Try out the approach from here:
-            // https://stackoverflow.com/questions/27727439/how-to-watch-for-transactions-for-an-address-in-bitcoinj-java?rq=1
 
             kit.wallet().addWatchedAddress(Address.fromString(netParams, "2N23tWAFEtBtTgxNjBNmnwzsiPdLcNek181"));
 
