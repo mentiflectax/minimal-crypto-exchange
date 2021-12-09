@@ -28,14 +28,13 @@
     ))
 
 (defn create-btc-tx
-  [wallet
-   tx
-   prev-balance
-   new-balance]
+  [tx-id amount]
   (let []
     {
      :currency   "BTC"
      :created-at (now)
+     :tx-id tx-id
+     :amount amount
      }
     ))
 
@@ -49,20 +48,15 @@
     ))
 
 (defn btcTxReceived
-  [wallet
-   tx
-   prev-balance
-   new-balance]
+  [tx-id amount]
   (let [
         new-tx (create-btc-tx
-                 wallet
-                 tx
-                 prev-balance
-                 new-balance)
+                 tx-id
+                 amount)
         ]
     (swap! state append-tx new-tx)
-    (log-info (str "state: " @state))
     (log-info (str "btcTxReceived"))
+    (log-info (str "New state: " @state))
     )
   )
 

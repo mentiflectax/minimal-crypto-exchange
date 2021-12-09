@@ -51,11 +51,9 @@ public class WalletObserver {
                     final String txId = tx.getTxId().toString();
                     Coin amount = relevantTxOutput.get().getAmount();
                     System.out.println(String.format("Received %s BTC", amount.toFriendlyString()));
-                    // TODO: Add comments here (to the transaction)
-                    // bitcoin-cli -regtest sendtoaddress 2MwnQZ9zqU7hH9h4DVWiudGeuPS1GbQRGrx 1 "Comment 5"
-                    // TODO: Adapt this call
                     clojureService.btcTxReceived(txId, amount);
                 }
+                // TODO: Think what we need to do if we cannot find the relevant transaction
                 System.out.println("---");
             });
         }
