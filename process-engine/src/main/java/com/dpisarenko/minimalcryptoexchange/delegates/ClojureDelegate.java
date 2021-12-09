@@ -6,7 +6,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component("clj-del")
+@Component("ClojureDelegate")
 public class ClojureDelegate implements JavaDelegate {
     @Autowired
     private ClojureService backend;

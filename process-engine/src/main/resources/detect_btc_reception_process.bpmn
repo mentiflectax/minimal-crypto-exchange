@@ -67,11 +67,11 @@
       <bpmn:outgoing>Flow_0eja2cw</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1e78raa" sourceRef="Activity_17xow95" targetRef="have_btc_arrived_open" />
-    <bpmn:userTask id="Activity_17xow95" name="Wait">
+    <bpmn:userTask id="Activity_17xow95" name="Wait" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_1a3a0t9</bpmn:incoming>
       <bpmn:outgoing>Flow_1e78raa</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="check_whether_or_not_btc_has_arrived" name="Check whether or not BTC has arrived" camunda:asyncBefore="true" camunda:delegateExpression="${clj-del}">
+    <bpmn:serviceTask id="check_whether_or_not_btc_has_arrived" name="Check whether or not BTC has arrived" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="cljfn">check-btc-arrived</camunda:inputParameter>
