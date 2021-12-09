@@ -64,7 +64,22 @@
 
 (defn tx-present?
   [state tx-id currency]
-  false)
+  (let [txs (:txs state)
+        matching-txs (filter (fn [cur-tx]
+                    (let [cur-tx-currency (:currency cur-tx)
+                          cur-tx-id (:tx-id cur-tx)
+
+                          ]
+                      (and
+                        (= currency cur-tx-currency)
+                        (= tx-id cur-tx-id)))
+                    )
+                  txs
+                  )
+        tx-exists (not (empty? matching-txs))
+        ]
+        tx-exists)
+  )
 
 ;; Various functions (end)
 
@@ -75,7 +90,7 @@
   (let [
         tx-id (.getVariable del-ex "INCOMING_TX_ID")
         btc-arrived (tx-present?
-                      state
+                      @state
                       tx-id
                       "BTC")
         ]
