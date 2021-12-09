@@ -2,22 +2,18 @@ package com.dpisarenko.minimalcryptoexchange.clj;
 
 import clojure.java.api.Clojure;
 import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.wallet.Wallet;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 
 @Service
 public class ClojureService {
-    BigDecimal add(BigDecimal a, BigDecimal b) {
-        return (BigDecimal) Clojure.var("com.dpisarenko.camundarepl", "add").invoke(a, b);
-    }
+
+    public static final String MAIN_CLOJURE_NAMESPACE = "com.dpisarenko.core";
 
     public void runClojureCode(final DelegateExecution delEx, final String clojureFunctionName) {
-        Clojure.var("com.dpisarenko.camundarepl", clojureFunctionName)
+        Clojure.var(MAIN_CLOJURE_NAMESPACE, clojureFunctionName)
                 .invoke(delEx);
     }
 

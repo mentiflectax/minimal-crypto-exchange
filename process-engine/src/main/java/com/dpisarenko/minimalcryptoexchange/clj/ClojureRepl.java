@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import static com.dpisarenko.minimalcryptoexchange.clj.ClojureService.MAIN_CLOJURE_NAMESPACE;
+
 @Service
 public class ClojureRepl {
     private final Logger logger = LoggerFactory.getLogger("CLOJURE");
@@ -16,9 +18,9 @@ public class ClojureRepl {
     @PostConstruct
     public void init() {
         final IFn require = Clojure.var("clojure.core", "require");
-        require.invoke(Clojure.read("com.dpisarenko.core"));
+        require.invoke(Clojure.read(MAIN_CLOJURE_NAMESPACE));
 
-        Clojure.var("com.dpisarenko.core", "init")
+        Clojure.var(MAIN_CLOJURE_NAMESPACE, "init")
                 .invoke(logger);
 
         Clojure.var("clojure.core.server", "start-server").invoke(
