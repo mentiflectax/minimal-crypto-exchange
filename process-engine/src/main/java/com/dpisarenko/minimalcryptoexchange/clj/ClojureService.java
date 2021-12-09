@@ -21,9 +21,9 @@ public class ClojureService {
                 .invoke(delEx);
     }
 
-    public void btcTxReceived(Wallet wallet, Transaction tx, Coin prevBalance, Coin newBalance) {
+    public void btcTxReceived(final String txId, final Coin amount) {
         Clojure.var("com.dpisarenko.core", "btcTxReceived")
-                .invoke(wallet, tx, prevBalance, newBalance);
+                .invoke(txId, amount);
     }
 
     @PostConstruct
