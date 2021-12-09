@@ -63,7 +63,7 @@
 ;; Various functions (start)
 
 (defn tx-present?
-  [state address amt currency]
+  [state tx-id currency]
   false)
 
 ;; Various functions (end)
@@ -73,16 +73,15 @@
 (defn check-btc-arrived
   [del-ex]
   (let [
-       exp-source-address nil ;; TODO: Read from the process variables
-       exp-amount nil ;; TODO: Read from the process variables
+        tx-id (.getVariable del-ex "INCOMING_TX_ID")
         btc-arrived (tx-present?
                       state
-                      exp-source-address
-                      exp-amount
+                      tx-id
                       "BTC")
         ]
     ;; TODO: Update the "btc arrived" process variable
-    (log-info "check-btc-arrived")
+    (log-info (str "check-btc-arrived: INCOMING_TX_ID: "
+                   tx-id))
     ))
 
 ;; Delegates (end)

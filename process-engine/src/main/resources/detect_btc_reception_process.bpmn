@@ -5,11 +5,6 @@
       <bpmn:outgoing>Flow_0pweo0p</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0pweo0p" sourceRef="start" targetRef="enter_transaction_details" />
-    <bpmn:task id="check_whether_or_not_btc_has_arrived" name="Check whether or not BTC has arrived" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_0eja2cw</bpmn:incoming>
-      <bpmn:incoming>Flow_10d0u24</bpmn:incoming>
-      <bpmn:outgoing>Flow_1a3a0t9</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:sequenceFlow id="Flow_0eja2cw" sourceRef="enter_transaction_details" targetRef="check_whether_or_not_btc_has_arrived" />
     <bpmn:exclusiveGateway id="have_btc_arrived_open" name="Have BTC arrived?" camunda:asyncBefore="true" default="Flow_14azlkm">
       <bpmn:incoming>Flow_1e78raa</bpmn:incoming>
@@ -65,7 +60,7 @@
     <bpmn:userTask id="enter_transaction_details" name="Enter transaction details" camunda:asyncBefore="true">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="TX_ID" label="ID of the transaction (which you used to send money to the exchange)" type="string" />
+          <camunda:formField id="INCOMING_TX_ID" label="ID of the transaction (which you used to send money to the exchange)" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0pweo0p</bpmn:incoming>
@@ -76,6 +71,16 @@
       <bpmn:incoming>Flow_1a3a0t9</bpmn:incoming>
       <bpmn:outgoing>Flow_1e78raa</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:serviceTask id="check_whether_or_not_btc_has_arrived" name="Check whether or not BTC has arrived" camunda:asyncBefore="true" camunda:delegateExpression="${clj-del}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="cljfn">check-btc-arrived</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0eja2cw</bpmn:incoming>
+      <bpmn:incoming>Flow_10d0u24</bpmn:incoming>
+      <bpmn:outgoing>Flow_1a3a0t9</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="detect_btc_reception_process">
@@ -149,9 +154,6 @@
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
         <dc:Bounds x="152" y="82" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1kr331f_di" bpmnElement="check_whether_or_not_btc_has_arrived">
-        <dc:Bounds x="400" y="60" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1x6qudt_di" bpmnElement="have_btc_arrived_open" isMarkerVisible="true">
         <dc:Bounds x="745" y="75" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -193,6 +195,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0m92w7o_di" bpmnElement="Activity_17xow95">
         <dc:Bounds x="560" y="60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09dq04r_di" bpmnElement="check_whether_or_not_btc_has_arrived">
+        <dc:Bounds x="400" y="60" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
