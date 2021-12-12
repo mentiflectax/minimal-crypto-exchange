@@ -99,4 +99,9 @@
                    tx-id ", BTC arrived: " btc-arrived))
     ))
 
+(defn set_retry_counter_to_0
+  [de]
+  (.setVariable de "RETRY_COUNTER" 0)
+  )
+
 ;; Delegates (end)
