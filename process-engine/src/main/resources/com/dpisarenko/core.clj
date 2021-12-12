@@ -103,6 +103,10 @@
     (.setVariable de "USD_AMOUNT" usd)
     ))
 
+(defn send_usdt
+  [de]
+  (let []
+    (log-info "send_usdt")))
 
 ; Camunda stuff (end)
 ;; Low-level functions (start)
