@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0ir9wyu" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="exchange_btc_for_usdt_process" name="Exchange BTC for USDT Process" isExecutable="true">
+    <bpmn:startEvent id="start" camunda:asyncBefore="true">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="INCOMING_TX_ID" label="ID of the &#34;customer to exchange&#34; BTC transaction" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0hg0jsh</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0hg0jsh" sourceRef="start" targetRef="wait_for_btc_to_arrive" />
+    <bpmn:callActivity id="wait_for_btc_to_arrive" name="Wait for the BTC to arrive" camunda:asyncBefore="true" calledElement="detect_btc_reception_process">
+      <bpmn:extensionElements>
+        <camunda:in source="INCOMING_TX_ID" target="INCOMING_TX_ID" />
+        <camunda:out source="BTC_ARRIVED" target="BTC_ARRIVED" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0hg0jsh</bpmn:incoming>
+      <bpmn:outgoing>Flow_1w0cued</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_1w0cued" sourceRef="wait_for_btc_to_arrive" targetRef="Activity_13ogmzp" />
+    <bpmn:userTask id="Activity_13ogmzp" name="Wait">
+      <bpmn:incoming>Flow_1w0cued</bpmn:incoming>
+      <bpmn:outgoing>Flow_0l6a2dc</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="end" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_0l6a2dc</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0l6a2dc" sourceRef="Activity_13ogmzp" targetRef="end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_btc_for_usdt_process">
+      <bpmndi:BPMNEdge id="Flow_0hg0jsh_di" bpmnElement="Flow_0hg0jsh">
+        <di:waypoint x="215" y="97" />
+        <di:waypoint x="270" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w0cued_di" bpmnElement="Flow_1w0cued">
+        <di:waypoint x="370" y="97" />
+        <di:waypoint x="430" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0l6a2dc_di" bpmnElement="Flow_0l6a2dc">
+        <di:waypoint x="530" y="97" />
+        <di:waypoint x="592" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="179" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ydvpam_di" bpmnElement="wait_for_btc_to_arrive">
+        <dc:Bounds x="270" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yhiecu_di" bpmnElement="Activity_13ogmzp">
+        <dc:Bounds x="430" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1agxq27_di" bpmnElement="end">
+        <dc:Bounds x="592" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

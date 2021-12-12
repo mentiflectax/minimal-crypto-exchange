@@ -33,8 +33,8 @@
     {
      :currency   "BTC"
      :created-at (now)
-     :tx-id tx-id
-     :amount amount
+     :tx-id      tx-id
+     :amount     amount
      }
     ))
 
@@ -66,19 +66,19 @@
   [state tx-id currency]
   (let [txs (:txs state)
         matching-txs (filter (fn [cur-tx]
-                    (let [cur-tx-currency (:currency cur-tx)
-                          cur-tx-id (:tx-id cur-tx)
+                               (let [cur-tx-currency (:currency cur-tx)
+                                     cur-tx-id (:tx-id cur-tx)
 
-                          ]
-                      (and
-                        (= currency cur-tx-currency)
-                        (= tx-id cur-tx-id)))
-                    )
-                  txs
-                  )
+                                     ]
+                                 (and
+                                   (= currency cur-tx-currency)
+                                   (= tx-id cur-tx-id)))
+                               )
+                             txs
+                             )
         tx-exists (not (empty? matching-txs))
         ]
-        tx-exists)
+    tx-exists)
   )
 
 ;; Various functions (end)
@@ -111,6 +111,19 @@
         new-value (+ 1 old-value)
         ]
     (.setVariable de "RETRY_COUNTER" new-value)
+    )
+  )
+
+(defn check_max_number_of_wait_cycles_exceeded
+  [de]
+  (let [
+        retries (.getVariable de "RETRY_COUNTER")
+        max-retries 5
+        max-retries-exceeded (> retries max-retries)
+        ]
+    (.setVariable de
+                  "MAX_NUMBER_OF_WAITING_CYCLES_EXCEEDED"
+                  max-retries-exceeded)
     )
   )
 
