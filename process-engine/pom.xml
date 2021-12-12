@@ -13,6 +13,7 @@
         <spring-boot.version>2.5.4</spring-boot.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <web3j.version>4.8.7</web3j.version>
     </properties>
 
     <dependencyManagement>
@@ -75,7 +76,12 @@
         <dependency>
             <groupId>org.web3j</groupId>
             <artifactId>core</artifactId>
-            <version>4.8.7</version>
+            <version>${web3j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>contracts</artifactId>
+            <version>${web3j.version}</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>

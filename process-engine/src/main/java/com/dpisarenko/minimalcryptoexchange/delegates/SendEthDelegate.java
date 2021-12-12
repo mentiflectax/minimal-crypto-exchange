@@ -16,6 +16,9 @@ public class SendEthDelegate implements JavaDelegate {
     @Value("${networks.eth.url}")
     String ethNetworkUrl;
 
+    @Value("${accounts.eth.usdt.contract-address}")
+    String usdtContractAddress;
+
     SendEthDelegate(Logger logger) {
         this.logger = logger;
     }
@@ -29,6 +32,8 @@ public class SendEthDelegate implements JavaDelegate {
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         logger.info("Hello");
 
+
+        //web3.
     }
 
     Web3j createWeb3If(final String url) {
