@@ -2,6 +2,8 @@
   (:require [com.dpisarenko.common :refer :all])
   )
 
+(def SATOSHI_TO_USD_CONVERSION_FACTOR 0.0004917)
+
 (defonce state
          (atom {
                 :txs []
@@ -90,6 +92,15 @@
         amount-sats (.getValue amount)
         ]
     (.setVariable de "RECEIVED_SATOSHIS" amount-sats)
+    ))
+
+(defn calculate_usd_amount
+  [de]
+  (let [
+        sats (.getVariable de "RECEIVED_SATOSHIS")
+        usd (* sats SATOSHI_TO_USD_CONVERSION_FACTOR)
+        ]
+    (.setVariable de "USD_AMOUNT" usd)
     ))
 
 

@@ -19,7 +19,7 @@
       <bpmn:incoming>Flow_0hg0jsh</bpmn:incoming>
       <bpmn:outgoing>Flow_1w0cued</bpmn:outgoing>
     </bpmn:callActivity>
-    <bpmn:sequenceFlow id="Flow_1w0cued" sourceRef="wait_for_btc_to_arrive" targetRef="Activity_1ro9nlc" />
+    <bpmn:sequenceFlow id="Flow_1w0cued" sourceRef="wait_for_btc_to_arrive" targetRef="calculate_usd_amount" />
     <bpmn:userTask id="Activity_13ogmzp" name="Wait">
       <bpmn:incoming>Flow_01gvb6j</bpmn:incoming>
       <bpmn:outgoing>Flow_0l6a2dc</bpmn:outgoing>
@@ -28,11 +28,16 @@
       <bpmn:incoming>Flow_0l6a2dc</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0l6a2dc" sourceRef="Activity_13ogmzp" targetRef="end" />
-    <bpmn:task id="Activity_1ro9nlc" name="Calculate the USDT amount to transfer" camunda:asyncBefore="true">
+    <bpmn:sequenceFlow id="Flow_01gvb6j" sourceRef="calculate_usd_amount" targetRef="Activity_13ogmzp" />
+    <bpmn:serviceTask id="calculate_usd_amount" name="Calculate USD amount" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="cljfn">calculate_usd_amount</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1w0cued</bpmn:incoming>
       <bpmn:outgoing>Flow_01gvb6j</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_01gvb6j" sourceRef="Activity_1ro9nlc" targetRef="Activity_13ogmzp" />
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_btc_for_usdt_process">
@@ -64,7 +69,7 @@
       <bpmndi:BPMNShape id="Event_1agxq27_di" bpmnElement="end">
         <dc:Bounds x="792" y="79" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1ro9nlc_di" bpmnElement="Activity_1ro9nlc">
+      <bpmndi:BPMNShape id="Activity_1de60ob_di" bpmnElement="calculate_usd_amount">
         <dc:Bounds x="430" y="57" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
