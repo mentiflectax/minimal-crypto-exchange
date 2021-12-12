@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.RemoteCall;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
+
+import java.math.BigInteger;
 
 @Component("SendEthDelegate")
 public class SendEthDelegate implements JavaDelegate {
@@ -40,6 +44,12 @@ public class SendEthDelegate implements JavaDelegate {
         final Credentials credentials = Credentials.create(privateKey);
 
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new DefaultGasProvider());
+
+        final String targetEthAddress = (String) delEx.getVariable("TARGET_ETH_ADDRESS");
+
+        final TransactionReceipt transferReceipt = usdtContract.transfer(targetEthAddress, BigInteger.ONE)
+                .send();
+
 
         logger.info("Hello");
     }

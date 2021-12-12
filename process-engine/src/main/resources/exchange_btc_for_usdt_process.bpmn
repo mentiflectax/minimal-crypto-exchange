@@ -5,6 +5,7 @@
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="INCOMING_TX_ID" label="ID of the &#34;customer to exchange&#34; BTC transaction" type="string" />
+          <camunda:formField id="TARGET_ETH_ADDRESS" label="Target ETH/USDT address" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:outgoing>Flow_0hg0jsh</bpmn:outgoing>
