@@ -39,7 +39,7 @@
       <bpmn:outgoing>Flow_01gvb6j</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_02ytakt" sourceRef="send_usdt" targetRef="Activity_13ogmzp" />
-    <bpmn:serviceTask id="send_usdt" name="Send USDT" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
+    <bpmn:serviceTask id="send_usdt" name="Send USDT" camunda:asyncBefore="true" camunda:delegateExpression="${SendEthDelegate}">
       <bpmn:incoming>Flow_01gvb6j</bpmn:incoming>
       <bpmn:outgoing>Flow_02ytakt</bpmn:outgoing>
     </bpmn:serviceTask>
