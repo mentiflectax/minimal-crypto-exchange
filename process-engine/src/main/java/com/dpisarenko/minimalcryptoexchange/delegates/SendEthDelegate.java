@@ -6,8 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.web3j.contracts.eip20.generated.ERC20;
+import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.DefaultGasProvider;
 
 @Component("SendEthDelegate")
 public class SendEthDelegate implements JavaDelegate {
@@ -18,6 +21,9 @@ public class SendEthDelegate implements JavaDelegate {
 
     @Value("${accounts.eth.usdt.contract-address}")
     String usdtContractAddress;
+
+    @Value("${accounts.eth.exchange.private-key}")
+    String privateKey;
 
     SendEthDelegate(Logger logger) {
         this.logger = logger;
@@ -30,10 +36,12 @@ public class SendEthDelegate implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delEx) throws Exception {
         final Web3j web3 = createWeb3If(ethNetworkUrl);
+
+        final Credentials credentials = Credentials.create(privateKey);
+
+        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new DefaultGasProvider());
+
         logger.info("Hello");
-
-
-        //web3.
     }
 
     Web3j createWeb3If(final String url) {
