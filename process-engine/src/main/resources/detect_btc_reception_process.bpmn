@@ -15,7 +15,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${BTC_ARRIVED == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:endEvent id="end_btc_received" name="BTC received" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_19lpxzn</bpmn:incoming>
+      <bpmn:incoming>Flow_1u4vdnq</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:intermediateCatchEvent id="Event_1q9sge3" name="Wait" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_11lpl4p</bpmn:incoming>
@@ -42,7 +42,7 @@
       <bpmn:incoming>Flow_1wuhec8</bpmn:incoming>
       <bpmn:outgoing>Flow_19lpxzn</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_19lpxzn" sourceRef="have_btc_arrived_closed" targetRef="end_btc_received" />
+    <bpmn:sequenceFlow id="Flow_19lpxzn" sourceRef="have_btc_arrived_closed" targetRef="get_received_satoshis" />
     <bpmn:serviceTask id="check_whether_or_not_btc_has_arrived" name="Check whether or not BTC has arrived" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -81,12 +81,22 @@
       <bpmn:incoming>Flow_1lq0cu8</bpmn:incoming>
       <bpmn:outgoing>Flow_04mt8gx</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1u4vdnq" sourceRef="get_received_satoshis" targetRef="end_btc_received" />
+    <bpmn:serviceTask id="get_received_satoshis" name="Get received Satoshis" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="cljfn">get_received_satoshis</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_19lpxzn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1u4vdnq</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="detect_btc_reception_process">
       <bpmndi:BPMNEdge id="Flow_19lpxzn_di" bpmnElement="Flow_19lpxzn">
         <di:waypoint x="1055" y="100" />
-        <di:waypoint x="1152" y="100" />
+        <di:waypoint x="1090" y="100" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_10d0u24_di" bpmnElement="Flow_10d0u24">
         <di:waypoint x="582" y="620" />
@@ -143,6 +153,10 @@
         <di:waypoint x="360" y="100" />
         <di:waypoint x="450" y="100" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1u4vdnq_di" bpmnElement="Flow_1u4vdnq">
+        <di:waypoint x="1190" y="100" />
+        <di:waypoint x="1252" y="100" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Gateway_1x6qudt_di" bpmnElement="have_btc_arrived_open" isMarkerVisible="true">
         <dc:Bounds x="715" y="75" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -180,10 +194,13 @@
         <dc:Bounds x="152" y="82" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_051jalo_di" bpmnElement="end_btc_received">
-        <dc:Bounds x="1152" y="82" width="36" height="36" />
+        <dc:Bounds x="1252" y="82" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1137" y="125" width="67" height="14" />
+          <dc:Bounds x="1237" y="125" width="67" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0v779z0_di" bpmnElement="get_received_satoshis">
+        <dc:Bounds x="1090" y="60" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

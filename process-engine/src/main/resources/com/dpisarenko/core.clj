@@ -78,6 +78,41 @@
                   max-retries-exceeded)
     )
   )
+
+(declare find-tx)
+
+(defn get_received_satoshis
+  [de]
+  (let [
+        tx-id (.getVariable de "INCOMING_TX_ID")
+        tx (find-tx @state tx-id "BTC")
+        amount (:amount tx)
+        amount-sats (.getValue amount)
+        ]
+    (.setVariable de "RECEIVED_SATOSHIS" amount-sats)
+    ))
+
+(defn find-tx
+  [state tx-id currency]
+  (let [
+        txs (:txs state)
+        matching-txs (filter
+                       (fn [cur-tx]
+                         (let [cur-tx-currency (:currency cur-tx)
+                               cur-tx-id (:tx-id cur-tx)
+
+                               ]
+                           (and
+                             (= currency cur-tx-currency)
+                             (= tx-id cur-tx-id)))
+                         )
+                       txs
+                       )
+        ]
+    (first matching-txs)
+    )
+  )
+
 ; Camunda stuff (end)
 ;; Low-level functions (start)
 (defn create-btc-tx
