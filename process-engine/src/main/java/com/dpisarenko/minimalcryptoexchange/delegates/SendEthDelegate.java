@@ -26,6 +26,9 @@ public class SendEthDelegate implements JavaDelegate {
     @Value("${accounts.eth.usdt.contract-address}")
     String usdtContractAddress;
 
+    @Value("${accounts.eth.exchange.address}")
+    String exchangeAddress;
+
     @Value("${accounts.eth.exchange.private-key}")
     String privateKey;
 
@@ -47,9 +50,7 @@ public class SendEthDelegate implements JavaDelegate {
 
         final String targetEthAddress = (String) delEx.getVariable("TARGET_ETH_ADDRESS");
 
-        final TransactionReceipt transferReceipt = usdtContract.transfer(targetEthAddress, BigInteger.ONE)
-                .send();
-
+        final TransactionReceipt transferReceipt = usdtContract.transferFrom(exchangeAddress, targetEthAddress, BigInteger.ONE).send();
 
         logger.info("Hello");
     }
