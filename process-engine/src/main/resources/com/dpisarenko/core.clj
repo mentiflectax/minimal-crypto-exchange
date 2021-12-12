@@ -1,20 +1,14 @@
-(ns com.dpisarenko.core)
+(ns com.dpisarenko.core
+  (:require [com.dpisarenko.common :refer :all])
+  (:require [com.dpisarenko.detect-btc-reception-process :refer :all])
+  (:require [com.dpisarenko.exchange-btc-for-usdt-process :refer :all])
+  )
 
 (defonce state
          (atom {
                 :txs []
                 }))
 
-; Macros (start)
-(defmacro log-info
-  [msg]
-  (list '. 'logger 'info msg)
-  )
-
-(defmacro now
-  []
-  (list 'new 'java.util.Date))
-; Macros (end)
 
 ; Camunda stuff (start)
 ; Camunda stuff (end)
@@ -27,15 +21,10 @@
     (log-info "Clojure subsystem started.")
     ))
 
-
 ;; Various functions (start)
-
 (declare create-btc-tx)
-
 (declare append-tx)
-
 (declare btcTxReceived)
-
 (declare tx-present?)
 ;; Various functions (end)
 
