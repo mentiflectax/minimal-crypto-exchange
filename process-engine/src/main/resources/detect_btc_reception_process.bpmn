@@ -7,11 +7,11 @@
     <bpmn:sequenceFlow id="Flow_0pweo0p" sourceRef="start" targetRef="enter_transaction_details" />
     <bpmn:sequenceFlow id="Flow_0eja2cw" sourceRef="enter_transaction_details" targetRef="check_whether_or_not_btc_has_arrived" />
     <bpmn:exclusiveGateway id="have_btc_arrived_open" name="Have BTC arrived?" camunda:asyncBefore="true" default="Flow_14azlkm">
-      <bpmn:incoming>Flow_1e78raa</bpmn:incoming>
+      <bpmn:incoming>Flow_1a3a0t9</bpmn:incoming>
       <bpmn:outgoing>Flow_1wuhec8</bpmn:outgoing>
       <bpmn:outgoing>Flow_14azlkm</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_1a3a0t9" sourceRef="check_whether_or_not_btc_has_arrived" targetRef="Activity_17xow95" />
+    <bpmn:sequenceFlow id="Flow_1a3a0t9" sourceRef="check_whether_or_not_btc_has_arrived" targetRef="have_btc_arrived_open" />
     <bpmn:task id="Activity_1r6s5q0" name="Confirm the transaction has completed" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_1wuhec8</bpmn:incoming>
       <bpmn:outgoing>Flow_1abz4eu</bpmn:outgoing>
@@ -21,7 +21,7 @@
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1abz4eu" sourceRef="Activity_1r6s5q0" targetRef="have_btc_arrived_closed" />
     <bpmn:endEvent id="end_btc_received" name="BTC received" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_19lpxzn</bpmn:incoming>
+      <bpmn:incoming>Flow_0u76pyk</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:intermediateCatchEvent id="Event_1q9sge3" name="Wait" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_11lpl4p</bpmn:incoming>
@@ -56,7 +56,7 @@
       <bpmn:incoming>Flow_10m4pwb</bpmn:incoming>
       <bpmn:outgoing>Flow_19lpxzn</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_19lpxzn" sourceRef="have_btc_arrived_closed" targetRef="end_btc_received" />
+    <bpmn:sequenceFlow id="Flow_19lpxzn" sourceRef="have_btc_arrived_closed" targetRef="Activity_0yh2fyn" />
     <bpmn:userTask id="enter_transaction_details" name="Enter transaction details" camunda:asyncBefore="true">
       <bpmn:extensionElements>
         <camunda:formData>
@@ -65,11 +65,6 @@
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0pweo0p</bpmn:incoming>
       <bpmn:outgoing>Flow_0eja2cw</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1e78raa" sourceRef="Activity_17xow95" targetRef="have_btc_arrived_open" />
-    <bpmn:userTask id="Activity_17xow95" name="Wait" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_1a3a0t9</bpmn:incoming>
-      <bpmn:outgoing>Flow_1e78raa</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:serviceTask id="check_whether_or_not_btc_has_arrived" name="Check whether or not BTC has arrived" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
       <bpmn:extensionElements>
@@ -81,120 +76,125 @@
       <bpmn:incoming>Flow_10d0u24</bpmn:incoming>
       <bpmn:outgoing>Flow_1a3a0t9</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0u76pyk" sourceRef="Activity_0yh2fyn" targetRef="end_btc_received" />
+    <bpmn:userTask id="Activity_0yh2fyn" name="Wait">
+      <bpmn:incoming>Flow_19lpxzn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0u76pyk</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="detect_btc_reception_process">
       <bpmndi:BPMNEdge id="Flow_19lpxzn_di" bpmnElement="Flow_19lpxzn">
-        <di:waypoint x="1085" y="100" />
-        <di:waypoint x="1142" y="100" />
+        <di:waypoint x="1005" y="100" />
+        <di:waypoint x="1050" y="100" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_10d0u24_di" bpmnElement="Flow_10d0u24">
-        <di:waypoint x="612" y="620" />
+        <di:waypoint x="532" y="620" />
         <di:waypoint x="450" y="620" />
         <di:waypoint x="450" y="140" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_10m4pwb_di" bpmnElement="Flow_10m4pwb">
-        <di:waypoint x="795" y="510" />
-        <di:waypoint x="1060" y="510" />
-        <di:waypoint x="1060" y="130" />
+        <di:waypoint x="715" y="510" />
+        <di:waypoint x="980" y="510" />
+        <di:waypoint x="980" y="130" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1031" y="313" width="18" height="14" />
+          <dc:Bounds x="951" y="313" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_11lpl4p_di" bpmnElement="Flow_11lpl4p">
-        <di:waypoint x="770" y="535" />
-        <di:waypoint x="770" y="620" />
-        <di:waypoint x="648" y="620" />
+        <di:waypoint x="690" y="535" />
+        <di:waypoint x="690" y="620" />
+        <di:waypoint x="568" y="620" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="693" y="598" width="15" height="14" />
+          <dc:Bounds x="613" y="598" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04mt8gx_di" bpmnElement="Flow_04mt8gx">
-        <di:waypoint x="770" y="430" />
-        <di:waypoint x="770" y="485" />
+        <di:waypoint x="690" y="430" />
+        <di:waypoint x="690" y="485" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1lq0cu8_di" bpmnElement="Flow_1lq0cu8">
-        <di:waypoint x="770" y="270" />
-        <di:waypoint x="770" y="350" />
+        <di:waypoint x="690" y="270" />
+        <di:waypoint x="690" y="350" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_14azlkm_di" bpmnElement="Flow_14azlkm">
-        <di:waypoint x="770" y="125" />
-        <di:waypoint x="770" y="190" />
+        <di:waypoint x="690" y="125" />
+        <di:waypoint x="690" y="190" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="792" y="143" width="15" height="14" />
+          <dc:Bounds x="712" y="143" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1abz4eu_di" bpmnElement="Flow_1abz4eu">
-        <di:waypoint x="960" y="100" />
-        <di:waypoint x="1035" y="100" />
+        <di:waypoint x="880" y="100" />
+        <di:waypoint x="955" y="100" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1wuhec8_di" bpmnElement="Flow_1wuhec8">
-        <di:waypoint x="795" y="100" />
-        <di:waypoint x="860" y="100" />
+        <di:waypoint x="715" y="100" />
+        <di:waypoint x="780" y="100" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="801" y="82" width="18" height="14" />
+          <dc:Bounds x="721" y="82" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1a3a0t9_di" bpmnElement="Flow_1a3a0t9">
         <di:waypoint x="500" y="100" />
-        <di:waypoint x="560" y="100" />
+        <di:waypoint x="665" y="100" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0eja2cw_di" bpmnElement="Flow_0eja2cw">
-        <di:waypoint x="340" y="100" />
-        <di:waypoint x="400" y="100" />
+      <bpmndi:BPMNEdge id="Flow_0u76pyk_di" bpmnElement="Flow_0u76pyk">
+        <di:waypoint x="1150" y="100" />
+        <di:waypoint x="1232" y="100" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0pweo0p_di" bpmnElement="Flow_0pweo0p">
         <di:waypoint x="188" y="100" />
         <di:waypoint x="240" y="100" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1e78raa_di" bpmnElement="Flow_1e78raa">
-        <di:waypoint x="660" y="100" />
-        <di:waypoint x="745" y="100" />
+      <bpmndi:BPMNEdge id="Flow_0eja2cw_di" bpmnElement="Flow_0eja2cw">
+        <di:waypoint x="340" y="100" />
+        <di:waypoint x="400" y="100" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
-        <dc:Bounds x="152" y="82" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1x6qudt_di" bpmnElement="have_btc_arrived_open" isMarkerVisible="true">
-        <dc:Bounds x="745" y="75" width="50" height="50" />
+        <dc:Bounds x="665" y="75" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="744" y="38" width="51" height="27" />
+          <dc:Bounds x="664" y="38" width="51" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1r6s5q0_di" bpmnElement="Activity_1r6s5q0">
-        <dc:Bounds x="860" y="60" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_051jalo_di" bpmnElement="end_btc_received">
-        <dc:Bounds x="1142" y="82" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1127" y="125" width="67" height="14" />
-        </bpmndi:BPMNLabel>
+        <dc:Bounds x="780" y="60" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1tc59ql_di" bpmnElement="Event_1q9sge3">
-        <dc:Bounds x="612" y="602" width="36" height="36" />
+        <dc:Bounds x="532" y="602" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="619" y="645" width="22" height="14" />
+          <dc:Bounds x="539" y="645" width="22" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_09z6iwa_di" bpmnElement="Activity_09z6iwa">
-        <dc:Bounds x="720" y="190" width="100" height="80" />
+        <dc:Bounds x="640" y="190" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0nb946u_di" bpmnElement="Activity_0nb946u">
-        <dc:Bounds x="720" y="350" width="100" height="80" />
+        <dc:Bounds x="640" y="350" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0rfzk0l_di" bpmnElement="Gateway_0rfzk0l" isMarkerVisible="true">
-        <dc:Bounds x="745" y="485" width="50" height="50" />
+        <dc:Bounds x="665" y="485" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="661" y="500" width="77" height="40" />
+          <dc:Bounds x="581" y="500" width="77" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_17mq2ud_di" bpmnElement="have_btc_arrived_closed" isMarkerVisible="true">
-        <dc:Bounds x="1035" y="75" width="50" height="50" />
+        <dc:Bounds x="955" y="75" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0d0j342_di" bpmnElement="Activity_0yh2fyn">
+        <dc:Bounds x="1050" y="60" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_051jalo_di" bpmnElement="end_btc_received">
+        <dc:Bounds x="1232" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1217" y="125" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="152" y="82" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1j46v9r_di" bpmnElement="enter_transaction_details">
         <dc:Bounds x="240" y="60" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0m92w7o_di" bpmnElement="Activity_17xow95">
-        <dc:Bounds x="560" y="60" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_09dq04r_di" bpmnElement="check_whether_or_not_btc_has_arrived">
         <dc:Bounds x="400" y="60" width="100" height="80" />
