@@ -19,15 +19,20 @@
       <bpmn:incoming>Flow_0hg0jsh</bpmn:incoming>
       <bpmn:outgoing>Flow_1w0cued</bpmn:outgoing>
     </bpmn:callActivity>
-    <bpmn:sequenceFlow id="Flow_1w0cued" sourceRef="wait_for_btc_to_arrive" targetRef="Activity_13ogmzp" />
+    <bpmn:sequenceFlow id="Flow_1w0cued" sourceRef="wait_for_btc_to_arrive" targetRef="Activity_1ro9nlc" />
     <bpmn:userTask id="Activity_13ogmzp" name="Wait">
-      <bpmn:incoming>Flow_1w0cued</bpmn:incoming>
+      <bpmn:incoming>Flow_01gvb6j</bpmn:incoming>
       <bpmn:outgoing>Flow_0l6a2dc</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:endEvent id="end" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_0l6a2dc</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0l6a2dc" sourceRef="Activity_13ogmzp" targetRef="end" />
+    <bpmn:task id="Activity_1ro9nlc" name="Calculate the USDT amount to transfer" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_1w0cued</bpmn:incoming>
+      <bpmn:outgoing>Flow_01gvb6j</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_01gvb6j" sourceRef="Activity_1ro9nlc" targetRef="Activity_13ogmzp" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_btc_for_usdt_process">
@@ -40,8 +45,12 @@
         <di:waypoint x="430" y="97" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0l6a2dc_di" bpmnElement="Flow_0l6a2dc">
+        <di:waypoint x="730" y="97" />
+        <di:waypoint x="792" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01gvb6j_di" bpmnElement="Flow_01gvb6j">
         <di:waypoint x="530" y="97" />
-        <di:waypoint x="592" y="97" />
+        <di:waypoint x="630" y="97" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
         <dc:Bounds x="179" y="79" width="36" height="36" />
@@ -50,10 +59,13 @@
         <dc:Bounds x="270" y="57" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1yhiecu_di" bpmnElement="Activity_13ogmzp">
-        <dc:Bounds x="430" y="57" width="100" height="80" />
+        <dc:Bounds x="630" y="57" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1agxq27_di" bpmnElement="end">
-        <dc:Bounds x="592" y="79" width="36" height="36" />
+        <dc:Bounds x="792" y="79" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ro9nlc_di" bpmnElement="Activity_1ro9nlc">
+        <dc:Bounds x="430" y="57" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
