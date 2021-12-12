@@ -94,9 +94,9 @@
                       tx-id
                       "BTC")
         ]
-    ;; TODO: Update the "btc arrived" process variable
-    (log-info (str "check-btc-arrived: INCOMING_TX_ID: "
-                   tx-id))
+    (.setVariable del-ex "BTC_ARRIVED" btc-arrived)
+    (log-info (str "check-btc-arrived: check-btc-arrived: INCOMING_TX_ID: "
+                   tx-id ", BTC arrived: " btc-arrived))
     ))
 
 ;; Delegates (end)
