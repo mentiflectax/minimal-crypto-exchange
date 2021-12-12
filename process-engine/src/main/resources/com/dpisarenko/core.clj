@@ -86,15 +86,15 @@
 ;; Delegates (start)
 
 (defn check-btc-arrived
-  [del-ex]
+  [de]
   (let [
-        tx-id (.getVariable del-ex "INCOMING_TX_ID")
+        tx-id (.getVariable de "INCOMING_TX_ID")
         btc-arrived (tx-present?
                       @state
                       tx-id
                       "BTC")
         ]
-    (.setVariable del-ex "BTC_ARRIVED" btc-arrived)
+    (.setVariable de "BTC_ARRIVED" btc-arrived)
     (log-info (str "check-btc-arrived: check-btc-arrived: INCOMING_TX_ID: "
                    tx-id ", BTC arrived: " btc-arrived))
     ))
