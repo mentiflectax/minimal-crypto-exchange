@@ -25,12 +25,12 @@
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_14azlkm" name="No" sourceRef="have_btc_arrived_open" targetRef="Activity_09z6iwa" />
-    <bpmn:task id="Activity_09z6iwa" name="Increment wait counter" camunda:asyncBefore="true">
+    <bpmn:sequenceFlow id="Flow_14azlkm" name="No" sourceRef="have_btc_arrived_open" targetRef="increment_wait_counter" />
+    <bpmn:task id="increment_wait_counter" name="Increment wait counter" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_14azlkm</bpmn:incoming>
       <bpmn:outgoing>Flow_1lq0cu8</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_1lq0cu8" sourceRef="Activity_09z6iwa" targetRef="Activity_0nb946u" />
+    <bpmn:sequenceFlow id="Flow_1lq0cu8" sourceRef="increment_wait_counter" targetRef="Activity_0nb946u" />
     <bpmn:task id="Activity_0nb946u" name="Check whether or not max. number of waiting cycles is exceeded" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_1lq0cu8</bpmn:incoming>
       <bpmn:outgoing>Flow_04mt8gx</bpmn:outgoing>
@@ -174,7 +174,7 @@
           <dc:Bounds x="729" y="645" width="22" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_09z6iwa_di" bpmnElement="Activity_09z6iwa">
+      <bpmndi:BPMNShape id="Activity_09z6iwa_di" bpmnElement="increment_wait_counter">
         <dc:Bounds x="830" y="190" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0nb946u_di" bpmnElement="Activity_0nb946u">

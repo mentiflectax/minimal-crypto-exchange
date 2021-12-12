@@ -104,4 +104,14 @@
   (.setVariable de "RETRY_COUNTER" 0)
   )
 
+(defn increment_wait_counter
+  [de]
+  (let [
+        old-value (.getVariable de "RETRY_COUNTER")
+        new-value (+ 1 old-value)
+        ]
+    (.setVariable de "RETRY_COUNTER" new-value)
+    )
+  )
+
 ;; Delegates (end)
