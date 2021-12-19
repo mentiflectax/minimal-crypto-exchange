@@ -1,9 +1,9 @@
 async function main() {
   // We get the contract to deploy
-  const ERC20 = await ethers.getContractFactory("USDT");
-  const erc20 = await ERC20.deploy("Test Tether", "tUSDT");
+  const USDT = await ethers.getContractFactory("USDT");
+  const usdt = await USDT.deploy(1000);
 
-  console.log("ERC20 deployed to:", erc20.address);
+  console.log("USDT contract deployed to:", usdt.address);
 }
 
 main()
