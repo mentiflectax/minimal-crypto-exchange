@@ -56,6 +56,8 @@ public class WalletObserver {
                 // TODO: Think what we need to do if we cannot find the relevant transaction
                 System.out.println("---");
             });
+
+            System.out.println("Hello");
         }
         catch (Exception exception) {
             exception.printStackTrace();

@@ -1,7 +1,7 @@
 async function main() {
   // We get the contract to deploy
   const USDT = await ethers.getContractFactory("USDT");
-  const usdt = await USDT.deploy(1000);
+  const usdt = await USDT.deploy(1000000000000000);
 
   console.log("USDT contract deployed to:", usdt.address);
 }
