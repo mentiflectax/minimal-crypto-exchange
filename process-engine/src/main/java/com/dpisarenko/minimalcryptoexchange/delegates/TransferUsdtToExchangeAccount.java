@@ -13,6 +13,8 @@ import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 
+import java.math.BigInteger;
+
 @Component("TransferUsdtToExchangeAccount")
 public class TransferUsdtToExchangeAccount implements JavaDelegate {
     private final Logger logger;
@@ -50,7 +52,15 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         // Method threw 'java.lang.RuntimeException' exception.
         // Error processing transaction request: exceeds block gas limit
 
-        logger.info("");
+        logger.info("Starting to transfer USDT to the exchange address");
+        try {
+            usdtContract.transfer(exchangeAddress, BigInteger.valueOf(10)).send();
+        } catch (final Exception exception) {
+            logger.error("", exception);
+        }
+
+
+
     }
 
     Web3j createWeb3If(final String url) {
