@@ -11,7 +11,8 @@ To fix the error ~exceeds block gas limit~ when sending tUSDT to the exchange ac
 
 * TODO Is there JSON RPC call which will return the gas price?
 
-* TODO Experiment 1
+* DONE Experiment 1
+  CLOSED: [2021-12-31 Fri 13:50]
 
 ** DONE Step 1: Change gas ~gasLimit~ in ~genesis.json~ from ~0x47b760~ to ~0xffffff~ 
    CLOSED: [2021-12-31 Fri 13:28]
@@ -23,6 +24,17 @@ To fix the error ~exceeds block gas limit~ when sending tUSDT to the exchange ac
    CLOSED: [2021-12-31 Fri 13:43]
 
    Yes, it does.
+
+* TODO Experiment 2
+
+** TODO Step 1: Change gas ~gasLimit~ in ~genesis.json~ from ~0x47b760~ to ~0x000001~ 
+
+0x47b760
+0x000001
+   
+** TODO Step 2: Re-deploy the testnets
+   
+** TODO Step 3: Check whether or not the error still occurs
 
 * TODO Search for the error message in the source code of ~go-ethereum~
 
