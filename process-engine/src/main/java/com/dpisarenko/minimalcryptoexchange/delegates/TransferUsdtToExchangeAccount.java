@@ -18,6 +18,7 @@ import org.web3j.tx.gas.DefaultGasProvider;
 import java.math.BigInteger;
 
 import static java.lang.String.format;
+import static java.math.BigInteger.ONE;
 
 @Component("TransferUsdtToExchangeAccount")
 public class TransferUsdtToExchangeAccount implements JavaDelegate {
@@ -67,8 +68,9 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
 
         final BigInteger amount = BigInteger.valueOf(1);
         try {
-            //final TransactionReceipt sendResponse = usdtContract.approve(bufferAddress, amount).send();
-            //logger.debug("sendResponse: " + sendResponse);
+            final TransactionReceipt sendResponse = usdtContract.approve(bufferAddress, amount.add(ONE))
+                    .send();
+            logger.debug("sendResponse: " + sendResponse);
             final TransactionReceipt transferResponse = usdtContract.transferFrom(bufferAddress, exchangeAddress, amount).send();
             // final TransactionReceipt transferResponse = usdtContract.transfer(exchangeAddress, BigInteger.valueOf(1)).send();
         } catch (final Exception exception) {
