@@ -56,14 +56,19 @@ if pool.currentState.GetBalance(from).Cmp(tx.Cost()) < 0 {
 
 0
 
-* TODO How can I transfer some ETH to the exchange account?
+* DONE How can I transfer some ETH to the exchange account?
+  CLOSED: [2021-12-31 Fri 18:18]
 
 Exchange ETH address: ~0x190FD61ED8fE0067f0f09EA992C1BF96209bab66~
 
-** TODO What ETH transfer scripts do we have?
+** DONE What ETH transfer scripts do we have?
+   CLOSED: [2021-12-31 Fri 18:18]
 
-   
-  
+https://dpisarenko.com/posts/eth-transfers/  
+
+
+* TODO Find out what "intrinsic gas too low" means
+
 * TODO Search for the error message in the source code of ~go-ethereum~
 
 ** DONE What is the error message we are looking for?

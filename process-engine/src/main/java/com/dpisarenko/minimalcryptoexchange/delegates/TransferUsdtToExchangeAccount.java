@@ -11,14 +11,11 @@ import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.math.BigInteger;
 
 import static java.lang.String.format;
-import static org.web3j.protocol.core.DefaultBlockParameterName.LATEST;
 
 @Component("TransferUsdtToExchangeAccount")
 public class TransferUsdtToExchangeAccount implements JavaDelegate {
@@ -51,7 +48,8 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         final Credentials credentials = Credentials.create(privateKey);
-        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider());
+        final BigInteger gasPrice = web3.ethGasPrice().send().getGasPrice();
+        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(gasPrice, gasPrice.multiply(BigInteger.valueOf(100))));
 
         // Check the balance
         final BigInteger oldBalance = EthUtils.getEthBalanceInWei(web3, exchangeAddress);
