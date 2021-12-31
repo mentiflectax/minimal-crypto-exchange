@@ -56,6 +56,8 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         // Check the balance
         final BigInteger oldBalance = EthUtils.getEthBalanceInWei(web3, exchangeAddress);
 
+        // Send ETH to the exchange account
+
         // Send USDT to the exchange account
         logger.info("Starting to transfer USDT to the exchange address");
         try {
