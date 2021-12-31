@@ -41,6 +41,17 @@ To fix the error ~exceeds block gas limit~ when sending tUSDT to the exchange ac
 
 Now we get a different error: ~insufficient funds for gas * price + value~
 
+~/Users/dp118m/dev/misc/go-ethereum/core/tx_pool.go~:
+
+#+begin_src go
+// Transactor should have enough funds to cover the costs
+// cost == V + GP * GL
+if pool.currentState.GetBalance(from).Cmp(tx.Cost()) < 0 {
+	return ErrInsufficientFunds
+}
+#+end_src
+
+** TODO How much ETH does the exchange account have?
 
 * TODO Search for the error message in the source code of ~go-ethereum~
 

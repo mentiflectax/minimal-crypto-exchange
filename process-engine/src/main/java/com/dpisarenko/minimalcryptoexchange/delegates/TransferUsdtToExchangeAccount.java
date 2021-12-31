@@ -1,5 +1,6 @@
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.logic.eth.EthUtils;
 import com.dpisarenko.minimalcryptoexchange.logic.usdt.TestGasProvider;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -52,6 +53,9 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         final Credentials credentials = Credentials.create(privateKey);
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider());
 
+        // Check the balance
+        final BigInteger oldBalance = EthUtils.getEthBalanceInWei(web3, exchangeAddress);
+
         // Send USDT to the exchange account
         logger.info("Starting to transfer USDT to the exchange address");
         try {
@@ -59,13 +63,6 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         } catch (final Exception exception) {
             logger.error("", exception);
         }
-
-        // Check the balance
-        final EthGetBalance getBalanceResponse = web3.ethGetBalance(exchangeAddressEth, LATEST).sendAsync().get();
-        final BigInteger balanceWei = getBalanceResponse.getBalance();
-        logger.info(format("Balance of account '%s' is equal to %d wei (network '%s')",
-                exchangeAddressEth, balanceWei.longValue(), ethNetworkUrl));
-
     }
 
     Web3j createWeb3If(final String url) {
