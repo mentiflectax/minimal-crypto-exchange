@@ -15,7 +15,7 @@ accounts:
       private-key: b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e
       password: a-turkey-is-a-chicken-designed-by-a-committee
     usdt:
-      contract-address: '0x8D5F8D23C59AABc7aA2511a70cc1a4C069AEaA5E'
+      contract-address: '0x86c58D398fF7EF4cA13BdD216D0973f37fA0D25b'
 networks:
   eth:
     url: http://localhost:8178
