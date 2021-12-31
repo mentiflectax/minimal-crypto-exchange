@@ -335,4 +335,9 @@ How can I see the values of
    
 ** Thought: Can we get ~pool.chain.GetHeaderByHash(pool.head)~ in Java or log output?
 
-   
+* 2021-13-31 21:40: New exception
+
+#+begin_src 
+org.web3j.protocol.exceptions.TransactionException: Transaction 0xf8f477120b66a169ef6848a440b3c57a91833c100ce7d1b9da940b320e18e394 has failed with status: 0x0. Gas used: 23682. Revert reason: 'ERC20: transfer amount exceeds balance'.
+#+end_src
+

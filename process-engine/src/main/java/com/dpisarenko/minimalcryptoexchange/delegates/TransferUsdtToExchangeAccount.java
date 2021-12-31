@@ -38,6 +38,9 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
     @Value("${accounts.eth.usdt.contract-address}")
     String usdtContractAddress;
 
+    @Value("${accounts.eth.usdt.buffer-address}")
+    String bufferAddress;
+
     public TransferUsdtToExchangeAccount(Logger logger) {
         this.logger = logger;
     }
@@ -60,8 +63,11 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
 
         // Send USDT to the exchange account
         logger.info("Starting to transfer USDT to the exchange address");
+        // TODO: Is there an account which has any USDT?
+
         try {
-            final TransactionReceipt transferResponse = usdtContract.transfer(exchangeAddress, BigInteger.valueOf(1)).send();
+            final TransactionReceipt transferResponse = usdtContract.transferFrom(bufferAddress, exchangeAddress, BigInteger.valueOf(1)).send();
+            // final TransactionReceipt transferResponse = usdtContract.transfer(exchangeAddress, BigInteger.valueOf(1)).send();
         } catch (final Exception exception) {
             logger.error("", exception);
         }
