@@ -51,7 +51,7 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         final Credentials credentials = Credentials.create(privateKey);
         final BigInteger gasPrice = web3.ethGasPrice().send().getGasPrice();
-        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider( BigInteger.valueOf(1), BigInteger.valueOf(2)));
+        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider( BigInteger.valueOf(1), BigInteger.valueOf(Short.MAX_VALUE)));
 
         // Check the balance
         final BigInteger oldBalance = EthUtils.getEthBalanceInWei(web3, exchangeAddress);
