@@ -8,9 +8,10 @@ Set up the environment as described [here](https://dpisarenko.com/mce/en/how-to-
 
 ## Step 2
 
+Set a breakpoint on line `usdtContract.transfer(exchangeAddress, BigInteger.valueOf(10)).send();`
 TODO
 
-## Step 3
+## Step N
 
-TODO
+Start the process engine application. Its Java main method is located [here](https://github.com/mentiflectax/minimal-crypto-exchange/blob/i16/process-engine/src/main/java/com/dpisarenko/minimalcryptoexchange/MinimalCryptoExchangeProcessApplication.java).
 
