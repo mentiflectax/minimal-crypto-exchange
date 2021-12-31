@@ -1,0 +1,8 @@
+#+STARTUP: logdone
+#+TITLE: How to fix errors when transferring tUSDT to the exchange account?
+
+* Purpose of the document
+
+To fix the error ~exceeds block gas limit~ when sending tUSDT to the exchange account.
+
+
