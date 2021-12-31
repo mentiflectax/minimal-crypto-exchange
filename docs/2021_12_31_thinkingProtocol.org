@@ -348,9 +348,27 @@ org.web3j.protocol.exceptions.TransactionException: Transaction 0xf8f477120b66a1
 org.web3j.protocol.exceptions.TransactionException: Transaction 0x411f395602ce361a05edd361d1d6cf6ef081f0f5e67d94f4e83aa04abdc215e5 has failed with status: 0x0. Gas used: 32767. Revert reason: 'ERC20: transfer amount exceeds allowance'.
 #+end_src
 
-* TODO Write message to StackOverflow
+* DONE Write message to StackOverflow
+  CLOSED: [2021-12-31 Fri 22:24]
 
 
 #+begin_src 
 org.web3j.protocol.exceptions.TransactionException: Transaction 0x4bce379a2673c4564b2eb6080607b00d1a8ac232fbddf903f353f4eeda566cae has failed with status: 0x0. Gas used: 32767. Revert reason: 'ERC20: transfer amount exceeds allowance'.
 #+end_src
+
+
+#+begin_example
+**Update 2:**
+
+I made following changes:
+
+1. The [set-up tutorial](https://dpisarenko.com/mce/en/how-to-start/) now contains step 7 in which ETH is added to the exchange account.
+2. Now a new version of the [ETH testnet](https://github.com/mentiflectax/geth-poa-testnet) is being used, major changes being that log output is more verbose and the gas price is set to 1 (see `--miner.gasprice 1` in [entrypoint.sh](https://github.com/mentiflectax/geth-poa-testnet/blob/master/entrypoint.sh)).
+3. Modified the code in [TransferUsdtToExchangeAccount](https://github.com/mentiflectax/minimal-crypto-exchange/blob/i16/process-engine/src/main/java/com/dpisarenko/minimalcryptoexchange/delegates/TransferUsdtToExchangeAccount.java) so that now USDT is transferred not from the exchange account (which has zero balance), but from the buffer account.
+
+Now I am receiving the error
+
+```
+org.web3j.protocol.exceptions.TransactionException: Transaction 0x4bce379a2673c4564b2eb6080607b00d1a8ac232fbddf903f353f4eeda566cae has failed with status: 0x0. Gas used: 32767. Revert reason: 'ERC20: transfer amount exceeds allowance'.
+```
+#+end_example

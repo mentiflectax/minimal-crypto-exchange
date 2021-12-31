@@ -54,7 +54,7 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         final Credentials credentials = Credentials.create(privateKey);
         final BigInteger gasPrice = web3.ethGasPrice().send().getGasPrice();
-        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider( BigInteger.valueOf(1), BigInteger.valueOf(Short.MAX_VALUE)));
+        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(BigInteger.valueOf(1), BigInteger.valueOf(Short.MAX_VALUE)));
 
         // Check the balance
         final BigInteger oldBalance = EthUtils.getEthBalanceInWei(web3, exchangeAddress);
@@ -65,8 +65,11 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         logger.info("Starting to transfer USDT to the exchange address");
         // TODO: Is there an account which has any USDT?
 
+        final BigInteger amount = BigInteger.valueOf(1);
         try {
-            final TransactionReceipt transferResponse = usdtContract.transferFrom(bufferAddress, exchangeAddress, BigInteger.valueOf(1)).send();
+            final TransactionReceipt sendResponse = usdtContract.approve(bufferAddress, amount).send();
+            logger.debug("sendResponse: " + sendResponse);
+            final TransactionReceipt transferResponse = usdtContract.transferFrom(bufferAddress, exchangeAddress, amount).send();
             // final TransactionReceipt transferResponse = usdtContract.transfer(exchangeAddress, BigInteger.valueOf(1)).send();
         } catch (final Exception exception) {
             logger.error("", exception);
