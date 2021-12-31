@@ -48,19 +48,12 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         final Credentials credentials = Credentials.create(privateKey);
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider());
 
-
-        // Method threw 'java.lang.RuntimeException' exception.
-        // Error processing transaction request: exceeds block gas limit
-
         logger.info("Starting to transfer USDT to the exchange address");
         try {
             usdtContract.transfer(exchangeAddress, BigInteger.valueOf(10)).send();
         } catch (final Exception exception) {
             logger.error("", exception);
         }
-
-
-
     }
 
     Web3j createWeb3If(final String url) {
