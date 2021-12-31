@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 
@@ -60,7 +61,7 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         // Send USDT to the exchange account
         logger.info("Starting to transfer USDT to the exchange address");
         try {
-            usdtContract.transfer(exchangeAddress, BigInteger.valueOf(1)).send();
+            final TransactionReceipt transferResponse = usdtContract.transfer(exchangeAddress, BigInteger.valueOf(1)).send();
         } catch (final Exception exception) {
             logger.error("", exception);
         }
