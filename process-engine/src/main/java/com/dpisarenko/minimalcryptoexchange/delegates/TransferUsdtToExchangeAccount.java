@@ -12,6 +12,7 @@ import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.math.BigInteger;
 
@@ -49,7 +50,7 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         final Credentials credentials = Credentials.create(privateKey);
         final BigInteger gasPrice = web3.ethGasPrice().send().getGasPrice();
-        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(gasPrice, gasPrice.multiply(BigInteger.valueOf(Integer.MAX_VALUE))));
+        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new DefaultGasProvider());
 
         // Check the balance
         final BigInteger oldBalance = EthUtils.getEthBalanceInWei(web3, exchangeAddress);
