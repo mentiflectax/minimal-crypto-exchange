@@ -4,3 +4,6 @@
 .nrepl-port
 *.spvchain
 *.wallet
+*.md~
+*.org~
+*.sol~
