@@ -8,7 +8,9 @@ Set up the environment as described [here](https://dpisarenko.com/mce/en/how-to-
 
 ## Step 2
 
-Set a breakpoint on line `usdtContract.transfer(exchangeAddress, BigInteger.valueOf(10)).send();`
+Set a breakpoint on line `usdtContract.transfer(exchangeAddress, BigInteger.valueOf(10)).send();` in [TransferUsdtToExchangeAccount](https://github.com/mentiflectax/minimal-crypto-exchange/blob/i16/process-engine/src/main/java/com/dpisarenko/minimalcryptoexchange/delegates/TransferUsdtToExchangeAccount.java) class:
+
+
 TODO
 
 ## Step N
