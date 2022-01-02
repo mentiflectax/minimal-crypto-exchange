@@ -68,18 +68,18 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
 
         final BigInteger amount = BigInteger.valueOf(1);
         try {
-            final TransactionReceipt approveResponse1 = usdtContract.approve(bufferAddress, amount.add(ONE))
+            final TransactionReceipt approveResponse1 = usdtContract.approve(bufferAddress, BigInteger.valueOf(100000))
                     .send();
             logger.debug("sendResponse: " + approveResponse1);
 
-            final TransactionReceipt approveResponse2 = usdtContract.approve(exchangeAddress, amount.add(ONE))
+            final TransactionReceipt approveResponse2 = usdtContract.approve(exchangeAddress, BigInteger.valueOf(100000))
                     .send();
             logger.debug("sendResponse: " + approveResponse2);
 
             // final TransactionReceipt sendResponse = usdtContract.transfer(exchangeAddress, amount).send();
             // logger.debug("sendResponse: " + sendResponse);
 
-            final TransactionReceipt transferResponse = usdtContract.transferFrom(exchangeAddress,  bufferAddress, amount).send();
+            final TransactionReceipt transferResponse = usdtContract.transferFrom(bufferAddress, exchangeAddress, amount).send();
             logger.debug("" + transferResponse);
             // final TransactionReceipt transferResponse = usdtContract.transfer(exchangeAddress, BigInteger.valueOf(1)).send();
         } catch (final Exception exception) {
