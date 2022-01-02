@@ -13,37 +13,49 @@
       <bpmn:incoming>Flow_0cchxgu</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0cchxgu" sourceRef="Activity_084mvhb" targetRef="Event_0nysrin" />
-    <bpmn:sequenceFlow id="Flow_1v15sjl" sourceRef="StartEvent_1" targetRef="Activity_1iny1lz" />
-    <bpmn:serviceTask id="Activity_1iny1lz" name="Test" camunda:asyncBefore="true" camunda:delegateExpression="${TransferUsdtToExchangeAccount}">
-      <bpmn:incoming>Flow_1v15sjl</bpmn:incoming>
+    <bpmn:sequenceFlow id="Flow_1v15sjl" sourceRef="StartEvent_1" targetRef="Activity_0bxbblr" />
+    <bpmn:serviceTask id="Activity_1iny1lz" name="Send USDT to the exchange account" camunda:asyncBefore="true" camunda:delegateExpression="${TransferUsdtToExchangeAccount}">
+      <bpmn:incoming>Flow_0tkecnb</bpmn:incoming>
       <bpmn:outgoing>Flow_1nxhm9y</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0tkecnb" sourceRef="Activity_0bxbblr" targetRef="Activity_1iny1lz" />
+    <bpmn:serviceTask id="Activity_0bxbblr" name="Increase allowance" camunda:asyncBefore="true" camunda:delegateExpression="${IncreaseAllowance}">
+      <bpmn:incoming>Flow_1v15sjl</bpmn:incoming>
+      <bpmn:outgoing>Flow_0tkecnb</bpmn:outgoing>
     </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="SendUsdtToExchangeProcess">
-      <bpmndi:BPMNEdge id="Flow_1nxhm9y_di" bpmnElement="Flow_1nxhm9y">
-        <di:waypoint x="360" y="97" />
-        <di:waypoint x="410" y="97" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0cchxgu_di" bpmnElement="Flow_0cchxgu">
-        <di:waypoint x="510" y="97" />
-        <di:waypoint x="562" y="97" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1v15sjl_di" bpmnElement="Flow_1v15sjl">
         <di:waypoint x="215" y="97" />
-        <di:waypoint x="260" y="97" />
+        <di:waypoint x="250" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cchxgu_di" bpmnElement="Flow_0cchxgu">
+        <di:waypoint x="660" y="97" />
+        <di:waypoint x="712" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nxhm9y_di" bpmnElement="Flow_1nxhm9y">
+        <di:waypoint x="510" y="97" />
+        <di:waypoint x="560" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tkecnb_di" bpmnElement="Flow_0tkecnb">
+        <di:waypoint x="350" y="97" />
+        <di:waypoint x="410" y="97" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="79" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1clqnt8_di" bpmnElement="Activity_084mvhb">
-        <dc:Bounds x="410" y="57" width="100" height="80" />
+        <dc:Bounds x="560" y="57" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0nysrin_di" bpmnElement="Event_0nysrin">
-        <dc:Bounds x="562" y="79" width="36" height="36" />
+        <dc:Bounds x="712" y="79" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0tsxb60_di" bpmnElement="Activity_1iny1lz">
-        <dc:Bounds x="260" y="57" width="100" height="80" />
+        <dc:Bounds x="410" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14tdpqv_di" bpmnElement="Activity_0bxbblr">
+        <dc:Bounds x="250" y="57" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
