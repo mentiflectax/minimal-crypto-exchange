@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import static java.lang.String.format;
 import static java.math.BigInteger.ONE;
 
+// TODO: Remove this class and the BPMN diagram where it is being used
 @Component("TransferUsdtToExchangeAccount")
 public class TransferUsdtToExchangeAccount implements JavaDelegate {
     private final Logger logger;
@@ -67,7 +68,6 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
 
         // Send USDT to the exchange account
         logger.info("Starting to transfer USDT to the exchange address");
-        // TODO: Is there an account which has any USDT?
 
         final BigInteger amount = BigInteger.valueOf(1);
         try {

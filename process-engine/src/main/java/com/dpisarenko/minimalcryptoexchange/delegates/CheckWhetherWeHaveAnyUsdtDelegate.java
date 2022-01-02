@@ -45,9 +45,8 @@ public class CheckWhetherWeHaveAnyUsdtDelegate implements JavaDelegate {
         final Credentials credentials = Credentials.create(privateKey);
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new DefaultGasProvider());
 
-        final BigInteger totalSupply = usdtContract.totalSupply().send();
-        delEx.setVariable("USDT_TOTAL_SUPPLY", totalSupply.longValue());
-        delEx.setVariable("ANY_USDT_AVAILABLE", totalSupply.longValue() > 0L);
+        final BigInteger usdtBalance = usdtContract.balanceOf(exchangeAddress).send();
+        delEx.setVariable("USDT_EXCHANGE_BALANCE", usdtBalance.longValue());
     }
 
     Web3j createWeb3If(final String url) {
