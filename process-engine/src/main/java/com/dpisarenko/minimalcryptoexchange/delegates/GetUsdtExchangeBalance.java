@@ -9,14 +9,13 @@ import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.math.BigInteger;
 
-@Component("CheckWhetherWeHaeAnyUsdtDelegate")
-public class CheckWhetherWeHaveAnyUsdtDelegate implements JavaDelegate {
+@Component("GetUsdtExchangeBalance")
+public class GetUsdtExchangeBalance implements JavaDelegate {
     private final Logger logger;
 
     @Value("${networks.eth.url}")
@@ -31,11 +30,11 @@ public class CheckWhetherWeHaveAnyUsdtDelegate implements JavaDelegate {
     @Value("${accounts.eth.exchange.private-key}")
     String privateKey;
 
-    CheckWhetherWeHaveAnyUsdtDelegate(Logger logger) {
+    GetUsdtExchangeBalance(Logger logger) {
         this.logger = logger;
     }
 
-    public CheckWhetherWeHaveAnyUsdtDelegate() {
+    public GetUsdtExchangeBalance() {
         this(LoggerFactory.getLogger(GetEthBalance.class));
     }
 
