@@ -108,6 +108,11 @@
   (let []
     (log-info "send_usdt")))
 
+(defn check_if_or_we_have_any_usdt
+  [de]
+  (let [available-usdt (.getVariable de "USDT_EXCHANGE_BALANCE")]
+    (.setVariable de "ANY_USDT_AVAILABLE" (> available-usdt 0))))
+
 ; Camunda stuff (end)
 ;; Low-level functions (start)
 (defn create-btc-tx

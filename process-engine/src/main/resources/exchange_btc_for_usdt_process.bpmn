@@ -38,9 +38,9 @@
       <bpmn:incoming>Flow_01gvb6j</bpmn:incoming>
       <bpmn:outgoing>Flow_02ytakt</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0a685bq" sourceRef="get_exchange_usdt_balance" targetRef="Gateway_1jedgr7" />
-    <bpmn:exclusiveGateway id="Gateway_1jedgr7" name="Do we have any USDT?" default="Flow_0ia6zk9">
-      <bpmn:incoming>Flow_0a685bq</bpmn:incoming>
+    <bpmn:sequenceFlow id="Flow_0a685bq" sourceRef="get_exchange_usdt_balance" targetRef="check_if_or_we_have_any_usdt" />
+    <bpmn:exclusiveGateway id="Gateway_1jedgr7" name="Do we have any USDT?" camunda:asyncBefore="true" default="Flow_0ia6zk9">
+      <bpmn:incoming>Flow_0pwgr7g</bpmn:incoming>
       <bpmn:outgoing>Flow_0oj2kj4</bpmn:outgoing>
       <bpmn:outgoing>Flow_0ia6zk9</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -71,6 +71,16 @@
       <bpmn:incoming>Flow_0hg0jsh</bpmn:incoming>
       <bpmn:outgoing>Flow_0a685bq</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:serviceTask id="check_if_or_we_have_any_usdt" name="Determine whether or not we have any USDT" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="cljfn">check_if_or_we_have_any_usdt</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0a685bq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pwgr7g</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0pwgr7g" sourceRef="check_if_or_we_have_any_usdt" targetRef="Gateway_1jedgr7" />
     <bpmn:textAnnotation id="TextAnnotation_0uimmgx">
       <bpmn:text>Add a gateway that checks whether or not BTC has been received (BTC_ARRIVED)</bpmn:text>
     </bpmn:textAnnotation>
@@ -78,9 +88,6 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_btc_for_usdt_process">
-      <bpmndi:BPMNShape id="TextAnnotation_0uimmgx_di" bpmnElement="TextAnnotation_0uimmgx">
-        <dc:Bounds x="1270" y="80" width="180" height="60" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0y8q1vm_di" bpmnElement="Flow_0y8q1vm">
         <di:waypoint x="840" y="390" />
         <di:waypoint x="912" y="390" />
@@ -106,7 +113,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0a685bq_di" bpmnElement="Flow_0a685bq">
         <di:waypoint x="320" y="237" />
-        <di:waypoint x="615" y="237" />
+        <di:waypoint x="400" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02ytakt_di" bpmnElement="Flow_02ytakt">
         <di:waypoint x="1370" y="237" />
@@ -128,6 +135,13 @@
         <di:waypoint x="188" y="237" />
         <di:waypoint x="220" y="237" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pwgr7g_di" bpmnElement="Flow_0pwgr7g">
+        <di:waypoint x="500" y="237" />
+        <di:waypoint x="615" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="152" y="219" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ydvpam_di" bpmnElement="wait_for_btc_to_arrive">
         <dc:Bounds x="930" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -161,11 +175,14 @@
       <bpmndi:BPMNShape id="Activity_025ojhq_di" bpmnElement="ask_user_to_transfer_btc">
         <dc:Bounds x="740" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
-        <dc:Bounds x="152" y="219" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0w0cwvm_di" bpmnElement="get_exchange_usdt_balance">
         <dc:Bounds x="220" y="197" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0uimmgx_di" bpmnElement="TextAnnotation_0uimmgx">
+        <dc:Bounds x="1270" y="80" width="180" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0utrlo7_di" bpmnElement="check_if_or_we_have_any_usdt">
+        <dc:Bounds x="400" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_0pmryrb_di" bpmnElement="Association_0pmryrb">
         <di:waypoint x="1320" y="197" />
