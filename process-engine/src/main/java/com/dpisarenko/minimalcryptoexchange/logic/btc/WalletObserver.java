@@ -32,8 +32,7 @@ public class WalletObserver {
             final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
             kit.connectToLocalHost();
             kit.startAsync();
-            // TODO: Uncomment awaitrunning
-            //kit.awaitRunning();
+            kit.awaitRunning();
 
             kit.wallet().addWatchedAddress(Address.fromString(netParams,  exchangeAddress));
 
