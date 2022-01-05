@@ -51,7 +51,7 @@ public class SendEthDelegate implements JavaDelegate {
 
         final String targetEthAddress = (String) delEx.getVariable("TARGET_ETH_ADDRESS");
 
-        final Double usdAmount = (Double) delegateExecution.getVariable("USD_AMOUNT");
+        final Double usdAmount = (Double) delEx.getVariable("USD_AMOUNT");
         final long usdAmountLong = (long) (usdAmount * 100L);
         final BigInteger usdtAmount = BigInteger.valueOf(usdAmountLong);
 
