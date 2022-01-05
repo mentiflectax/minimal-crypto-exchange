@@ -31,7 +31,6 @@ public class ApproveUsdtTransfer implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         final Credentials credentials = Credentials.create(privateKey);
-        final BigInteger gasPrice = web3.ethGasPrice().send().getGasPrice();
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(BigInteger.valueOf(1), BigInteger.valueOf(2*Short.MAX_VALUE)));
 
         final Double usdAmount = (Double) delegateExecution.getVariable("USD_AMOUNT");

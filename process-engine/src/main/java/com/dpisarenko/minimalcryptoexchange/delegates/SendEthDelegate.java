@@ -51,7 +51,11 @@ public class SendEthDelegate implements JavaDelegate {
 
         final String targetEthAddress = (String) delEx.getVariable("TARGET_ETH_ADDRESS");
 
-        final TransactionReceipt transferReceipt = usdtContract.transferFrom(exchangeAddress, targetEthAddress, BigInteger.ONE).send();
+        final Double usdAmount = (Double) delegateExecution.getVariable("USD_AMOUNT");
+        final long usdAmountLong = (long) (usdAmount * 100L);
+        final BigInteger usdtAmount = BigInteger.valueOf(usdAmountLong);
+
+        final TransactionReceipt transferReceipt = usdtContract.transferFrom(exchangeAddress, targetEthAddress, usdtAmount).send();
 
         logger.info("Hello");
     }
