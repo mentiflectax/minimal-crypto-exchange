@@ -13,12 +13,8 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.math.BigInteger;
-
-import static java.lang.String.format;
-import static java.math.BigInteger.ONE;
 
 // TODO: Remove this class and the BPMN diagram where it is being used
 @Component("TransferUsdtToExchangeAccount")

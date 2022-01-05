@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 
 import java.math.BigInteger;
@@ -33,9 +32,7 @@ public class ApproveUsdtTransfer implements JavaDelegate {
         final Credentials credentials = Credentials.create(privateKey);
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(BigInteger.valueOf(1), BigInteger.valueOf(2*Short.MAX_VALUE)));
 
-        final Double usdAmount = (Double) delegateExecution.getVariable("USD_AMOUNT");
-        final long usdAmountLong = (long) (usdAmount * 100L);
-        final BigInteger usdtAmount = BigInteger.valueOf(usdAmountLong);
+        final BigInteger usdtAmount = (BigInteger) delegateExecution.getVariable("USDT_AMOUNT");
         final BigInteger amountToApprove = usdtAmount.add(BigInteger.ONE);
         usdtContract.approve(exchangeAddress, amountToApprove).send();
     }

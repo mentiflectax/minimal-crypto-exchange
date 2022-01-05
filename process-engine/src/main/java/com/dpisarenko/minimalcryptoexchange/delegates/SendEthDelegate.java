@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.RemoteCall;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
-import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.math.BigInteger;
 
@@ -50,14 +47,8 @@ public class SendEthDelegate implements JavaDelegate {
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(BigInteger.valueOf(1), BigInteger.valueOf(2*Short.MAX_VALUE)));
 
         final String targetEthAddress = (String) delEx.getVariable("TARGET_ETH_ADDRESS");
-
-        final Double usdAmount = (Double) delEx.getVariable("USD_AMOUNT");
-        final long usdAmountLong = (long) (usdAmount * 100L);
-        final BigInteger usdtAmount = BigInteger.valueOf(usdAmountLong);
-
-        final TransactionReceipt transferReceipt = usdtContract.transferFrom(exchangeAddress, targetEthAddress, usdtAmount).send();
-
-        logger.info("Hello");
+        final BigInteger usdtAmount = (BigInteger) delEx.getVariable("USDT_AMOUNT");
+        usdtContract.transferFrom(exchangeAddress, targetEthAddress, usdtAmount).send();
     }
 
     Web3j createWeb3If(final String url) {
