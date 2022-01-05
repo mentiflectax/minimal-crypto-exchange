@@ -15,7 +15,7 @@ import java.math.BigInteger;
 import static java.lang.String.format;
 import static org.web3j.protocol.core.DefaultBlockParameterName.LATEST;
 
-@Component
+@Component("GetEthBalance")
 public class GetEthBalance implements JavaDelegate {
     private final Logger logger;
 
@@ -41,7 +41,7 @@ public class GetEthBalance implements JavaDelegate {
         logger.info(format("Balance of account '%s' is equal to %d wei (network '%s')",
                 exchangeAddressEth, balanceWei.longValue(), ethNetworkUrl));
         delEx.setVariable("EXCHANGE_ACCOUNT_BALANCE_WEI",
-                balanceWei);
+                balanceWei.longValue());
     }
 
     Web3j createWeb3If(final String url) {
