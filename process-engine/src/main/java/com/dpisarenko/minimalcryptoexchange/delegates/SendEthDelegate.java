@@ -1,5 +1,6 @@
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.logic.usdt.TestGasProvider;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class SendEthDelegate implements JavaDelegate {
 
         final Credentials credentials = Credentials.create(privateKey);
 
-        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new DefaultGasProvider());
+        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(BigInteger.valueOf(1), BigInteger.valueOf(2*Short.MAX_VALUE)));
 
         final String targetEthAddress = (String) delEx.getVariable("TARGET_ETH_ADDRESS");
 
