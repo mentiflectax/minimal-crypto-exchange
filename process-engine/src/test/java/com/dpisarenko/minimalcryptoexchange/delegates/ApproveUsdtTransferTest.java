@@ -18,7 +18,7 @@ public class ApproveUsdtTransferTest {
         final Function<String, Web3j> createWeb3j = mock(Function.class);
         final Function<String, Credentials> createCredentials = mock(Function.class);
         final Function<LoadErc20ContractInput, ERC20> loadErc20Contract = mock(Function.class);
-        final ApproveUsdtTransfer sut = new ApproveUsdtTransfer(createWeb3j, createCredentials, loadErc20Contract);
+        final ApproveUsdtTransfer sut = new ApproveUsdtTransfer(loadErc20Contract);
         sut.privateKey = "privateKey";
         sut.usdtContractAddress = "usdtContractAddress";
         sut.ethNetworkUrl = "ethNetworkUrl";
