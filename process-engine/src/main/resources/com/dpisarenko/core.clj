@@ -113,6 +113,12 @@
   (let [available-usdt (.getVariable de "USDT_EXCHANGE_BALANCE")]
     (.setVariable de "ANY_USDT_AVAILABLE" (> available-usdt 0))))
 
+(defn check_if_or_we_have_any_eth
+  [de]
+  (let [available-eth (.getVariable de "EXCHANGE_ACCOUNT_BALANCE_WEI")]
+    (.setVariable de "ANY_ETH_AVAILABLE" (> available-eth 0)))
+)
+
 ; Camunda stuff (end)
 ;; Low-level functions (start)
 (defn create-btc-tx
