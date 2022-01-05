@@ -30,13 +30,9 @@ public class ApproveUsdtTransfer implements JavaDelegate {
     @Value("${accounts.eth.exchange.address}")
     String exchangeAddress;
 
-    private final Function<String, Web3j> createWeb3j;
-    private final Function<String, Credentials> createCredentials;
     private final Function<LoadErc20ContractInput, ERC20> loadErc20Contract;
 
     ApproveUsdtTransfer(Function<String, Web3j> createWeb3j, Function<String, Credentials> createCredentials, Function<LoadErc20ContractInput, ERC20> loadErc20Contract) {
-        this.createWeb3j = createWeb3j;
-        this.createCredentials = createCredentials;
         this.loadErc20Contract = loadErc20Contract;
     }
 
@@ -48,10 +44,10 @@ public class ApproveUsdtTransfer implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         // TODO: Test this
-        final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
-        final Credentials credentials = createCredentials.apply(privateKey);
-        final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(BigInteger.valueOf(1), BigInteger.valueOf(2 * Short.MAX_VALUE)));
-
+        final ERC20 usdtContract = loadErc20Contract.apply(new LoadErc20ContractInput()
+                .withPrivateKey(privateKey)
+                .withUsdtContractAddress(usdtContractAddress)
+                .withEthNetworkUrl(ethNetworkUrl));
         final BigInteger usdtAmount = (BigInteger) delegateExecution.getVariable("USDT_AMOUNT");
         final BigInteger amountToApprove = usdtAmount.add(BigInteger.ONE);
         usdtContract.approve(exchangeAddress, amountToApprove).send();
