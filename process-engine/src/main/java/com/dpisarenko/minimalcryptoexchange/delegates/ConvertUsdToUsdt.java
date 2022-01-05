@@ -11,7 +11,7 @@ public class ConvertUsdToUsdt implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         final Double usdAmount = (Double) delegateExecution.getVariable("USD_AMOUNT");
-        final long usdtAmountLong = (long) (usdAmount * 1000000000000000000L);
+        final long usdtAmountLong = (long) (usdAmount * 100000000000000L);
         final BigInteger usdtAmount = BigInteger.valueOf(usdtAmountLong);
         delegateExecution.setVariable("USDT_AMOUNT", usdtAmount);
     }
