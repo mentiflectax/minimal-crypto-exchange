@@ -27,13 +27,12 @@ public class WalletObserver {
         BriefLogFormatter.init();
         final LocalTestNetParams netParams = new LocalTestNetParams();
         netParams.setPort(18444);
+        final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
+        kit.connectToLocalHost();
+        kit.startAsync();
+        kit.awaitRunning();
 
         try {
-            final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
-            kit.connectToLocalHost();
-            kit.startAsync();
-            kit.awaitRunning();
-
             kit.wallet().addWatchedAddress(Address.fromString(netParams,  exchangeAddress));
 
             kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {

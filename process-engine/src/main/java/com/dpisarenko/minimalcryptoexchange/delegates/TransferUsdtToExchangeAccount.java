@@ -57,7 +57,7 @@ public class TransferUsdtToExchangeAccount implements JavaDelegate {
         final Credentials credentials = Credentials.create(privateKey);
         final BigInteger gasPrice = web3.ethGasPrice().send().getGasPrice();
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new TestGasProvider(BigInteger.valueOf(1), BigInteger.valueOf(2*Short.MAX_VALUE)));
-
+// TODO: Remove USDT.bufferAddress
         final BigInteger usdtBalance = usdtContract.balanceOf(exchangeAddress).send();
         System.out.println("Hello");
 
