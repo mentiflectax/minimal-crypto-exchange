@@ -9,7 +9,6 @@
                 :txs []
                 }))
 
-
 (defn init
   [logger]
   (let [cur-time (now)]
@@ -39,6 +38,7 @@
 ;; Various functions (end)
 
 ; Camunda stuff (start)
+; TODO: Write automated test for check-btc-arrived
 (defn check-btc-arrived
   [de]
   (let [
@@ -50,24 +50,23 @@
         ]
     (.setVariable de "BTC_ARRIVED" btc-arrived)
     (log-info (str "check-btc-arrived: check-btc-arrived: INCOMING_TX_ID: "
-                   tx-id ", BTC arrived: " btc-arrived))
-    ))
+                   tx-id ", BTC arrived: " btc-arrived))))
 
+; TODO: Write automated test for set_retry_counter_to_0
 (defn set_retry_counter_to_0
   [de]
-  (.setVariable de "RETRY_COUNTER" 0)
-  )
+  (.setVariable de "RETRY_COUNTER" 0))
 
+; TODO: Write automated test for increment_wait_counter
 (defn increment_wait_counter
   [de]
   (let [
         old-value (.getVariable de "RETRY_COUNTER")
         new-value (+ 1 old-value)
         ]
-    (.setVariable de "RETRY_COUNTER" new-value)
-    )
-  )
+    (.setVariable de "RETRY_COUNTER" new-value)))
 
+; TODO: Write automated test for check_max_number_of_wait_cycles_exceeded
 (defn check_max_number_of_wait_cycles_exceeded
   [de]
   (let [
@@ -77,12 +76,10 @@
         ]
     (.setVariable de
                   "MAX_NUMBER_OF_WAITING_CYCLES_EXCEEDED"
-                  max-retries-exceeded)
-    )
-  )
+                  max-retries-exceeded)))
 
+; TODO: Write automated test for get_received_satoshis
 (declare find-tx)
-
 (defn get_received_satoshis
   [de]
   (let [
@@ -91,28 +88,24 @@
         amount (:amount tx)
         amount-sats (.getValue amount)
         ]
-    (.setVariable de "RECEIVED_SATOSHIS" amount-sats)
-    ))
+    (.setVariable de "RECEIVED_SATOSHIS" amount-sats)))
 
+; TODO: Write automated test for calculate_usd_amount
 (defn calculate_usd_amount
   [de]
   (let [
         sats (.getVariable de "RECEIVED_SATOSHIS")
         usd (* sats SATOSHI_TO_USD_CONVERSION_FACTOR)
         ]
-    (.setVariable de "USD_AMOUNT" usd)
-    ))
+    (.setVariable de "USD_AMOUNT" usd)))
 
-(defn send_usdt
-  [de]
-  (let []
-    (log-info "send_usdt")))
-
+; TODO: Write automated test for check_if_or_we_have_any_usdt
 (defn check_if_or_we_have_any_usdt
   [de]
   (let [available-usdt (.getVariable de "USDT_EXCHANGE_BALANCE")]
     (.setVariable de "ANY_USDT_AVAILABLE" (> available-usdt 0))))
 
+; TODO: Write automated test check_if_or_we_have_any_eth
 (defn check_if_or_we_have_any_eth
   [de]
   (let [available-eth (.getVariable de "EXCHANGE_ACCOUNT_BALANCE_WEI")]
@@ -138,8 +131,7 @@
         old-tx-list (get old-state :txs)
         new-tx-list (conj old-tx-list new-tx)
         ]
-    (assoc old-state :txs new-tx-list)
-    ))
+    (assoc old-state :txs new-tx-list)))
 
 (defn tx-present?
   [state tx-id currency]
@@ -177,7 +169,5 @@
                        txs
                        )
         ]
-    (first matching-txs)
-    )
-  )
+    (first matching-txs)))
 ;; Low-level functions (end)

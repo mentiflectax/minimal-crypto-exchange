@@ -40,6 +40,7 @@ public class GetUsdtExchangeBalance implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delEx) throws Exception {
+        // TODO: Test this
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         final Credentials credentials = Credentials.create(privateKey);
         final ERC20 usdtContract = ERC20.load(usdtContractAddress, web3, credentials, new DefaultGasProvider());

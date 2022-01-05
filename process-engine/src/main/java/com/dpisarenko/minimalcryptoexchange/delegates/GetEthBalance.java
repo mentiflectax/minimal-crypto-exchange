@@ -35,6 +35,7 @@ public class GetEthBalance implements JavaDelegate {
 
     @Override
     public void execute(final DelegateExecution delEx) throws Exception {
+        // TODO: Test this
         final Web3j web3 = createWeb3If(ethNetworkUrl);
         final EthGetBalance response = web3.ethGetBalance(exchangeAddressEth, LATEST).sendAsync().get();
         final BigInteger balanceWei = response.getBalance();

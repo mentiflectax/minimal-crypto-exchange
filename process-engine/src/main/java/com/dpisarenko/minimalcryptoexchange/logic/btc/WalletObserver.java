@@ -23,7 +23,7 @@ public class WalletObserver {
 
     @PostConstruct
     public void init() {
-        //final String exchangeAddress = this.exchangeAddress;
+        // TODO: Test this
         BriefLogFormatter.init();
         final LocalTestNetParams netParams = new LocalTestNetParams();
         netParams.setPort(18444);
@@ -35,6 +35,8 @@ public class WalletObserver {
         try {
             kit.wallet().addWatchedAddress(Address.fromString(netParams,  exchangeAddress));
 
+            // TODO: Put the listener into a separate class
+            // TODO: Write an automated test for the listener
             kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
                 // tx.getOutputs().get(0).getValue()
                 System.out.println("---");

@@ -14,6 +14,7 @@ public final class EthUtils {
     }
 
     public static BigInteger getEthBalanceInWei(Web3j web3, final String address) throws ExecutionException, InterruptedException {
+        // TODO: Test this
         final EthGetBalance getBalanceResponse = web3.ethGetBalance(address, LATEST).sendAsync().get();
         return getBalanceResponse.getBalance();
     }
