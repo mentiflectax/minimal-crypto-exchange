@@ -23,7 +23,7 @@
       <bpmn:incoming>Flow_0l6a2dc</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0l6a2dc" sourceRef="Activity_13ogmzp" targetRef="end" />
-    <bpmn:sequenceFlow id="Flow_01gvb6j" sourceRef="calculate_usd_amount" targetRef="approve_usdt_transfer" />
+    <bpmn:sequenceFlow id="Flow_01gvb6j" sourceRef="calculate_usd_amount" targetRef="convert_usd_to_usdt" />
     <bpmn:serviceTask id="calculate_usd_amount" name="Calculate USD amount" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -98,8 +98,13 @@
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1g995z4" sourceRef="approve_usdt_transfer" targetRef="send_usdt" />
     <bpmn:serviceTask id="approve_usdt_transfer" name="Approve USDT transfer" camunda:asyncBefore="true" camunda:delegateExpression="${ApproveUsdtTransfer}">
-      <bpmn:incoming>Flow_01gvb6j</bpmn:incoming>
+      <bpmn:incoming>Flow_1jnnaft</bpmn:incoming>
       <bpmn:outgoing>Flow_1g995z4</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1jnnaft" sourceRef="convert_usd_to_usdt" targetRef="approve_usdt_transfer" />
+    <bpmn:serviceTask id="convert_usd_to_usdt" name="Calculate USDT amount" camunda:asyncBefore="true" camunda:delegateExpression="${ConvertUsdToUsdt}">
+      <bpmn:incoming>Flow_01gvb6j</bpmn:incoming>
+      <bpmn:outgoing>Flow_1jnnaft</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:textAnnotation id="TextAnnotation_0uimmgx">
       <bpmn:text>Add a gateway that checks whether or not BTC has been received (BTC_ARRIVED)</bpmn:text>
@@ -109,7 +114,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_btc_for_usdt_process">
       <bpmndi:BPMNShape id="TextAnnotation_0uimmgx_di" bpmnElement="TextAnnotation_0uimmgx">
-        <dc:Bounds x="1780" y="80" width="180" height="60" />
+        <dc:Bounds x="1940" y="80" width="180" height="60" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0y8q1vm_di" bpmnElement="Flow_0y8q1vm">
         <di:waypoint x="1190" y="390" />
@@ -139,16 +144,16 @@
         <di:waypoint x="400" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02ytakt_di" bpmnElement="Flow_02ytakt">
-        <di:waypoint x="1880" y="237" />
-        <di:waypoint x="1970" y="237" />
+        <di:waypoint x="2040" y="237" />
+        <di:waypoint x="2130" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_01gvb6j_di" bpmnElement="Flow_01gvb6j">
         <di:waypoint x="1540" y="237" />
-        <di:waypoint x="1600" y="237" />
+        <di:waypoint x="1590" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0l6a2dc_di" bpmnElement="Flow_0l6a2dc">
-        <di:waypoint x="2070" y="237" />
-        <di:waypoint x="2132" y="237" />
+        <di:waypoint x="2230" y="237" />
+        <di:waypoint x="2292" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1w0cued_di" bpmnElement="Flow_1w0cued">
         <di:waypoint x="1380" y="237" />
@@ -171,8 +176,12 @@
         <di:waypoint x="965" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1g995z4_di" bpmnElement="Flow_1g995z4">
-        <di:waypoint x="1700" y="237" />
-        <di:waypoint x="1780" y="237" />
+        <di:waypoint x="1860" y="237" />
+        <di:waypoint x="1940" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jnnaft_di" bpmnElement="Flow_1jnnaft">
+        <di:waypoint x="1690" y="237" />
+        <di:waypoint x="1760" y="237" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
         <dc:Bounds x="152" y="219" width="36" height="36" />
@@ -214,20 +223,23 @@
         <dc:Bounds x="740" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1yhiecu_di" bpmnElement="Activity_13ogmzp">
-        <dc:Bounds x="1970" y="197" width="100" height="80" />
+        <dc:Bounds x="2130" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1agxq27_di" bpmnElement="end">
-        <dc:Bounds x="2132" y="219" width="36" height="36" />
+        <dc:Bounds x="2292" y="219" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0bu7dgh_di" bpmnElement="send_usdt">
-        <dc:Bounds x="1780" y="197" width="100" height="80" />
+        <dc:Bounds x="1940" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0wsdjrv_di" bpmnElement="approve_usdt_transfer">
-        <dc:Bounds x="1600" y="197" width="100" height="80" />
+        <dc:Bounds x="1760" y="197" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10nocm2_di" bpmnElement="convert_usd_to_usdt">
+        <dc:Bounds x="1590" y="197" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_0pmryrb_di" bpmnElement="Association_0pmryrb">
-        <di:waypoint x="1830" y="197" />
-        <di:waypoint x="1830" y="140" />
+        <di:waypoint x="1990" y="197" />
+        <di:waypoint x="1990" y="140" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
