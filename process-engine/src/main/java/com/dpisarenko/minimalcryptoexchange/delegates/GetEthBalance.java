@@ -1,5 +1,6 @@
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.logic.eth.CreateWeb3j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
 
 import java.math.BigInteger;
+import java.util.function.Function;
 
 import static java.lang.String.format;
 import static org.web3j.protocol.core.DefaultBlockParameterName.LATEST;
@@ -25,27 +27,25 @@ public class GetEthBalance implements JavaDelegate {
     @Value("${networks.eth.url}")
     String ethNetworkUrl;
 
-    GetEthBalance(Logger logger) {
+    private final Function<String, Web3j> createWeb3j;
+
+    GetEthBalance(Logger logger, Function<String, Web3j> createWeb3j) {
         this.logger = logger;
+        this.createWeb3j = createWeb3j;
     }
 
     public GetEthBalance() {
-        this(LoggerFactory.getLogger(GetEthBalance.class));
+        this(LoggerFactory.getLogger(GetEthBalance.class), new CreateWeb3j());
     }
 
     @Override
     public void execute(final DelegateExecution delEx) throws Exception {
-        // TODO: Test this
-        final Web3j web3 = createWeb3If(ethNetworkUrl);
+        final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
         final EthGetBalance response = web3.ethGetBalance(exchangeAddressEth, LATEST).sendAsync().get();
         final BigInteger balanceWei = response.getBalance();
         logger.info(format("Balance of account '%s' is equal to %d wei (network '%s')",
                 exchangeAddressEth, balanceWei.longValue(), ethNetworkUrl));
         delEx.setVariable("EXCHANGE_ACCOUNT_BALANCE_WEI",
                 balanceWei.longValue());
-    }
-
-    Web3j createWeb3If(final String url) {
-        return Web3j.build(new HttpService(url));
     }
 }

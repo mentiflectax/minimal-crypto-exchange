@@ -9,6 +9,7 @@ import org.web3j.protocol.core.methods.response.EthGetBalance;
 
 import java.math.BigInteger;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -25,12 +26,13 @@ public class GetEthBalanceTest {
         final String ethNetworkUrl = "ethNetworkUrl";
         final String exchangeAddressEth = "exchangeAddressEth";
         final Logger logger = mock(Logger.class);
-        final GetEthBalance sut = spy(new GetEthBalance(logger));
+        final Function<String, Web3j> createWeb3j = mock(Function.class);
+        final GetEthBalance sut = spy(new GetEthBalance(logger, createWeb3j));
         sut.exchangeAddressEth = exchangeAddressEth;
         sut.ethNetworkUrl = ethNetworkUrl;
         final Web3j web3 = mock(Web3j.class);
 
-        doReturn(web3).when(sut).createWeb3If(ethNetworkUrl);
+        when(createWeb3j.apply(ethNetworkUrl)).thenReturn(web3);
 
         final BigInteger balanceWei = BigInteger.ONE;
 
@@ -54,7 +56,7 @@ public class GetEthBalanceTest {
 
         // Then
         verify(sut).execute(delEx);
-        verify(sut).createWeb3If(ethNetworkUrl);
+        verify(createWeb3j).apply(ethNetworkUrl);
         verify(web3).ethGetBalance(exchangeAddressEth, LATEST);
         verify(request).sendAsync();
         verify(completableFuture).get();
