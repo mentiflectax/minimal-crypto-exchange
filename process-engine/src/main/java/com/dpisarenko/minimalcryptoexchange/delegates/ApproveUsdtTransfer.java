@@ -36,14 +36,13 @@ public class ApproveUsdtTransfer implements JavaDelegate {
     }
 
     @Override
-    public void execute(DelegateExecution delegateExecution) throws Exception {
-        // TODO: Test this
+    public void execute(final DelegateExecution delEx) throws Exception {
         final ERC20 usdtContract = loadErc20Contract.apply(
                 new LoadErc20ContractInput()
                         .withPrivateKey(privateKey)
                         .withUsdtContractAddress(usdtContractAddress)
                         .withEthNetworkUrl(ethNetworkUrl));
-        final BigInteger usdtAmount = (BigInteger) delegateExecution.getVariable("USDT_AMOUNT");
+        final BigInteger usdtAmount = (BigInteger) delEx.getVariable("USDT_AMOUNT");
         final BigInteger amountToApprove = usdtAmount.add(BigInteger.ONE);
         usdtContract.approve(exchangeAddress, amountToApprove).send();
     }
