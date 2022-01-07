@@ -61,7 +61,7 @@ public class GetEthBalanceTest {
         verify(response).getBalance();
         verify(logger).info("Balance of account 'exchangeAddressEth' is equal to 1 wei (network 'ethNetworkUrl')");
         verify(delEx).setVariable("EXCHANGE_ACCOUNT_BALANCE_WEI",
-                balanceWei);
+                balanceWei.longValue());
         verifyNoMoreInteractions(sut, web3, request,
                 response, completableFuture, logger,
                 delEx);

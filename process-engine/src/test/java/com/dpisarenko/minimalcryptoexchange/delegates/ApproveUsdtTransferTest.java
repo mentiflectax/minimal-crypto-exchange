@@ -5,8 +5,6 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.web3j.contracts.eip20.generated.ERC20;
-import org.web3j.crypto.Credentials;
-import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.RemoteCall;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
@@ -21,8 +19,6 @@ public class ApproveUsdtTransferTest {
     @Test
     public void givenDelegateExecution_whenExecute_thenApproveAmount() throws Exception {
         // Given
-        final Function<String, Web3j> createWeb3j = mock(Function.class);
-        final Function<String, Credentials> createCredentials = mock(Function.class);
         final Function<LoadErc20ContractInput, ERC20> loadErc20Contract = mock(Function.class);
         final ApproveUsdtTransfer sut = new ApproveUsdtTransfer(loadErc20Contract);
         sut.privateKey = "privateKey";

@@ -8,12 +8,14 @@ import java.math.BigInteger;
 
 @Component("ConvertUsdToUsdt")
 public class ConvertUsdToUsdt implements JavaDelegate {
+
+    static final long USD_TO_USDT_CONVERSION_FACTOR = 100000000000000L;
+
     @Override
-    public void execute(DelegateExecution delegateExecution) throws Exception {
-        // TODO: Test this
-        final Double usdAmount = (Double) delegateExecution.getVariable("USD_AMOUNT");
-        final long usdtAmountLong = (long) (usdAmount * 100000000000000L);
+    public void execute(final DelegateExecution delEx) throws Exception {
+        final Double usdAmount = (Double) delEx.getVariable("USD_AMOUNT");
+        final long usdtAmountLong = (long) (usdAmount * USD_TO_USDT_CONVERSION_FACTOR);
         final BigInteger usdtAmount = BigInteger.valueOf(usdtAmountLong);
-        delegateExecution.setVariable("USDT_AMOUNT", usdtAmount);
+        delEx.setVariable("USDT_AMOUNT", usdtAmount);
     }
 }
