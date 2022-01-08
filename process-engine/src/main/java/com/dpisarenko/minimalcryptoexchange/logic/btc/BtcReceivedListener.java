@@ -41,7 +41,6 @@ public class BtcReceivedListener implements WalletCoinsReceivedEventListener {
             clojureService.btcTxReceived(txId, amount);
         } else {
             logger.error(String.format("Error process incoming BTC transaction '%s': Could not find correct TX output", tx.getTxId().toString()));
-            // TODO: Test this
         }
     }
 

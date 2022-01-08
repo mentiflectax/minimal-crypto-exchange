@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -52,5 +53,33 @@ public class BtcReceivedListenerTest {
         verify(logger).info("Received 0.00000001 BTC");
         verifyNoMoreInteractions(sut, clojureService, logger);
     }
+    @Test
+    public void givenIncomingBtcTxWithoutRightOutputs_whenOnCoinsReceived_thenLogError() {
+        // Given
+        final ClojureService clojureService = mock(ClojureService.class);
+        final NetworkParameters netParams = new LocalTestNetParams();
+        final Logger logger = mock(Logger.class);
+        final BtcReceivedListener sut = spy(new BtcReceivedListener(clojureService, EXCHANGE_ADDRESS, netParams, logger));
 
+        final Wallet wallet = mock(Wallet.class);
+        final Transaction tx = mock(Transaction.class);
+        final Sha256Hash txId = Sha256Hash.of("txId".getBytes());
+        when(tx.getTxId()).thenReturn(txId);
+        final Coin prevBalance = Coin.ZERO;
+        final Coin newBalance = Coin.SATOSHI;
+
+        final Optional<LogicalTransactionOutput> relevantTxOutput = Optional.empty();
+        doReturn(relevantTxOutput).when(sut).findRelevantTxOutput(tx);
+
+        // When
+        sut.onCoinsReceived(wallet, tx, prevBalance, newBalance);
+
+        // Then
+        verify(sut).onCoinsReceived(wallet, tx, prevBalance, newBalance);
+        verify(logger).debug("Incoming BTC transaction registered: f9f1a1baf8cd977b0fb9534e593dc52f8e788c17e1d2541d51911d842fbca6af");
+        verify(sut).findRelevantTxOutput(tx);
+        verify(clojureService, never()).btcTxReceived(txId.toString(), newBalance);
+        verify(logger).error("Error process incoming BTC transaction 'f9f1a1baf8cd977b0fb9534e593dc52f8e788c17e1d2541d51911d842fbca6af': Could not find correct TX output");
+        verifyNoMoreInteractions(sut, clojureService, logger);
+    }
 }
