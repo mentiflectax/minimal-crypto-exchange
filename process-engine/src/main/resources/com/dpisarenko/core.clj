@@ -75,7 +75,6 @@
                   "MAX_NUMBER_OF_WAITING_CYCLES_EXCEEDED"
                   max-retries-exceeded)))
 
-; TODO: Write automated test for get_received_satoshis
 (declare find-tx)
 (defn get_received_satoshis
   [de]
