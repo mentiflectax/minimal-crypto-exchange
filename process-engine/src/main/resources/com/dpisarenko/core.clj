@@ -38,7 +38,6 @@
 ;; Various functions (end)
 
 ; Camunda stuff (start)
-; TODO: Write automated test for check-btc-arrived
 (defn check-btc-arrived
   [de]
   (let [
