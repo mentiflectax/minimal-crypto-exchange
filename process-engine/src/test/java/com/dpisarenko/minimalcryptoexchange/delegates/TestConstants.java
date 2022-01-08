@@ -1,6 +1,6 @@
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
-public final class TestConstants {
+final class TestConstants {
     private TestConstants() {
     }
 

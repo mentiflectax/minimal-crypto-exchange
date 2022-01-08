@@ -5,8 +5,6 @@ import org.bitcoinj.core.Coin;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @Service
 public class ClojureService {
 
@@ -20,10 +18,5 @@ public class ClojureService {
     public void btcTxReceived(final String txId, final Coin amount) {
         Clojure.var("com.dpisarenko.core", "btcTxReceived")
                 .invoke(txId, amount);
-    }
-
-    @PostConstruct
-    void test() {
-        //btcTxReceived(null, null, null, null);
     }
 }

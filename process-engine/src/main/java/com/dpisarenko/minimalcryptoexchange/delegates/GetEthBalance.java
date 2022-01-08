@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
-import org.web3j.protocol.http.HttpService;
 
 import java.math.BigInteger;
 import java.util.function.Function;

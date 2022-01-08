@@ -31,36 +31,15 @@ public class WalletObserver {
         kit.connectToLocalHost();
         kit.startAsync();
         kit.awaitRunning();
-
         try {
             kit.wallet().addWatchedAddress(Address.fromString(netParams,  exchangeAddress));
-
             // TODO: Put the listener into a separate class
             // TODO: Write an automated test for the listener
-            kit.wallet().addCoinsReceivedEventListener((wallet, tx, prevBalance, newBalance) -> {
-                // tx.getOutputs().get(0).getValue()
-                System.out.println("---");
-                Optional<LogicalTransactionOutput> relevantTxOutput = tx.getOutputs()
-                        .stream()
-                        .map(output -> new LogicalTransactionOutput()
-                                .withTargetAddress(output.getScriptPubKey().getToAddress(netParams))
-                                .withAmount(output.getValue()))
-                        .filter(logicalTransactionOutput -> exchangeAddress.equals(logicalTransactionOutput.getTargetAddress().toString()))
-                        .findFirst();
-
-                if (relevantTxOutput.isPresent()) {
-                    final String txId = tx.getTxId().toString();
-                    Coin amount = relevantTxOutput.get().getAmount();
-                    System.out.println(String.format("Received %s BTC", amount.toFriendlyString()));
-                    clojureService.btcTxReceived(txId, amount);
-                }
-                // TODO: Think what we need to do if we cannot find the relevant transaction
-                System.out.println("---");
-            });
-
-            System.out.println("Hello");
+            kit.wallet().addCoinsReceivedEventListener(new BtcReceivedListener(clojureService, exchangeAddress, netParams));
         }
         catch (Exception exception) {
+            // TODO: Test this
+            // TODO: Log this error
             exception.printStackTrace();
         }
     }
