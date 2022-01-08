@@ -4,8 +4,10 @@ import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.wallet.Wallet;
 import org.bitcoinj.wallet.listeners.WalletCoinsReceivedEventListener;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,14 +33,7 @@ public class BtcReceivedListener implements WalletCoinsReceivedEventListener {
     @Override
     public void onCoinsReceived(final Wallet wallet, final Transaction tx, final Coin prevBalance, final Coin newBalance) {
         logger.debug(String.format("Incoming BTC transaction registered: %s", tx.getTxId().toString()));
-        final Optional<LogicalTransactionOutput> relevantTxOutput = tx.getOutputs()
-                .stream()
-                .map(output -> new LogicalTransactionOutput()
-                        .withTargetAddress(output.getScriptPubKey().getToAddress(netParams))
-                        .withAmount(output.getValue()))
-                .filter(logicalTransactionOutput -> exchangeAddress.equals(logicalTransactionOutput.getTargetAddress().toString()))
-                .findFirst();
-
+        final Optional<LogicalTransactionOutput> relevantTxOutput = findRelevantTxOutput(tx);
         if (relevantTxOutput.isPresent()) {
             // TODO: Test this
             final String txId = tx.getTxId().toString();
@@ -49,5 +44,19 @@ public class BtcReceivedListener implements WalletCoinsReceivedEventListener {
             logger.error(String.format("Error process incoming BTC transaction '%s': Could not find correct TX output", tx.getTxId().toString()));
             // TODO: Test this
         }
+    }
+
+    private Optional<LogicalTransactionOutput> findRelevantTxOutput(Transaction tx) {
+        return tx.getOutputs()
+                .stream()
+                .map(this::createLogicalTxOutput)
+                .filter(logicalTransactionOutput -> exchangeAddress.equals(logicalTransactionOutput.getTargetAddress().toString()))
+                .findFirst();
+    }
+
+    LogicalTransactionOutput createLogicalTxOutput(TransactionOutput output) {
+        return new LogicalTransactionOutput()
+                .withTargetAddress(output.getScriptPubKey().getToAddress(netParams))
+                .withAmount(output.getValue());
     }
 }
