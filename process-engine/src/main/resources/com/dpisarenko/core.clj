@@ -52,7 +52,6 @@
     (log-info (str "check-btc-arrived: check-btc-arrived: INCOMING_TX_ID: "
                    tx-id ", BTC arrived: " btc-arrived))))
 
-; TODO: Write automated test for set_retry_counter_to_0
 (defn set_retry_counter_to_0
   [de]
   (.setVariable de "RETRY_COUNTER" 0))
