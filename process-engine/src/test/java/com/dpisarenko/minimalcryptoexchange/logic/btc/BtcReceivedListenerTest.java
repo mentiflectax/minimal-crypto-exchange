@@ -11,8 +11,11 @@ import org.slf4j.Logger;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class BtcReceivedListenerTest {
@@ -36,12 +39,18 @@ public class BtcReceivedListenerTest {
         final LogicalTransactionOutput lto = mock(LogicalTransactionOutput.class);
         when(lto.getAmount()).thenReturn(newBalance);
         final Optional<LogicalTransactionOutput> relevantTxOutput = Optional.of(lto);
+        doReturn(relevantTxOutput).when(sut).findRelevantTxOutput(tx);
 
         // When
         sut.onCoinsReceived(wallet, tx, prevBalance, newBalance);
 
         // Then
-        //verify(clojureService).btcTxReceived();
+        verify(sut).onCoinsReceived(wallet, tx, prevBalance, newBalance);
+        verify(logger).debug("Incoming BTC transaction registered: f9f1a1baf8cd977b0fb9534e593dc52f8e788c17e1d2541d51911d842fbca6af");
+        verify(sut).findRelevantTxOutput(tx);
+        verify(clojureService).btcTxReceived(txId.toString(), newBalance);
+        verify(logger).info("Received 0.00000001 BTC");
+        verifyNoMoreInteractions(sut, clojureService, logger);
     }
 
 }

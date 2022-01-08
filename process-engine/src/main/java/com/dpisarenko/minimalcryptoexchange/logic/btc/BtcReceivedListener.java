@@ -35,10 +35,9 @@ public class BtcReceivedListener implements WalletCoinsReceivedEventListener {
         logger.debug(String.format("Incoming BTC transaction registered: %s", tx.getTxId().toString()));
         final Optional<LogicalTransactionOutput> relevantTxOutput = findRelevantTxOutput(tx);
         if (relevantTxOutput.isPresent()) {
-            // TODO: Test this
             final String txId = tx.getTxId().toString();
             Coin amount = relevantTxOutput.get().getAmount();
-            logger.info(String.format("Received %s BTC", amount.toFriendlyString()));
+            logger.info(String.format("Received %s", amount.toFriendlyString()));
             clojureService.btcTxReceived(txId, amount);
         } else {
             logger.error(String.format("Error process incoming BTC transaction '%s': Could not find correct TX output", tx.getTxId().toString()));
@@ -46,7 +45,7 @@ public class BtcReceivedListener implements WalletCoinsReceivedEventListener {
         }
     }
 
-    private Optional<LogicalTransactionOutput> findRelevantTxOutput(Transaction tx) {
+    Optional<LogicalTransactionOutput> findRelevantTxOutput(Transaction tx) {
         return tx.getOutputs()
                 .stream()
                 .map(this::createLogicalTxOutput)
