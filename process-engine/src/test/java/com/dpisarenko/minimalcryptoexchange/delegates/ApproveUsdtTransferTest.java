@@ -11,6 +11,10 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import java.math.BigInteger;
 import java.util.function.Function;
 
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.ETH_NETWORK_URL;
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.EXCHANGE_ADDRESS;
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.PRIVATE_KEY;
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.USDT_CONTRACT_ADDRESS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,19 +25,19 @@ public class ApproveUsdtTransferTest {
         // Given
         final Function<LoadErc20ContractInput, ERC20> loadErc20Contract = mock(Function.class);
         final ApproveUsdtTransfer sut = new ApproveUsdtTransfer(loadErc20Contract);
-        sut.privateKey = "privateKey";
-        sut.usdtContractAddress = "usdtContractAddress";
-        sut.ethNetworkUrl = "ethNetworkUrl";
-        sut.exchangeAddress = "exchangeAddress";
+        sut.privateKey = PRIVATE_KEY;
+        sut.usdtContractAddress = USDT_CONTRACT_ADDRESS;
+        sut.ethNetworkUrl = ETH_NETWORK_URL;
+        sut.exchangeAddress = EXCHANGE_ADDRESS;
 
         final DelegateExecution delEx = mock(DelegateExecution.class);
 
         final ERC20 usdtContract = mock(ERC20.class);
 
         when(loadErc20Contract.apply(Mockito.eq(new LoadErc20ContractInput()
-                .withPrivateKey("privateKey")
-                .withUsdtContractAddress("usdtContractAddress")
-                .withEthNetworkUrl("ethNetworkUrl")))).thenReturn(usdtContract);
+                .withPrivateKey(PRIVATE_KEY)
+                .withUsdtContractAddress(USDT_CONTRACT_ADDRESS)
+                .withEthNetworkUrl(ETH_NETWORK_URL)))).thenReturn(usdtContract);
 
         final BigInteger usdtAmount = BigInteger.ONE;
         when(delEx.getVariable("USDT_AMOUNT")).thenReturn(usdtAmount);
@@ -42,17 +46,17 @@ public class ApproveUsdtTransferTest {
 
         final RemoteCall<TransactionReceipt> approveResult = mock(RemoteCall.class);
 
-        when(usdtContract.approve("exchangeAddress", amountToApprove)).thenReturn(approveResult);
+        when(usdtContract.approve(EXCHANGE_ADDRESS, amountToApprove)).thenReturn(approveResult);
 
         // When
         sut.execute(delEx);
 
         // Then
         verify(loadErc20Contract).apply(Mockito.eq(new LoadErc20ContractInput()
-                .withPrivateKey("privateKey")
-                .withUsdtContractAddress("usdtContractAddress")
-                .withEthNetworkUrl("ethNetworkUrl")));
-        verify(usdtContract).approve("exchangeAddress", amountToApprove);
+                .withPrivateKey(PRIVATE_KEY)
+                .withUsdtContractAddress(USDT_CONTRACT_ADDRESS)
+                .withEthNetworkUrl(ETH_NETWORK_URL)));
+        verify(usdtContract).approve(EXCHANGE_ADDRESS, amountToApprove);
         verify(approveResult).send();
     }
 }

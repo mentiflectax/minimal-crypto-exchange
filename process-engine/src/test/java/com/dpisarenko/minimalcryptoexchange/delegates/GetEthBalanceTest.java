@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.ETH_NETWORK_URL;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -20,19 +21,20 @@ import static org.mockito.Mockito.when;
 import static org.web3j.protocol.core.DefaultBlockParameterName.LATEST;
 
 public class GetEthBalanceTest {
+
+    public static final String EXCHANGE_ADDRESS_ETH = "exchangeAddressEth";
+
     @Test
     public void givenAddress_whenExecute_thenSetProcessVariableToBalance() throws Exception {
         // Given
-        final String ethNetworkUrl = "ethNetworkUrl";
-        final String exchangeAddressEth = "exchangeAddressEth";
         final Logger logger = mock(Logger.class);
         final Function<String, Web3j> createWeb3j = mock(Function.class);
         final GetEthBalance sut = spy(new GetEthBalance(logger, createWeb3j));
-        sut.exchangeAddressEth = exchangeAddressEth;
-        sut.ethNetworkUrl = ethNetworkUrl;
+        sut.exchangeAddressEth = EXCHANGE_ADDRESS_ETH;
+        sut.ethNetworkUrl = ETH_NETWORK_URL;
         final Web3j web3 = mock(Web3j.class);
 
-        when(createWeb3j.apply(ethNetworkUrl)).thenReturn(web3);
+        when(createWeb3j.apply(ETH_NETWORK_URL)).thenReturn(web3);
 
         final BigInteger balanceWei = BigInteger.ONE;
 
@@ -47,7 +49,7 @@ public class GetEthBalanceTest {
         when(request.sendAsync()).thenReturn(completableFuture);
 
         doReturn(request).when(web3)
-                .ethGetBalance(exchangeAddressEth, LATEST);
+                .ethGetBalance(EXCHANGE_ADDRESS_ETH, LATEST);
 
         final DelegateExecution delEx = mock(DelegateExecution.class);
 
@@ -56,8 +58,8 @@ public class GetEthBalanceTest {
 
         // Then
         verify(sut).execute(delEx);
-        verify(createWeb3j).apply(ethNetworkUrl);
-        verify(web3).ethGetBalance(exchangeAddressEth, LATEST);
+        verify(createWeb3j).apply(ETH_NETWORK_URL);
+        verify(web3).ethGetBalance(EXCHANGE_ADDRESS_ETH, LATEST);
         verify(request).sendAsync();
         verify(completableFuture).get();
         verify(response).getBalance();

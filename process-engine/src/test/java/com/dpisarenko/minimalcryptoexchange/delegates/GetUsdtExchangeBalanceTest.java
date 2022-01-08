@@ -9,16 +9,15 @@ import org.web3j.protocol.core.RemoteCall;
 import java.math.BigInteger;
 import java.util.function.Function;
 
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.ETH_NETWORK_URL;
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.EXCHANGE_ADDRESS;
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.PRIVATE_KEY;
+import static com.dpisarenko.minimalcryptoexchange.delegates.TestConstants.USDT_CONTRACT_ADDRESS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GetUsdtExchangeBalanceTest {
-    private static final String ETH_NETWORK_URL = "ethNetworkUrl";
-    private static final String USDT_CONTRACT_ADDRESS = "usdtContractAddress";
-    private static final String EXCHANGE_ADDRESS = "exchangeAddress";
-    private static final String PRIVATE_KEY = "privateKey";
-
     @Test
     public void givenUsdtContract_whenExecute_thenSetProcessVariableToExchangeUsdtBalance() throws Exception {
         // Given
@@ -54,6 +53,5 @@ public class GetUsdtExchangeBalanceTest {
         verify(usdtContract).balanceOf(EXCHANGE_ADDRESS);
         verify(balanceOfResponse).send();
         verify(delEx).setVariable("USDT_EXCHANGE_BALANCE", usdtBalance.longValue());
-
     }
 }
