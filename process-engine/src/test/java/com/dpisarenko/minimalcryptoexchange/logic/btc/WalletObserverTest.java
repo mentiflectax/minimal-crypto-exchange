@@ -23,7 +23,7 @@ public class WalletObserverTest {
             .withPort(18444);
 
     @Test
-    public void givenConfiguration_whenInit_setupCoinsReceivedListener() {
+    public void givenConfiguration_whenInit_thenSetupCoinsReceivedListener() {
         // Given
         final Logger logger = mock(Logger.class);
         final WalletObserver sut = spy(new WalletObserver(logger));

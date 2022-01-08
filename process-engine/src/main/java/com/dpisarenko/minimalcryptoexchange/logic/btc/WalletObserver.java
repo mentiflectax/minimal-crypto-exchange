@@ -44,12 +44,7 @@ public class WalletObserver {
         final Wallet wallet = kit.wallet();
 
         wallet.addWatchedAddress(Address.fromString(netParams, exchangeAddress));
-        try {
-            wallet.addCoinsReceivedEventListener(createBtcReceivedListener(netParams));
-        } catch (final Exception exception) {
-            // TODO: Test this
-            logger.error("An error occurred while setting up BTC wallet listener", exception);
-        }
+        wallet.addCoinsReceivedEventListener(createBtcReceivedListener(netParams));
     }
 
     BtcReceivedListener createBtcReceivedListener(final LocalTestNetParams netParams) {
