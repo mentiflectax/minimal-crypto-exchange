@@ -37,7 +37,6 @@ public class SendEthDelegate implements JavaDelegate {
 
     @Override
     public void execute(final DelegateExecution delEx) throws Exception {
-        // TODO: Test this
         final ERC20 usdtContract = loadErc20Contract.apply(
                 new LoadErc20ContractInput()
                         .withPrivateKey(privateKey)
