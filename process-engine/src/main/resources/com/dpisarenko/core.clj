@@ -94,7 +94,6 @@
         ]
     (.setVariable de "USD_AMOUNT" usd)))
 
-; TODO: Write automated test for check_if_or_we_have_any_usdt
 (defn check_if_or_we_have_any_usdt
   [de]
   (let [available-usdt (.getVariable de "USDT_EXCHANGE_BALANCE")]
