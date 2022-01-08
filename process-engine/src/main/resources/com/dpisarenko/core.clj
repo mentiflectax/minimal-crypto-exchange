@@ -86,7 +86,6 @@
         ]
     (.setVariable de "RECEIVED_SATOSHIS" amount-sats)))
 
-; TODO: Write automated test for calculate_usd_amount
 (defn calculate_usd_amount
   [de]
   (let [
