@@ -64,7 +64,6 @@
         ]
     (.setVariable de "RETRY_COUNTER" new-value)))
 
-; TODO: Write automated test for check_max_number_of_wait_cycles_exceeded
 (defn check_max_number_of_wait_cycles_exceeded
   [de]
   (let [
