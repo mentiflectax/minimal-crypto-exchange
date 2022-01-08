@@ -56,7 +56,6 @@
   [de]
   (.setVariable de "RETRY_COUNTER" 0))
 
-; TODO: Write automated test for increment_wait_counter
 (defn increment_wait_counter
   [de]
   (let [

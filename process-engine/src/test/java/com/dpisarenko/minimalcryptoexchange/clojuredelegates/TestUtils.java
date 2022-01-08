@@ -6,8 +6,7 @@ import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 
 import static com.dpisarenko.minimalcryptoexchange.clj.ClojureService.MAIN_CLOJURE_NAMESPACE;
 
-public class TestUtils {
-
+public final class TestUtils {
     private TestUtils() {
     }
 
