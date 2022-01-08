@@ -4,6 +4,7 @@ import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
+import org.bitcoinj.wallet.Wallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,22 +34,37 @@ public class WalletObserver {
 
     @PostConstruct
     public void init() {
-        // TODO: Test this
         BriefLogFormatter.init();
-        final LocalTestNetParams netParams = new LocalTestNetParams();
-        netParams.setPort(18444);
-        final WalletAppKit kit = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
+        final LocalTestNetParams netParams = new LocalTestNetParams()
+                .withPort(18444);
+        final WalletAppKit kit = createWalletAppKit(netParams);
         kit.connectToLocalHost();
-        kit.startAsync();
-        kit.awaitRunning();
+        startAsync(kit);
+        awaitRunning(kit);
+        final Wallet wallet = kit.wallet();
+
+        wallet.addWatchedAddress(Address.fromString(netParams, exchangeAddress));
         try {
-            kit.wallet().addWatchedAddress(Address.fromString(netParams, exchangeAddress));
-            // TODO: Write an automated test for the listener
-            kit.wallet().addCoinsReceivedEventListener(new BtcReceivedListener(clojureService, exchangeAddress, netParams));
-        }
-        catch (final Exception exception) {
+            wallet.addCoinsReceivedEventListener(createBtcReceivedListener(netParams));
+        } catch (final Exception exception) {
             // TODO: Test this
             logger.error("An error occurred while setting up BTC wallet listener", exception);
         }
+    }
+
+    BtcReceivedListener createBtcReceivedListener(final LocalTestNetParams netParams) {
+        return new BtcReceivedListener(clojureService, exchangeAddress, netParams);
+    }
+
+    void awaitRunning(WalletAppKit kit) {
+        kit.awaitRunning();
+    }
+
+    void startAsync(WalletAppKit kit) {
+        kit.startAsync();
+    }
+
+    WalletAppKit createWalletAppKit(LocalTestNetParams netParams) {
+        return new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
     }
 }
