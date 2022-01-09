@@ -9,7 +9,7 @@ import java.math.BigInteger;
 @Component("ConvertUsdToUsdt")
 public class ConvertUsdToUsdt implements JavaDelegate {
 
-    static final long USD_TO_USDT_CONVERSION_FACTOR = 100000000000000L;
+    static final long USD_TO_USDT_CONVERSION_FACTOR = 1000000000000000000L;
 
     @Override
     public void execute(final DelegateExecution delEx) throws Exception {
