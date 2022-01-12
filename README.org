@@ -165,3 +165,9 @@ Thereafter the sent amount should appear in the Electrum wallet.
 *** How to send test ETH to the exchange account
 
 See [[https://dpisarenko.com/posts/eth-transfers/][this blog post]].    
+
+* Contributors
+
+  * [[https://www.linkedin.com/in/dmitrii-pisarenko-1149a5201][Dmitrii Pisarenko]]
+  * [[https://www.linkedin.com/in/caleb-m-demel][Caleb Demel]]
+  * [[https://www.linkedin.com/in/ronnie-liu-11155352][RonnieLiu]]
