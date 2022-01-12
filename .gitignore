@@ -1,1 +1,9 @@
 .DS_Store
+*.sh~
+*.js~
+.nrepl-port
+*.spvchain
+*.wallet
+*.md~
+*.org~
+*.sol~

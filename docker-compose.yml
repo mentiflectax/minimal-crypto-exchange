@@ -6,13 +6,22 @@ services:
 #
   node:
     image: ulamlabs/bitcoind-custom-regtest:latest
+# For ports used by node see
+# https://github.com/ulamlabs/bitcoind-custom-regtest/blob/master/bitcoin.conf
+    ports:
+      - "18444:19000"
+      - "28332:28332"
   electrumx:
     image: lukechilds/electrumx:latest
     links:
       - node
+# Port settings see https://github.com/ulamlabs/bitcoind-custom-regtest
     ports:
       - "51001:50001"
       - "51002:50002"
+#      - "19001:19001"
+#      - "19000:19000"
+#      - "28332:28332"
     environment:
       - NET=regtest
       - COIN=BitcoinSegwit
@@ -29,6 +38,7 @@ services:
       - BTCEXP_BITCOIND_URI=http://test:test@node:19001
       - BTCEXP_ELECTRUMX_SERVERS=tls://electrumx:50002
       - BTCEXP_ADDRESS_API=electrumx
+      - BTCEXP_BASIC_AUTH_PASSWORD=test
 #
 # BTC testnet setup (end)
 #
@@ -38,11 +48,12 @@ services:
 # ETH testnet setup (start)
 #
   geth:
-    image: mentiflectax/geth-poa-testnet:v2
+    image: mentiflectax/geth-poa-testnet:v3
     environment:
       - ETH_PASSWORD=QfdxTYxkwASj
       - ETH_PRIVATE_KEY=0d0b4c455973c883bb0fa584f0078178aa90c571a8f1d40f28d2339f4e757dde
       - ETH_ADDRESS=0c56352F05De44C9b5BA8bcF9BDEc7e654993339
+      - ETH_VERBOSITY=5
     ports:
       - 8178:8178
       - 8546:8546

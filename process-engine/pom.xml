@@ -6,13 +6,14 @@
 
     <groupId>com.dpisarenko</groupId>
     <artifactId>process-engine</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <camunda.spring-boot.version>7.16.0</camunda.spring-boot.version>
         <spring-boot.version>2.5.4</spring-boot.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <web3j.version>4.8.7</web3j.version>
     </properties>
 
     <dependencyManagement>
@@ -34,6 +35,11 @@
             <version>${camunda.spring-boot.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.camunda.bpm.springboot</groupId>
+            <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+            <version>${camunda.spring-boot.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
@@ -49,11 +55,33 @@
             <version>1.2.6</version>
         </dependency>
         <!-- Logging (end) -->
+        <!-- Bitcoin (start) -->
+        <dependency>
+            <groupId>org.bitcoinj</groupId>
+            <artifactId>bitcoinj-core</artifactId>
+            <version>0.15.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.btc4j</groupId>
+            <artifactId>btc4j-daemon</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+        <!-- Bitcoin (end) -->
         <!-- Ethereum (start) -->
         <dependency>
             <groupId>org.web3j</groupId>
             <artifactId>core</artifactId>
-            <version>4.8.7</version>
+            <version>${web3j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>contracts</artifactId>
+            <version>${web3j.version}</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -75,6 +103,13 @@
             <scope>test</scope>
         </dependency>
         <!-- Testing (end) -->
+        <!-- Clojure (start) -->
+        <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>clojure</artifactId>
+            <version>1.10.3</version>
+        </dependency>
+        <!-- Clojure (end) -->
     </dependencies>
 
     <build>

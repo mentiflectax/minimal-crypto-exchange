@@ -212,6 +212,42 @@
       "artifacts": [
         "Context"
       ]
+    },
+    "/Users/dp118m/dev/misc/minimal-crypto-exchange/erc20/npm-prj/contracts/USDT.sol": {
+      "lastModificationDate": 1641743290864,
+      "contentHash": "e0122a07e3a36b4fe124d6e010987af9",
+      "sourceName": "contracts/USDT.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./tokens/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "USDT"
+      ]
     }
   }
 }

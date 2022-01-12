@@ -1,0 +1,11 @@
+package com.dpisarenko.minimalcryptoexchange.logic.usdt;
+
+import org.web3j.tx.gas.StaticGasProvider;
+
+import java.math.BigInteger;
+
+public class TestGasProvider extends StaticGasProvider {
+    public TestGasProvider(BigInteger gasPrice, BigInteger gasLimit) {
+        super(gasPrice, gasLimit);
+    }
+}
