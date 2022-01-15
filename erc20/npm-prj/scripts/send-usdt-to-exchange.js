@@ -12,7 +12,7 @@ async function main() {
     await usdt.approve(usdtSender, amount + gas);
     console.log("Done");
     console.log("Sending USDT...");
-    await usdt.transferFrom(usdtSender, exchange, amount);
+    await usdt.transferFrom(usdtSender, exchange, amount, { gasLimit: gas });
     console.log("Done");
 }
 
