@@ -2,7 +2,7 @@ async function main() {
     // TODO: Load the USDT contract by address
     
     const USDT = await ethers.getContractFactory("USDT");
-    const usdt = await MyContract.attach(
+    const usdt = await USDT.attach(
   "0xB816192c15160a2C1B4D032CDd7B1009583b21AF"
     );
     const amount = 350;
