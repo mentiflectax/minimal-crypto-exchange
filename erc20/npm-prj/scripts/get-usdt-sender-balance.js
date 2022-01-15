@@ -3,17 +3,12 @@ async function main() {
     const usdt = await USDT.attach(
   "0xB816192c15160a2C1B4D032CDd7B1009583b21AF"
     );
-    const amount = 350;
-    const gas = 100000;
-    const exchange = "0x190FD61ED8fE0067f0f09EA992C1BF96209bab66";
     const usdtSender = "0xDd1e8cC92AF9748193459ADDF910E1b96E88154D";
 
-    console.log("Approving the transfer...");
-    await usdt.approve(usdtSender, amount + gas);
+    console.log("Getting balance of the USDT sender...");
+    const balance = await.balanceOf(usdtSender);
     console.log("Done");
-    console.log("Sending USDT...");
-    await usdt.transferFrom(usdtSender, exchange, amount);
-    console.log("Done");
+    console.log("Balance: ", balance);
 }
 
 main()
