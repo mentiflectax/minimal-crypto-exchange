@@ -130,39 +130,35 @@
     (.setVariable de "ANY_ETH_AVAILABLE" (> available-eth 0)))
   )
 
+(declare get_exchange_usdt_balance)
+
 (defn get_old_usdt_balance
   [de]
-  (let
-    [
-     eth-network-url (:eth-network-url @state)
-     eth-private-key (:eth-private-key @state)
-     usdt-contract-address (:usdt-contract-address @state)
-     eth-exchange-address (:eth-exchange-address @state)
-     lc-input (-> (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput)
-                  (.withEthNetworkUrl eth-network-url)
-                  (.withPrivateKey eth-private-key)
-                  (.withUsdtContractAddress usdt-contract-address))
-     lc-fn (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract)
-     usdt-contract (.apply lc-fn lc-input)
-     balance-of-response (.balanceOf usdt-contract eth-exchange-address)
-     usdt-balance-big-integer (.send balance-of-response)
-     usdt-balance-long (.longValue usdt-balance-big-integer)
-     ]
-    (log-info
-      (str "get_old_usdt_balance: "
-           "eth-network-url: "
-           eth-network-url
-           ","
-           "usdt-contract: "
-           usdt-contract
-
-           )
-      )
-    (.setVariable de "OLD_USDT_BALANCE" usdt-balance-long)
-    ))
+  (.setVariable de "OLD_USDT_BALANCE" (get_exchange_usdt_balance)))
 
 ; Camunda stuff (end)
 ;; Low-level functions (start)
+(defn get_exchange_usdt_balance
+  []
+  (let [eth-network-url (:eth-network-url @state)
+        eth-private-key (:eth-private-key @state)
+        usdt-contract-address (:usdt-contract-address @state)
+        eth-exchange-address (:eth-exchange-address @state)
+        lc-input (-> (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput)
+                     (.withEthNetworkUrl eth-network-url)
+                     (.withPrivateKey eth-private-key)
+                     (.withUsdtContractAddress usdt-contract-address))
+        lc-fn (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract)
+        usdt-contract (.apply lc-fn lc-input)
+        balance-of-response (.balanceOf usdt-contract eth-exchange-address)
+        usdt-balance-big-integer (.send balance-of-response)
+        usdt-balance-long (.longValue usdt-balance-big-integer)
+        ]
+    usdt-balance-long
+    )
+  )
+
+
 (defn create-btc-tx
   [tx-id amount]
   (let []
