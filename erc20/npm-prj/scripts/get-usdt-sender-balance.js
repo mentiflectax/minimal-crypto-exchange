@@ -6,7 +6,7 @@ async function main() {
     const usdtSender = "0xDd1e8cC92AF9748193459ADDF910E1b96E88154D";
 
     console.log("Getting balance of the USDT sender...");
-    const balance = await.balanceOf(usdtSender);
+    const balance = await usdt.balanceOf(usdtSender);
     console.log("Done");
     console.log("Balance: ", balance);
 }
