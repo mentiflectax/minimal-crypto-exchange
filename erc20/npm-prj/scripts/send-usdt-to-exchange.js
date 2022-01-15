@@ -4,7 +4,7 @@ async function main() {
   "0xB816192c15160a2C1B4D032CDd7B1009583b21AF"
     );
     const amount = 350;
-    const gas = 100000000;
+    const gas = 10000000;
     const exchange = "0x190FD61ED8fE0067f0f09EA992C1BF96209bab66";
     const usdtSender = "0xDd1e8cC92AF9748193459ADDF910E1b96E88154D";
 
