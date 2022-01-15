@@ -17,11 +17,11 @@
 
 (defonce state
          (atom {
-                :eth-private-key nil
-                :eth-network-url  nil
+                :eth-private-key       nil
+                :eth-network-url       nil
                 :usdt-contract-address nil
-                :eth-exchange-address nil
-                :txs    []
+                :eth-exchange-address  nil
+                :txs                   []
                 }))
 
 (defn init
@@ -134,9 +134,16 @@
   [de]
   (let
     [
+     eth-network-url (:eth-network-url @state)
 
      ]
-    (log-info "get_old_usdt_balance")
+    (log-info
+      (str "get_old_usdt_balance: "
+           "eth-network-url: "
+           eth-network-url
+
+           )
+      )
     (.setVariable de "OLD_USDT_BALANCE" 0)
     ))
 
