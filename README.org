@@ -25,11 +25,16 @@ See [[https://dpisarenko.com/mce/en/how-to-start/][this tutorial]].
 
 *** USDT Sender
 
- * Password: ~only-mouse-in-a-mouse-trap-is-cheap~
- * Can be created using ~eth/create-account-usdt-sender.sh~.
- 
+ * Address: ~0xDd1e8cC92AF9748193459ADDF910E1b96E88154D~
+ * Private key: ~620a589aa99ef4944cfd670503959b47f78d1b03d625bc6adf978736745bf30d~
+ * Password: ~only-cheese-in-a-mouse-trap-is-cheap~
+
 ** Miscellaneous
 
+*** How to generate ETH addresses for the testnet
+
+Use https://vanity-eth.tk    
+   
 *** How to use Camunda
 
 **** Step 1: Login
