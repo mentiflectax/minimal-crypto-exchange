@@ -15,6 +15,7 @@ import clojure.java.api.Clojure;
 import clojure.lang.IFn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -26,13 +27,29 @@ import static com.dpisarenko.minimalcryptoexchange.clj.ClojureService.MAIN_CLOJU
 public class ClojureRepl {
     private final Logger logger = LoggerFactory.getLogger("CLOJURE");
 
+    @Value("${networks.eth.url}")
+    String ethNetworkUrl;
+
+    @Value("${accounts.eth.usdt.contract-address}")
+    String usdtContractAddress;
+
+    @Value("${accounts.eth.exchange.address}")
+    String exchangeAddress;
+
+    @Value("${accounts.eth.exchange.private-key}")
+    String privateKey;
+
     @PostConstruct
     public void init() {
         final IFn require = Clojure.var("clojure.core", "require");
         require.invoke(Clojure.read(MAIN_CLOJURE_NAMESPACE));
 
         Clojure.var(MAIN_CLOJURE_NAMESPACE, "init")
-                .invoke(logger);
+                .invoke(logger,
+                        ethNetworkUrl,
+                        usdtContractAddress,
+                        exchangeAddress,
+                        privateKey);
 
         Clojure.var("clojure.core.server", "start-server").invoke(
                 Clojure.read("{:port 5555 :name spring-repl :accept clojure.core.server/repl}")

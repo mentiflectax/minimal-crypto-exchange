@@ -28,10 +28,21 @@
                 }))
 
 (defn init
-  [logger]
+  [logger
+   eth-network-url
+   usdt-contract-address
+   eth-exchange-address
+   eth-private-key
+   ]
   (let [cur-time (now)]
     (defonce logger logger)
-    (swap! state assoc :start-time cur-time)
+    (swap! state assoc
+           :start-time cur-time
+           :eth-private-key eth-private-key
+           :eth-network-url eth-network-url
+           :usdt-contract-address usdt-contract-address
+           :eth-exchange-address eth-exchange-address
+           )
     (log-info "Clojure subsystem started.")
     ))
 
