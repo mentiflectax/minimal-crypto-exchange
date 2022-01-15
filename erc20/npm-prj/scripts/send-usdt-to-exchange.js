@@ -10,10 +10,10 @@ async function main() {
     const usdtSender = "0xDd1e8cC92AF9748193459ADDF910E1b96E88154D";
 
     console.log("Approving the transfer...");
-    usdt.approve(usdtSender, amount);
+    await usdt.approve(usdtSender, amount);
     console.log("Done");
     console.log("Sending USDT...");
-    usdt.transferFrom(usdtSender, exchange, amount);
+    await usdt.transferFrom(usdtSender, exchange, amount);
     console.log("Done");
 }
 
