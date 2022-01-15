@@ -135,12 +135,23 @@
   (let
     [
      eth-network-url (:eth-network-url @state)
+     eth-private-key (:eth-private-key @state)
+     usdt-contract-address (:usdt-contract-address @state)
+     lc-input (-> (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput)
+                  (.withEthNetworkUrl eth-network-url)
+                  (.withPrivateKey eth-private-key)
+                  (.withUsdtContractAddress usdt-contract-address))
+     lc-fn (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract)
+     usdt-contract (.apply lc-fn lc-input)
 
      ]
     (log-info
       (str "get_old_usdt_balance: "
            "eth-network-url: "
            eth-network-url
+           ","
+           "usdt-contract: "
+           usdt-contract
 
            )
       )
