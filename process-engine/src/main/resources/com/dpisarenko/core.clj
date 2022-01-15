@@ -136,6 +136,7 @@
     [
 
      ]
+    (log-info "get_old_usdt_balance")
     (.setVariable de "OLD_USDT_BALANCE" 0)
     ))
 
