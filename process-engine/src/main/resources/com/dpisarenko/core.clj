@@ -17,13 +17,10 @@
 
 (defonce state
          (atom {
-                :config {
-                         ; TODO: Set these config data in Java
-                         :eth-private-key nil
-                         :eth-network-url  nil
-                         :usdt-contract-address nil
-                         :eth-exchange-address nil
-                         }
+                :eth-private-key nil
+                :eth-network-url  nil
+                :usdt-contract-address nil
+                :eth-exchange-address nil
                 :txs    []
                 }))
 
@@ -136,7 +133,9 @@
 (defn get_old_usdt_balance
   [de]
   (let
-    []
+    [
+
+     ]
     (.setVariable de "OLD_USDT_BALANCE" 0)
     ))
 
