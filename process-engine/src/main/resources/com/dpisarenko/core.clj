@@ -17,7 +17,14 @@
 
 (defonce state
          (atom {
-                :txs []
+                :config {
+                         ; TODO: Set these config data in Java
+                         :eth-private-key nil
+                         :eth-network-url  nil
+                         :usdt-contract-address nil
+                         :eth-exchange-address nil
+                         }
+                :txs    []
                 }))
 
 (defn init
@@ -113,7 +120,14 @@
   [de]
   (let [available-eth (.getVariable de "EXCHANGE_ACCOUNT_BALANCE_WEI")]
     (.setVariable de "ANY_ETH_AVAILABLE" (> available-eth 0)))
-)
+  )
+
+(defn get_old_usdt_balance
+  [de]
+  (let
+    []
+    (.setVariable de "OLD_USDT_BALANCE" 0)
+    ))
 
 ; Camunda stuff (end)
 ;; Low-level functions (start)
