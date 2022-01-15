@@ -23,6 +23,11 @@ See [[https://dpisarenko.com/mce/en/how-to-start/][this tutorial]].
  * Private key: ~b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e~
  * Password: ~a-turkey-is-a-chicken-designed-by-a-committee~
 
+*** USDT Sender
+
+ * Password: ~only-mouse-in-a-mouse-trap-is-cheap~
+ * Can be created using ~eth/create-account-usdt-sender.sh~.
+ 
 ** Miscellaneous
 
 *** How to use Camunda
