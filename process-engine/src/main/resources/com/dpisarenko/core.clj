@@ -136,6 +136,10 @@
   [de]
   (.setVariable de "OLD_USDT_BALANCE" (get_exchange_usdt_balance)))
 
+(defn get_new_usdt_balance
+  [de]
+  (.setVariable de "NEW_USDT_BALANCE" (get_exchange_usdt_balance)))
+
 ; Camunda stuff (end)
 ;; Low-level functions (start)
 (defn get_exchange_usdt_balance
