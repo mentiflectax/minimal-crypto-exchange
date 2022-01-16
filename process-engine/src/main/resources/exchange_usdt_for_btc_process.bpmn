@@ -6,7 +6,7 @@
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_0d8y4ai" sourceRef="start" targetRef="get_old_usdt_balance" />
     <bpmn:sequenceFlow id="Flow_1yr7q5b" sourceRef="get_old_usdt_balance" targetRef="transfer_usdt_to_exchange" />
-    <bpmn:sequenceFlow id="Flow_0qja3gu" sourceRef="transfer_usdt_to_exchange" targetRef="get_new_usdt_balance" />
+    <bpmn:sequenceFlow id="Flow_0qja3gu" sourceRef="transfer_usdt_to_exchange" targetRef="Activity_0s2vb90" />
     <bpmn:sequenceFlow id="Flow_0tk0f1f" sourceRef="get_new_usdt_balance" targetRef="wait" />
     <bpmn:endEvent id="end" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_0dmodsa</bpmn:incoming>
@@ -35,8 +35,13 @@
           <camunda:inputParameter name="cljfn">get_new_usdt_balance</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0qja3gu</bpmn:incoming>
+      <bpmn:incoming>Flow_0k12jvc</bpmn:incoming>
       <bpmn:outgoing>Flow_0tk0f1f</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0k12jvc" sourceRef="Activity_0s2vb90" targetRef="get_new_usdt_balance" />
+    <bpmn:serviceTask id="Activity_0s2vb90" name="Check whether or not a Ethereum transaction is there" camunda:asyncBefore="true" camunda:delegateExpression="${EthTxExists}">
+      <bpmn:incoming>Flow_0qja3gu</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k12jvc</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:group id="Group_1ppyhkb" categoryValueRef="CategoryValue_19clak7" />
   </bpmn:process>
@@ -45,48 +50,55 @@
   </bpmn:category>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_usdt_for_btc_process">
-      <bpmndi:BPMNEdge id="Flow_0d8y4ai_di" bpmnElement="Flow_0d8y4ai">
-        <di:waypoint x="215" y="177" />
-        <di:waypoint x="270" y="177" />
+      <bpmndi:BPMNEdge id="Flow_0dmodsa_di" bpmnElement="Flow_0dmodsa">
+        <di:waypoint x="1020" y="177" />
+        <di:waypoint x="1082" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tk0f1f_di" bpmnElement="Flow_0tk0f1f">
+        <di:waypoint x="860" y="177" />
+        <di:waypoint x="920" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qja3gu_di" bpmnElement="Flow_0qja3gu">
+        <di:waypoint x="530" y="177" />
+        <di:waypoint x="580" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1yr7q5b_di" bpmnElement="Flow_1yr7q5b">
         <di:waypoint x="370" y="177" />
         <di:waypoint x="430" y="177" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0qja3gu_di" bpmnElement="Flow_0qja3gu">
-        <di:waypoint x="530" y="177" />
-        <di:waypoint x="590" y="177" />
+      <bpmndi:BPMNEdge id="Flow_0d8y4ai_di" bpmnElement="Flow_0d8y4ai">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0tk0f1f_di" bpmnElement="Flow_0tk0f1f">
-        <di:waypoint x="690" y="177" />
-        <di:waypoint x="750" y="177" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0dmodsa_di" bpmnElement="Flow_0dmodsa">
-        <di:waypoint x="850" y="177" />
-        <di:waypoint x="912" y="177" />
+      <bpmndi:BPMNEdge id="Flow_0k12jvc_di" bpmnElement="Flow_0k12jvc">
+        <di:waypoint x="680" y="177" />
+        <di:waypoint x="760" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
         <dc:Bounds x="179" y="159" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0v8mekg_di" bpmnElement="end">
-        <dc:Bounds x="912" y="159" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0kpsja5_di" bpmnElement="transfer_usdt_to_exchange">
         <dc:Bounds x="430" y="137" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0mvk2mp_di" bpmnElement="wait">
-        <dc:Bounds x="750" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1pddvqv_di" bpmnElement="get_old_usdt_balance">
         <dc:Bounds x="270" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0v8mekg_di" bpmnElement="end">
+        <dc:Bounds x="1082" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mvk2mp_di" bpmnElement="wait">
+        <dc:Bounds x="920" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_01youmz_di" bpmnElement="get_new_usdt_balance">
-        <dc:Bounds x="590" y="137" width="100" height="80" />
+        <dc:Bounds x="760" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0s1in7a_di" bpmnElement="Activity_0s2vb90">
+        <dc:Bounds x="580" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Group_1ppyhkb_di" bpmnElement="Group_1ppyhkb">
-        <dc:Bounds x="240" y="80" width="640" height="170" />
+        <dc:Bounds x="240" y="80" width="810" height="170" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="519" y="87" width="82" height="27" />
+          <dc:Bounds x="604" y="87" width="82" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
