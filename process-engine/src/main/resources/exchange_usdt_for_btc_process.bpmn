@@ -37,7 +37,7 @@
       <bpmn:outgoing>Flow_0dswpf2</bpmn:outgoing>
       <bpmn:outgoing>Flow_08oawd7</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_0dswpf2" name="Yes" sourceRef="has_usdt_arrived" targetRef="Activity_12q4ewc" />
+    <bpmn:sequenceFlow id="Flow_0dswpf2" name="Yes" sourceRef="has_usdt_arrived" targetRef="get_received_usdt_amount" />
     <bpmn:endEvent id="Event_0cep8lz" name="Error: USDT not arrived">
       <bpmn:incoming>Flow_00sph3e</bpmn:incoming>
     </bpmn:endEvent>
@@ -49,8 +49,8 @@
       <bpmn:incoming>Flow_08oawd7</bpmn:incoming>
       <bpmn:outgoing>Flow_00sph3e</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_0kqc0jl" sourceRef="Activity_12q4ewc" targetRef="wait" />
-    <bpmn:serviceTask id="Activity_12q4ewc" name="Get received USDT amount" camunda:asyncBefore="true">
+    <bpmn:sequenceFlow id="Flow_0kqc0jl" sourceRef="get_received_usdt_amount" targetRef="wait" />
+    <bpmn:serviceTask id="get_received_usdt_amount" name="Get received USDT amount" camunda:asyncBefore="true" camunda:delegateExpression="${GetReceivedUsdt}">
       <bpmn:incoming>Flow_0dswpf2</bpmn:incoming>
       <bpmn:outgoing>Flow_0kqc0jl</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -133,7 +133,7 @@
       <bpmndi:BPMNShape id="Activity_0mvk2mp_di" bpmnElement="wait">
         <dc:Bounds x="840" y="237" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0otvdua_di" bpmnElement="Activity_12q4ewc">
+      <bpmndi:BPMNShape id="Activity_0otvdua_di" bpmnElement="get_received_usdt_amount">
         <dc:Bounds x="690" y="237" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1bn8boy_di" bpmnElement="Association_1bn8boy">
