@@ -58,7 +58,7 @@
     <bpmn:serviceTask id="convert-usdt-amount-to-usd" name="Convert USDT amount to USD" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="clfn">convert-usdt-amount-to-usd</camunda:inputParameter>
+          <camunda:inputParameter name="cljfn">convert-usdt-amount-to-usd</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0kqc0jl</bpmn:incoming>

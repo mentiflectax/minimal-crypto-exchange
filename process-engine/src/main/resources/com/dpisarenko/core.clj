@@ -147,6 +147,10 @@
         conversion-factor (new BigInteger com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt/USD_TO_USDT_CONVERSION_FACTOR)
         usd-amount (.divide usdt-amount conversion-factor)
         ]
+    (log-info (str "convert-usdt-amount-to-usd: "
+                   usdt-amount
+
+                   ))
     (.setVariable de "USD_AMOUNT" usd-amount)))
 
 
