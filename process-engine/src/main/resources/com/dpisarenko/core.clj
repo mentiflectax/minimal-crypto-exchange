@@ -143,8 +143,8 @@
 (defn convert-usdt-amount-to-usd
   [de]
   (let [
-        usdt-amount (.getVariable de "USDT_RECEIVED")
-        conversion-factor (new BigInteger com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt/USD_TO_USDT_CONVERSION_FACTOR)
+        usdt-amount (new BigDecimal (.getVariable de "USDT_RECEIVED"))
+        conversion-factor (BigDecimal/valueOf  com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt/USD_TO_USDT_CONVERSION_FACTOR)
         usd-amount (.divide usdt-amount conversion-factor)
         ]
     (log-info (str "convert-usdt-amount-to-usd: "
