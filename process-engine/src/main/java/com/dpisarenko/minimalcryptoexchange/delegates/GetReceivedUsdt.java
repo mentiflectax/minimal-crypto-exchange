@@ -14,6 +14,7 @@ package com.dpisarenko.minimalcryptoexchange.delegates;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.CreateWeb3j;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,8 +22,11 @@ import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.request.EthFilter;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Component("GetReceivedUsdt")
@@ -63,6 +67,22 @@ public class GetReceivedUsdt implements JavaDelegate {
 
 
         final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
+
+        final Optional<TransactionReceipt> transactionReceiptOpt = web3.ethGetTransactionReceipt(incomingTxId).send().getTransactionReceipt();
+
+        if (!transactionReceiptOpt.isPresent()) {
+            throw new RuntimeException("No transaction receipt found");
+        }
+
+        final TransactionReceipt transactionReceipt = transactionReceiptOpt.get();
+
+        final List<ERC20.TransferEventResponse> transferEvents = usdtContract.getTransferEvents(transactionReceipt);
+
+        if (transferEvents.size() < 1) {
+            throw new RuntimeException("No transfer events found");
+        }
+
+        final ERC20.TransferEventResponse transferEvent = transferEvents.get(0);
 
 
         System.out.println("Test: " + usdtContract);
