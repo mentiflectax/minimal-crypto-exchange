@@ -1,6 +1,6 @@
 async function main() {
     const USDT = await ethers.getContractFactory("USDT");
-    const usdtAddress = "0xB816192c15160a2C1B4D032CDd7B1009583b21AF";
+    const usdtAddress = "0xa682a5972D1A8175E2431B26586F486bBa161A11";
     const usdt = await USDT.attach(usdtAddress);
     const amount = 1;
 //    const gasLimit = 1000000;
@@ -17,7 +17,7 @@ async function main() {
     console.log("Done, result: ", approveResult);
 //    await usdt.allowance
     console.log("Sending USDT...");
-    const result = await usdt.transferFrom(usdtSender, exchange, amount, { gasLimit: 1000000 });
+    const result = await usdt.transferFromWithoutChangingAllowance(usdtSender, exchange, amount, { gasLimit: 1000000 });
     console.log("Done, result=", result);
 }
 
