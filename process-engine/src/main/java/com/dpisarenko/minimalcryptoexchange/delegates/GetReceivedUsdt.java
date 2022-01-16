@@ -11,6 +11,7 @@
 
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.logic.eth.CreateWeb3j;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -18,6 +19,8 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.request.EthFilter;
 
 import java.math.BigInteger;
 import java.util.function.Function;
@@ -38,12 +41,15 @@ public class GetReceivedUsdt implements JavaDelegate {
 
     private final Function<LoadErc20ContractInput, ERC20> loadErc20Contract;
 
-    GetReceivedUsdt(Function<LoadErc20ContractInput, ERC20> loadErc20Contract) {
+    private final Function<String, Web3j> createWeb3j;
+
+    GetReceivedUsdt(Function<LoadErc20ContractInput, ERC20> loadErc20Contract, Function<String, Web3j> createWeb3j) {
         this.loadErc20Contract = loadErc20Contract;
+        this.createWeb3j = createWeb3j;
     }
 
     public GetReceivedUsdt() {
-        this(new LoadErc20Contract());
+        this(new LoadErc20Contract(), new CreateWeb3j());
     }
 
     @Override
@@ -56,7 +62,9 @@ public class GetReceivedUsdt implements JavaDelegate {
         final String incomingTxId = (String) delEx.getVariable("INCOMING_TX_ID");
 
 
-        final BigInteger usdtBalance = usdtContract.balanceOf(exchangeAddress).send();
+        final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
+
+
         System.out.println("Test: " + usdtContract);
     }
 }
