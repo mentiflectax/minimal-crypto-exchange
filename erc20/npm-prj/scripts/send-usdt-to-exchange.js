@@ -8,7 +8,7 @@ async function main() {
     const usdtSender = "0xDd1e8cC92AF9748193459ADDF910E1b96E88154D";
 
     console.log("Determining the ETH balance of USDT sender...");
-    const ethBalance = await usdt.provider.getBalance(usdtAddress);
+    const ethBalance = await usdt.provider.getBalance(usdtSender);
     console.log("ETH balance:", ethBalance);
     console.log("Done");
     
