@@ -47,8 +47,6 @@ public class EthTxExists implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delEx) throws Exception {
         final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
-        // TODO: Delete this class
-        logger.debug("Test");
         final String incomingTxId = (String) delEx.getVariable("INCOMING_TX_ID");
 
         final EthGetTransactionReceipt receipt = web3.ethGetTransactionReceipt(incomingTxId).send();

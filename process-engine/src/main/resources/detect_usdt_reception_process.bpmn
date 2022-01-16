@@ -10,7 +10,7 @@
       <bpmn:outgoing>Flow_1t2h7qc</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:endEvent id="Event_09ma4yj" name="BTC received" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_0qe8pdm</bpmn:incoming>
+      <bpmn:incoming>Flow_1bq6vwf</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:intermediateCatchEvent id="Event_0bcgb3c" name="Wait" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_1mf3n7m</bpmn:incoming>
@@ -61,29 +61,19 @@
       <bpmn:incoming>Flow_04mx673</bpmn:incoming>
       <bpmn:outgoing>Flow_1ivbkvj</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_15p0sdl" name="Get received Satoshis" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="cljfn">get_received_satoshis</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1bq6vwf</bpmn:incoming>
-      <bpmn:outgoing>Flow_0qe8pdm</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1edo9li" sourceRef="Event_1q11iys" targetRef="Activity_0wbrkha" />
     <bpmn:sequenceFlow id="Flow_0ntaerm" sourceRef="check_whether_usdt_arrived" targetRef="Gateway_0n86439" />
     <bpmn:sequenceFlow id="Flow_1ohe45y" name="Yes" sourceRef="Gateway_0n86439" targetRef="Gateway_0ykjqi0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${USDT_ARRIVED == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_1t2h7qc" name="No" sourceRef="Gateway_0n86439" targetRef="Activity_1hwztd7" />
-    <bpmn:sequenceFlow id="Flow_0qe8pdm" sourceRef="Activity_15p0sdl" targetRef="Event_09ma4yj" />
     <bpmn:sequenceFlow id="Flow_1mf3n7m" name="No" sourceRef="Gateway_0decbtu" targetRef="Event_0bcgb3c" />
     <bpmn:sequenceFlow id="Flow_00hjold" sourceRef="Event_0bcgb3c" targetRef="check_whether_usdt_arrived" />
     <bpmn:sequenceFlow id="Flow_1ivbkvj" sourceRef="Activity_0631116" targetRef="Gateway_0decbtu" />
     <bpmn:sequenceFlow id="Flow_07sjlyr" name="Yes" sourceRef="Gateway_0decbtu" targetRef="Gateway_0ykjqi0">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${MAX_NUMBER_OF_WAITING_CYCLES_EXCEEDED == true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_1bq6vwf" sourceRef="Gateway_0ykjqi0" targetRef="Activity_15p0sdl" />
+    <bpmn:sequenceFlow id="Flow_1bq6vwf" sourceRef="Gateway_0ykjqi0" targetRef="Event_09ma4yj" />
     <bpmn:sequenceFlow id="Flow_02c4uti" sourceRef="Activity_0wbrkha" targetRef="check_whether_usdt_arrived" />
     <bpmn:sequenceFlow id="Flow_04mx673" sourceRef="Activity_1hwztd7" targetRef="Activity_0631116" />
   </bpmn:process>
@@ -110,10 +100,6 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="772" y="183" width="15" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0qe8pdm_di" bpmnElement="Flow_0qe8pdm">
-        <di:waypoint x="1200" y="140" />
-        <di:waypoint x="1262" y="140" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1mf3n7m_di" bpmnElement="Flow_1mf3n7m">
         <di:waypoint x="750" y="575" />
@@ -142,7 +128,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1bq6vwf_di" bpmnElement="Flow_1bq6vwf">
         <di:waypoint x="1065" y="140" />
-        <di:waypoint x="1100" y="140" />
+        <di:waypoint x="1262" y="140" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02c4uti_di" bpmnElement="Flow_02c4uti">
         <di:waypoint x="370" y="140" />
@@ -193,9 +179,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0631116_di" bpmnElement="Activity_0631116">
         <dc:Bounds x="700" y="390" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_15p0sdl_di" bpmnElement="Activity_15p0sdl">
-        <dc:Bounds x="1100" y="100" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
