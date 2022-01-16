@@ -214,8 +214,8 @@
       ]
     },
     "/Users/dp118m/dev/misc/minimal-crypto-exchange/erc20/npm-prj/contracts/USDT.sol": {
-      "lastModificationDate": 1642259328266,
-      "contentHash": "cbf0e89cfd774f0a3f18be2d1cc8fff4",
+      "lastModificationDate": 1642350276694,
+      "contentHash": "ea65395d923ea8e31c188cc10c81f0b0",
       "sourceName": "contracts/USDT.sol",
       "solcConfig": {
         "version": "0.8.4",
