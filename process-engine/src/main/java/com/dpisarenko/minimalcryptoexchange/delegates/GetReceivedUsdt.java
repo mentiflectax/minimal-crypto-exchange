@@ -14,14 +14,12 @@ package com.dpisarenko.minimalcryptoexchange.delegates;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.CreateWeb3j;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput;
-import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.math.BigInteger;
@@ -84,7 +82,8 @@ public class GetReceivedUsdt implements JavaDelegate {
 
         final ERC20.TransferEventResponse transferEvent = transferEvents.get(0);
 
+        final BigInteger usdtReceived = transferEvent._value;
 
-        System.out.println("Test: " + usdtContract);
+        delEx.setVariable("USDT_RECEIVED", usdtReceived);
     }
 }
