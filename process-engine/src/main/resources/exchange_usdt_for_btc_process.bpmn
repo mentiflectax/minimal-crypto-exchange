@@ -4,102 +4,63 @@
     <bpmn:startEvent id="start" camunda:asyncBefore="true">
       <bpmn:outgoing>Flow_0d8y4ai</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0d8y4ai" sourceRef="start" targetRef="get_old_usdt_balance" />
-    <bpmn:sequenceFlow id="Flow_1yr7q5b" sourceRef="get_old_usdt_balance" targetRef="transfer_usdt_to_exchange" />
-    <bpmn:sequenceFlow id="Flow_0qja3gu" sourceRef="transfer_usdt_to_exchange" targetRef="Activity_0s2vb90" />
-    <bpmn:sequenceFlow id="Flow_0tk0f1f" sourceRef="get_new_usdt_balance" targetRef="wait" />
+    <bpmn:sequenceFlow id="Flow_0d8y4ai" sourceRef="start" targetRef="transfer_usdt_to_exchange" />
+    <bpmn:sequenceFlow id="Flow_0qja3gu" sourceRef="transfer_usdt_to_exchange" targetRef="wait_for_usdt_to_arrive" />
     <bpmn:endEvent id="end" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_0dmodsa</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0dmodsa" sourceRef="wait" targetRef="end" />
     <bpmn:userTask id="transfer_usdt_to_exchange" name="Transfer USDT to the exchange outside of the exchange" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_1yr7q5b</bpmn:incoming>
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="INCOMING_TX_ID" label="ID of the incoming transaction (USDT sender to the exchange)" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0d8y4ai</bpmn:incoming>
       <bpmn:outgoing>Flow_0qja3gu</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:userTask id="wait" name="Wait" camunda:asyncBefore="true">
-      <bpmn:incoming>Flow_0tk0f1f</bpmn:incoming>
+      <bpmn:incoming>Flow_10b2ylu</bpmn:incoming>
       <bpmn:outgoing>Flow_0dmodsa</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="get_old_usdt_balance" name="Get old USDT balance" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="cljfn">get_old_usdt_balance</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0d8y4ai</bpmn:incoming>
-      <bpmn:outgoing>Flow_1yr7q5b</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="get_new_usdt_balance" name="Get new USDT balance" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="cljfn">get_new_usdt_balance</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0k12jvc</bpmn:incoming>
-      <bpmn:outgoing>Flow_0tk0f1f</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0k12jvc" sourceRef="Activity_0s2vb90" targetRef="get_new_usdt_balance" />
-    <bpmn:serviceTask id="Activity_0s2vb90" name="Check whether or not a Ethereum transaction is there" camunda:asyncBefore="true" camunda:delegateExpression="${EthTxExists}">
+    <bpmn:sequenceFlow id="Flow_10b2ylu" sourceRef="wait_for_usdt_to_arrive" targetRef="wait" />
+    <bpmn:callActivity id="wait_for_usdt_to_arrive" name="Wait for the USDT to arrive" camunda:asyncBefore="true" calledElement="detect_usdt_reception_process">
       <bpmn:incoming>Flow_0qja3gu</bpmn:incoming>
-      <bpmn:outgoing>Flow_0k12jvc</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:group id="Group_1ppyhkb" categoryValueRef="CategoryValue_19clak7" />
+      <bpmn:outgoing>Flow_10b2ylu</bpmn:outgoing>
+    </bpmn:callActivity>
   </bpmn:process>
-  <bpmn:category id="Category_17yjh5o">
-    <bpmn:categoryValue id="CategoryValue_19clak7" value="Learning to send USDT" />
-  </bpmn:category>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_usdt_for_btc_process">
       <bpmndi:BPMNEdge id="Flow_0dmodsa_di" bpmnElement="Flow_0dmodsa">
-        <di:waypoint x="1020" y="177" />
-        <di:waypoint x="1082" y="177" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0tk0f1f_di" bpmnElement="Flow_0tk0f1f">
-        <di:waypoint x="860" y="177" />
-        <di:waypoint x="920" y="177" />
+        <di:waypoint x="690" y="117" />
+        <di:waypoint x="752" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0qja3gu_di" bpmnElement="Flow_0qja3gu">
-        <di:waypoint x="530" y="177" />
-        <di:waypoint x="580" y="177" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1yr7q5b_di" bpmnElement="Flow_1yr7q5b">
-        <di:waypoint x="370" y="177" />
-        <di:waypoint x="430" y="177" />
+        <di:waypoint x="350" y="117" />
+        <di:waypoint x="410" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0d8y4ai_di" bpmnElement="Flow_0d8y4ai">
-        <di:waypoint x="215" y="177" />
-        <di:waypoint x="270" y="177" />
+        <di:waypoint x="188" y="117" />
+        <di:waypoint x="250" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0k12jvc_di" bpmnElement="Flow_0k12jvc">
-        <di:waypoint x="680" y="177" />
-        <di:waypoint x="760" y="177" />
+      <bpmndi:BPMNEdge id="Flow_10b2ylu_di" bpmnElement="Flow_10b2ylu">
+        <di:waypoint x="510" y="117" />
+        <di:waypoint x="590" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
-        <dc:Bounds x="179" y="159" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0kpsja5_di" bpmnElement="transfer_usdt_to_exchange">
-        <dc:Bounds x="430" y="137" width="100" height="80" />
+        <dc:Bounds x="250" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1pddvqv_di" bpmnElement="get_old_usdt_balance">
-        <dc:Bounds x="270" y="137" width="100" height="80" />
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="152" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0v8mekg_di" bpmnElement="end">
-        <dc:Bounds x="1082" y="159" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_1vdo658_di" bpmnElement="wait_for_usdt_to_arrive">
+        <dc:Bounds x="410" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0mvk2mp_di" bpmnElement="wait">
-        <dc:Bounds x="920" y="137" width="100" height="80" />
+        <dc:Bounds x="590" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_01youmz_di" bpmnElement="get_new_usdt_balance">
-        <dc:Bounds x="760" y="137" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0s1in7a_di" bpmnElement="Activity_0s2vb90">
-        <dc:Bounds x="580" y="137" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Group_1ppyhkb_di" bpmnElement="Group_1ppyhkb">
-        <dc:Bounds x="240" y="80" width="810" height="170" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="604" y="87" width="82" height="27" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Event_0v8mekg_di" bpmnElement="end">
+        <dc:Bounds x="752" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

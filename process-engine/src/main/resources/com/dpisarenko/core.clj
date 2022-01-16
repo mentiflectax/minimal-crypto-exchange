@@ -140,6 +140,21 @@
   [de]
   (.setVariable de "NEW_USDT_BALANCE" (get_exchange_usdt_balance)))
 
+(defn check-usdt-arrived
+  [de]
+  (let [eth-network-url (:eth-network-url @state)
+        create-web3 (new com.dpisarenko.minimalcryptoexchange.logic.eth.CreateWeb3j)
+        web3 (.apply create-web3 eth-network-url)
+        incoming-tx-id (.getVariable de "INCOMING_TX_ID")
+        get-tx-receipt-req (.ethGetTransactionReceipt web3 incoming-tx-id)
+        get-tx-receipt-response (.send get-tx-receipt-req)
+        tx-res-opt (.getTransactionReceipt() get-tx-receipt-response)
+        tx-exists (.isPresent tx-res-opt)
+        ]
+    (.setVariable de "USDT_ARRIVED" tx-exists)
+    )
+)
+
 ; Camunda stuff (end)
 ;; Low-level functions (start)
 (defn get_exchange_usdt_balance
