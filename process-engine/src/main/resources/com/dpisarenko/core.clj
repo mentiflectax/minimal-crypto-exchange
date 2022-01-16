@@ -15,6 +15,8 @@
 
 (def SATOSHI_TO_USD_CONVERSION_FACTOR 0.0004917)
 
+(def USD_TO_BTC_CONVERSION_FACTOR (BigDecimal/valueOf (/ 1. 43027.70)))
+
 (defonce state
          (atom {
                 :eth-private-key       nil
@@ -147,11 +149,15 @@
         conversion-factor (BigDecimal/valueOf  com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt/USD_TO_USDT_CONVERSION_FACTOR)
         usd-amount (.divide usdt-amount conversion-factor)
         ]
-    (log-info (str "convert-usdt-amount-to-usd: "
-                   usdt-amount
-
-                   ))
     (.setVariable de "USD_AMOUNT" usd-amount)))
+
+(defn convert-usd-to-btc
+  [de]
+  (let [
+        usd-amount (.getVariable de "USD_AMOUNT")
+        btc-amount (.multiply usd-amount USD_TO_BTC_CONVERSION_FACTOR)
+        ]
+    (.setVariable de "BTC_AMOUNT" btc-amount)))
 
 
 ; Camunda stuff (end)
