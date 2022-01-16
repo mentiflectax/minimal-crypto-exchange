@@ -12,7 +12,7 @@ contract USDT is ERC20 {
         address sender,
         address recipient,
         uint256 amount
-    ) public virtual override returns (bool) {
+    ) public returns (bool) {
         _transfer(sender, recipient, amount);
         return true;
     }
