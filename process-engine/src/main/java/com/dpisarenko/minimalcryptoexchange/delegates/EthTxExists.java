@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 
 import java.util.function.Function;
 
@@ -44,8 +45,15 @@ public class EthTxExists implements JavaDelegate {
     }
 
     @Override
-    public void execute(DelegateExecution delegateExecution) throws Exception {
+    public void execute(DelegateExecution delEx) throws Exception {
         final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
+        // TODO: Delete this class
         logger.debug("Test");
+        final String incomingTxId = (String) delEx.getVariable("INCOMING_TX_ID");
+
+        final EthGetTransactionReceipt receipt = web3.ethGetTransactionReceipt(incomingTxId).send();
+
+        delEx.setVariable("USDT_ARRIVED", receipt.getTransactionReceipt().isPresent());
+
     }
 }

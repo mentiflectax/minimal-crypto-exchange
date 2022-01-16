@@ -29,12 +29,7 @@
       <bpmn:incoming>Flow_07sjlyr</bpmn:incoming>
       <bpmn:outgoing>Flow_1bq6vwf</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="check_whether_usdt_arrived" name="Check whether or not USDT has arrived" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
-      <bpmn:extensionElements>
-        <camunda:inputOutput>
-          <camunda:inputParameter name="cljfn">check-btc-arrived</camunda:inputParameter>
-        </camunda:inputOutput>
-      </bpmn:extensionElements>
+    <bpmn:serviceTask id="check_whether_usdt_arrived" name="Check whether or not USDT has arrived" camunda:asyncBefore="true" camunda:delegateExpression="${EthTxExists}">
       <bpmn:incoming>Flow_00hjold</bpmn:incoming>
       <bpmn:incoming>Flow_02c4uti</bpmn:incoming>
       <bpmn:outgoing>Flow_0ntaerm</bpmn:outgoing>

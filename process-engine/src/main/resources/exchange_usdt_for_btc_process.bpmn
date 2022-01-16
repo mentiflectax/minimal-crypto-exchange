@@ -25,6 +25,9 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_10b2ylu" sourceRef="wait_for_usdt_to_arrive" targetRef="wait" />
     <bpmn:callActivity id="wait_for_usdt_to_arrive" name="Wait for the USDT to arrive" camunda:asyncBefore="true" calledElement="detect_usdt_reception_process">
+      <bpmn:extensionElements>
+        <camunda:in source="INCOMING_TX_ID" target="INCOMING_TX_ID" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0qja3gu</bpmn:incoming>
       <bpmn:outgoing>Flow_10b2ylu</bpmn:outgoing>
     </bpmn:callActivity>
