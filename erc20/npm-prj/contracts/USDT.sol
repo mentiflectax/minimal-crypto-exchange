@@ -8,10 +8,6 @@ contract USDT is ERC20 {
     	_mint(usdtSender, 1000000000000000000000);
     }
 
-    function getAllowance(address src, address target) returns (uint256) {
-    	return _allowances[sender][target];
-    }
-
     function transferFromWithoutChangingAllowance(
         address sender,
         address recipient,
