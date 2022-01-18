@@ -13,8 +13,8 @@
     <bpmn:userTask id="transfer_usdt_to_exchange" name="Transfer USDT to the exchange outside of the exchange" camunda:asyncBefore="true">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="INCOMING_TX_ID" label="ID of the incoming transaction (USDT sender to the exchange)" type="string" />
-          <camunda:formField id="TARGET_BTC_ADDRESS" label="Target BTC address" type="string" />
+          <camunda:formField id="INCOMING_TX_ID" label="ID of the incoming transaction (USDT sender to the exchange)" type="string" defaultValue="0x95bb61356aa4088d362dc8b5fea94db4cfef129c959134fcc543e8243b9f4769" />
+          <camunda:formField id="TARGET_BTC_ADDRESS" label="Target BTC address" type="string" defaultValue="2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0d8y4ai</bpmn:incoming>
