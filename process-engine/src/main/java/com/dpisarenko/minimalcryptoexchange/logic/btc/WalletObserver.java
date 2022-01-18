@@ -13,9 +13,14 @@ package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.bitcoinj.core.Address;
+import org.bitcoinj.core.Coin;
+import org.bitcoinj.core.InsufficientMoneyException;
+import org.bitcoinj.core.Transaction;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
+import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +29,13 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.math.BigDecimal;
 
 @Component
 public class WalletObserver {
+    final static long ONE_MILLION = 1000000L;
+    final static BigDecimal SATOSHIS_IN_BITCOIN = BigDecimal.valueOf(100L * ONE_MILLION);
+
     @Autowired
     ClojureService clojureService;
 
@@ -34,6 +43,8 @@ public class WalletObserver {
     String exchangeAddress;
 
     private final Logger logger;
+    WalletAppKit kit;
+    private LocalTestNetParams netParams;
 
     WalletObserver(Logger logger) {
         this.logger = logger;
@@ -46,9 +57,9 @@ public class WalletObserver {
     @PostConstruct
     public void init() {
         BriefLogFormatter.init();
-        final LocalTestNetParams netParams = new LocalTestNetParams()
+        netParams = new LocalTestNetParams()
                 .withPort(18444);
-        final WalletAppKit kit = createWalletAppKit(netParams);
+        kit = createWalletAppKit(netParams);
         kit.connectToLocalHost();
         startAsync(kit);
         awaitRunning(kit);
@@ -72,5 +83,24 @@ public class WalletObserver {
 
     WalletAppKit createWalletAppKit(LocalTestNetParams netParams) {
         return new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
+    }
+
+    public void sendBtc(BigDecimal btcAmount, String targetBtcAddress) {
+        final BigDecimal satoshisToSend = btcAmount.multiply(SATOSHIS_IN_BITCOIN);
+        final Coin coinToSend = Coin.valueOf(satoshisToSend.longValue());
+        final Address targetAddress = Address.fromString(netParams, targetBtcAddress);
+
+        final Transaction tx = new Transaction(netParams);
+        tx.addInput(kit.wallet().getUnspents().get(0));
+        tx.addOutput(coinToSend, targetAddress);
+
+        final SendRequest request = SendRequest.forTx(tx);
+        request.feePerKb = Coin.valueOf(1000);
+
+        try {
+            kit.wallet().sendCoins(request);
+        } catch (InsufficientMoneyException exception) {
+            throw new BpmnError("INSUFFICIENT_FUNDS");
+        }
     }
 }

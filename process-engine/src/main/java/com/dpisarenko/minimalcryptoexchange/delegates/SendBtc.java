@@ -11,14 +11,26 @@
 
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.logic.btc.WalletObserver;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 @Component("SendBtc")
 public class SendBtc implements JavaDelegate {
+    @Autowired
+    WalletObserver walletObserver;
+
     @Override
     public void execute(final DelegateExecution delEx) throws Exception {
+        final BigDecimal btcAmount = (BigDecimal) delEx.getVariable("BTC_AMOUNT");
+        final String targetBtcAddress = (String) delEx.getVariable("TARGET_BTC_ADDRESS");
+        walletObserver.sendBtc(btcAmount, targetBtcAddress);
+        System.out.println("Test");
+        // walletObserver.
 
     }
 }
