@@ -73,12 +73,6 @@ public class WalletObserver {
         awaitRunning(kit);
         final Wallet wallet = kit.wallet();
 
-        byte[] privBytes = Hex.decode("ef235aacf90d9f4aadd8c92e4b2562e1d9eb97f0df9ba3b508258739cb013db2");
-        byte[] appendZeroByte = ArrayUtils.addAll(new byte[1], privBytes);
-        final ECKey ecKey = ECKey.fromPrivate(new BigInteger(appendZeroByte), false);
-
-        wallet.importKey(ecKey);
-
         wallet.addWatchedAddress(Address.fromString(netParams, exchangeAddress));
         wallet.addCoinsReceivedEventListener(createBtcReceivedListener(netParams));
     }

@@ -13,7 +13,7 @@
     <bpmn:userTask id="transfer_usdt_to_exchange" name="Transfer USDT to the exchange outside of the exchange" camunda:asyncBefore="true">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="INCOMING_TX_ID" label="ID of the incoming transaction (USDT sender to the exchange)" type="string" defaultValue="0x95bb61356aa4088d362dc8b5fea94db4cfef129c959134fcc543e8243b9f4769" />
+          <camunda:formField id="INCOMING_TX_ID" label="ID of the incoming transaction (USDT sender to the exchange)" type="string" defaultValue="0x783bfb58b746f89fc72a7eac7ee49d22e8dd3741892f9316baffd8fec9d58c49" />
           <camunda:formField id="TARGET_BTC_ADDRESS" label="Target BTC address" type="string" defaultValue="2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs" />
         </camunda:formData>
       </bpmn:extensionElements>
@@ -87,9 +87,10 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_usdt_for_btc_process">
-      <bpmndi:BPMNShape id="TextAnnotation_15eobm9_di" bpmnElement="TextAnnotation_15eobm9">
-        <dc:Bounds x="1330" y="80" width="100" height="40" />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1rc47v1_di" bpmnElement="Flow_1rc47v1">
+        <di:waypoint x="1260" y="277" />
+        <di:waypoint x="1330" y="277" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0fgc439_di" bpmnElement="Flow_0fgc439">
         <di:waypoint x="1110" y="277" />
         <di:waypoint x="1160" y="277" />
@@ -137,15 +138,17 @@
         <di:waypoint x="188" y="277" />
         <di:waypoint x="250" y="277" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1rc47v1_di" bpmnElement="Flow_1rc47v1">
-        <di:waypoint x="1260" y="277" />
-        <di:waypoint x="1330" y="277" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
         <dc:Bounds x="152" y="259" width="36" height="36" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0v8mekg_di" bpmnElement="end">
+        <dc:Bounds x="1542" y="259" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0kpsja5_di" bpmnElement="transfer_usdt_to_exchange">
         <dc:Bounds x="250" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mvk2mp_di" bpmnElement="wait">
+        <dc:Bounds x="1330" y="237" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1vdo658_di" bpmnElement="wait_for_usdt_to_arrive">
         <dc:Bounds x="410" y="237" width="100" height="80" />
@@ -174,14 +177,11 @@
       <bpmndi:BPMNShape id="Activity_0ujdvfg_di" bpmnElement="convert-usd-to-btc">
         <dc:Bounds x="1010" y="237" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0v8mekg_di" bpmnElement="end">
-        <dc:Bounds x="1542" y="259" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0mvk2mp_di" bpmnElement="wait">
-        <dc:Bounds x="1330" y="237" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0oj07z9_di" bpmnElement="send_btc">
         <dc:Bounds x="1160" y="237" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_15eobm9_di" bpmnElement="TextAnnotation_15eobm9">
+        <dc:Bounds x="1330" y="80" width="100" height="40" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1bn8boy_di" bpmnElement="Association_1bn8boy">
         <di:waypoint x="1380" y="237" />
