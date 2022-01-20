@@ -102,6 +102,7 @@ public class WalletObserver {
         final ECKey ecKey = ECKey.fromPrivate(new BigInteger(appendZeroByte), false);
 
         final Wallet sourceWallet = Wallet.fromKeys(netParams, Collections.singletonList(ecKey));
+        sourceWallet.upgradeToDeterministic(null);
 
         final BigDecimal satoshisToSend = btcAmount.multiply(SATOSHIS_IN_BITCOIN);
         final Coin coinToSend = Coin.valueOf(satoshisToSend.longValue());
