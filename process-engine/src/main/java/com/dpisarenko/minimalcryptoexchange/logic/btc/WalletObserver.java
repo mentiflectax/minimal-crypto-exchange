@@ -16,8 +16,10 @@ import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
+import org.bitcoinj.wallet.Protos;
 import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
 import org.camunda.bpm.engine.delegate.BpmnError;
@@ -82,7 +84,7 @@ public class WalletObserver {
     }
 
     WalletAppKit createWalletAppKit(LocalTestNetParams netParams) {
-        return new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
+        return loadPrivateKey1(new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet"));
     }
 
     public void sendBtc(BigDecimal btcAmount, String targetBtcAddress) {
@@ -102,5 +104,11 @@ public class WalletObserver {
         } catch (InsufficientMoneyException exception) {
             throw new BpmnError("INSUFFICIENT_FUNDS");
         }
+    }
+
+    WalletAppKit loadPrivateKey1(final WalletAppKit wak) {
+        // final DeterministicKey dk = Protos.DeterministicKey.Builder
+        // wak.restoreWalletFromKey(dk);
+        return wak;
     }
 }
