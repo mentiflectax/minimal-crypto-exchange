@@ -134,14 +134,7 @@
 
 (declare get_exchange_usdt_balance)
 
-(defn get_old_usdt_balance
-  [de]
-  (.setVariable de "OLD_USDT_BALANCE" (get_exchange_usdt_balance)))
-
-(defn get_new_usdt_balance
-  [de]
-  (.setVariable de "NEW_USDT_BALANCE" (get_exchange_usdt_balance)))
-
+; TODO: Test this
 (defn convert-usdt-amount-to-usd
   [de]
   (let [
@@ -151,6 +144,7 @@
         ]
     (.setVariable de "USD_AMOUNT" usd-amount)))
 
+; TODO: Test this
 (defn convert-usd-to-btc
   [de]
   (let [
