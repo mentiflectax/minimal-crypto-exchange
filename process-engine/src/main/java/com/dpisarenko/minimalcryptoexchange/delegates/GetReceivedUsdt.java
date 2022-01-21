@@ -63,12 +63,12 @@ public class GetReceivedUsdt implements JavaDelegate {
                         .withEthNetworkUrl(ethNetworkUrl));
         final String incomingTxId = (String) delEx.getVariable("INCOMING_TX_ID");
 
-
         final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
 
         final Optional<TransactionReceipt> transactionReceiptOpt = web3.ethGetTransactionReceipt(incomingTxId).send().getTransactionReceipt();
 
         if (!transactionReceiptOpt.isPresent()) {
+            // TODO: Test this
             throw new RuntimeException("No transaction receipt found");
         }
 
@@ -77,6 +77,7 @@ public class GetReceivedUsdt implements JavaDelegate {
         final List<ERC20.TransferEventResponse> transferEvents = usdtContract.getTransferEvents(transactionReceipt);
 
         if (transferEvents.size() < 1) {
+            // TODO: Test this
             throw new RuntimeException("No transfer events found");
         }
 
@@ -85,5 +86,6 @@ public class GetReceivedUsdt implements JavaDelegate {
         final BigInteger usdtReceived = transferEvent._value;
 
         delEx.setVariable("USDT_RECEIVED", usdtReceived);
+        // TODO: Test this
     }
 }
