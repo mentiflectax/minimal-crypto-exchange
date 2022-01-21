@@ -40,8 +40,10 @@ public class SendBtc implements JavaDelegate {
         final ShellCommandExecutor shellCommandExecutor = new ShellCommandExecutor();
         final Outcome outcome = shellCommandExecutor.runShellCommand(command);
         if (outcome.isSuccess()) {
+            // TODO: Test this
             delEx.setVariable("SEND_BTC_TX_ID", outcome.getResult());
         } else {
+            // TODO: Test this
             throw new RuntimeException(String.format("Could not send %f BTC to '%s' using '%s' (details: '%s')", btcAmount.doubleValue(),
                     targetBtcAddress, command, outcome.getErrorMessage()));
         }

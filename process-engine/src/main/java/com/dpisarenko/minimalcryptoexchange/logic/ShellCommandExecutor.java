@@ -45,14 +45,17 @@ public class ShellCommandExecutor {
             }
 
             if (exitValue == 0) {
+                // TODO: Test this
                 return new Outcome()
                         .withSuccess(true)
                         .withResult(sb.toString());
             }
+            // TODO: Test this
             return new Outcome()
                     .withSuccess(false)
                     .withErrorMessage(sb.toString());
         } catch (final IOException | InterruptedException exception) {
+            // TODO: Test this
             logger.error(String.format("Error ocurred while executing command '%s'", command), exception);
             return new Outcome()
                     .withSuccess(false)
