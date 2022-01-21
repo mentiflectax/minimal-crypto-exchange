@@ -11,6 +11,9 @@
 
 package com.dpisarenko.minimalcryptoexchange.logic;
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteWatchdog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,57 +32,17 @@ public class ShellCommandExecutor {
     }
 
     public boolean runShellCommand(final String command) {
-        final String osName = System.getProperty("os.name");
-        final OperatingSystem os;
-        if ("Mac OS X".equals(osName)) {
-            os = OperatingSystem.MAC_OS_X;
-        } else if (osName.toLowerCase().startsWith("windows")) {
-            os = OperatingSystem.WINDOWS;
-        } else {
-            os = OperatingSystem.UNSUPPORTED;
-        }
-
-        if (OperatingSystem.UNSUPPORTED.equals(os)) {
-            logger.error(String.format("Operating system '%s' is not supported", osName));
-            return false;
-        }
-
-        final ProcessBuilder processBuilder = new ProcessBuilder();
-        if (OperatingSystem.MAC_OS_X.equals(os)) {
-            processBuilder.command("bash", "-c", command);
-        } else if (OperatingSystem.WINDOWS.equals(os)) {
-            processBuilder.command("cmd.exe", "/c", command);
-        }
-
+       // String line = "AcroRd32.exe /p /h \"" + file.getAbsolutePath() + "\"";
+        CommandLine cmdLine = CommandLine.parse(command);
+        DefaultExecutor executor = new DefaultExecutor();
+        executor.setExitValue(1);
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(60000);
+        executor.setWatchdog(watchdog);
         try {
-
-            // Process process = processBuilder.start();
-
-            final String fullCommand = String.format("sh -c %s",
-                    command);
-
-            //Process process = Runtime.getRuntime().exec(fullCommand);
-
-            Process process = Runtime.getRuntime().exec(new String[]{
-                    "sh",
-                    "docker exec -it minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress \"2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs\" 0.1"
-            });
-
-            StreamGobbler streamGobbler =
-                    new StreamGobbler(process.getErrorStream(), System.out::println);
-
-            Executors.newSingleThreadExecutor().submit(streamGobbler);
-            int exitVal = process.waitFor();
-            if (exitVal == 0) {
-
-                return true;
-            } else {
-                return false;
-            }
+            int exitValue = executor.execute(cmdLine);
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("", e);
         }
         return false;
     }
