@@ -14,9 +14,8 @@ package com.dpisarenko.minimalcryptoexchange.logic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.concurrent.Executors;
 
 public class ShellCommandExecutor {
     private final Logger logger;
@@ -58,18 +57,18 @@ public class ShellCommandExecutor {
 
             final String fullCommand = String.format("sh -c %s",
                     command);
-            Process process = Runtime.getRuntime().exec(fullCommand);
+            
+            //Process process = Runtime.getRuntime().exec(fullCommand);
 
-            StringBuilder output = new StringBuilder();
+            Process process = Runtime.getRuntime().exec(new String[]{
+                    "sh",
+                    "-c",
+                    "docker exec -it minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress \"2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs\" 0.1"
+            });
 
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line + "\n");
-            }
-
+            StreamGobbler streamGobbler =
+                    new StreamGobbler(process.getInputStream(), System.out::println);
+            Executors.newSingleThreadExecutor().submit(streamGobbler);
             int exitVal = process.waitFor();
             if (exitVal == 0) {
 
