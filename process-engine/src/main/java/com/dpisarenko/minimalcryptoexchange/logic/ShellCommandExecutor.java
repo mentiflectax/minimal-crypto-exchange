@@ -42,18 +42,17 @@ public class ShellCommandExecutor {
 
             final StringBuilder sb = new StringBuilder();
             String line = reader.readLine();
-            sb.append(line);
             while (line != null) {
-                line = reader.readLine();
                 sb.append(line);
+                line = reader.readLine();
             }
 
-            return sb.toString();
-        } catch (IOException e) {
-            logger.error("", e);
+            if (exitValue == 0) {
+                return sb.toString();
+            }
             return null;
-        } catch (InterruptedException e) {
-            logger.error("", e);
+        } catch (final IOException | InterruptedException exception) {
+            logger.error(String.format("Error ocurred while executing command '%s'", command), exception);
             return null;
         }
     }
