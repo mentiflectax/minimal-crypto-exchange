@@ -55,19 +55,4 @@ public class ShellCommandExecutor {
             return null;
         }
     }
-
-    public boolean runShellCommandOld(final String command) {
-        CommandLine cmdLine = CommandLine.parse(command);
-        DefaultExecutor executor = new DefaultExecutor();
-        executor.setExitValue(1);
-        ExecuteWatchdog watchdog = new ExecuteWatchdog(60000);
-        executor.setWatchdog(watchdog);
-        try {
-            int exitValue = executor.execute(cmdLine);
-            return true;
-        } catch (IOException e) {
-            logger.error("", e);
-        }
-        return false;
-    }
 }
