@@ -57,12 +57,11 @@ public class ShellCommandExecutor {
 
             final String fullCommand = String.format("sh -c %s",
                     command);
-            
+
             //Process process = Runtime.getRuntime().exec(fullCommand);
 
             Process process = Runtime.getRuntime().exec(new String[]{
                     "sh",
-                    "-c",
                     "docker exec -it minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress \"2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs\" 0.1"
             });
 
