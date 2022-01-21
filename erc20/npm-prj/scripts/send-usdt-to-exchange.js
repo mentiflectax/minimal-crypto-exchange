@@ -2,7 +2,7 @@ async function main() {
     const USDT = await ethers.getContractFactory("USDT");
     const usdtAddress = "0xa682a5972D1A8175E2431B26586F486bBa161A11";
     const usdt = await USDT.attach(usdtAddress);
-    const amount = ethers.BigNumber.from('3500000000000000000');
+    const amount = ethers.BigNumber.from('350000000000000000000');
     const exchange = "0x190FD61ED8fE0067f0f09EA992C1BF96209bab66";
     const usdtSender = "0xDd1e8cC92AF9748193459ADDF910E1b96E88154D";
 
