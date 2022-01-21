@@ -11,6 +11,7 @@
 
 package com.dpisarenko.minimalcryptoexchange.logic;
 
+import com.dpisarenko.minimalcryptoexchange.Outcome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +30,7 @@ public class ShellCommandExecutor {
         this(LoggerFactory.getLogger(ShellCommandExecutor.class));
     }
 
-    public String runShellCommand(final String command) {
+    public Outcome runShellCommand(final String command) {
         try {
             final Process process = Runtime.getRuntime().exec(command);
             final int exitValue = process.waitFor();
@@ -44,12 +45,18 @@ public class ShellCommandExecutor {
             }
 
             if (exitValue == 0) {
-                return sb.toString();
+                return new Outcome()
+                        .withSuccess(true)
+                        .withResult(sb.toString());
             }
-            return null;
+            return new Outcome()
+                    .withSuccess(false)
+                    .withErrorMessage(sb.toString());
         } catch (final IOException | InterruptedException exception) {
             logger.error(String.format("Error ocurred while executing command '%s'", command), exception);
-            return null;
+            return new Outcome()
+                    .withSuccess(false)
+                    .withErrorMessage(exception.getMessage());
         }
     }
 }

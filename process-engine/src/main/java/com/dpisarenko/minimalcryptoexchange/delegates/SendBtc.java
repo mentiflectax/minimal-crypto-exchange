@@ -11,6 +11,7 @@
 
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.Outcome;
 import com.dpisarenko.minimalcryptoexchange.logic.ShellCommandExecutor;
 import com.dpisarenko.minimalcryptoexchange.logic.btc.WalletObserver;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -37,11 +38,12 @@ public class SendBtc implements JavaDelegate {
         final String command = String.format(sendBtcCliCommandPattern, targetBtcAddress, btcAmount.doubleValue());
 
         final ShellCommandExecutor shellCommandExecutor = new ShellCommandExecutor();
-        final String btcTxId = shellCommandExecutor.runShellCommand(command);
-        if (btcTxId == null) {
-            throw new RuntimeException(String.format("Could not send %f BTC to '%s' using '%s'", btcAmount.doubleValue(),
-                    targetBtcAddress, command));
+        final Outcome outcome = shellCommandExecutor.runShellCommand(command);
+        if (outcome.isSuccess()) {
+            delEx.setVariable("SEND_BTC_TX_ID", outcome.getResult());
+        } else {
+            throw new RuntimeException(String.format("Could not send %f BTC to '%s' using '%s' (details: '%s')", btcAmount.doubleValue(),
+                    targetBtcAddress, command, outcome.getErrorMessage()));
         }
-        delEx.setVariable("SEND_BTC_TX_ID", btcTxId);
     }
 }
