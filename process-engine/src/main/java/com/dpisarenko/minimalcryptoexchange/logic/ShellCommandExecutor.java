@@ -66,7 +66,8 @@ public class ShellCommandExecutor {
             });
 
             StreamGobbler streamGobbler =
-                    new StreamGobbler(process.getInputStream(), System.out::println);
+                    new StreamGobbler(process.getErrorStream(), System.out::println);
+
             Executors.newSingleThreadExecutor().submit(streamGobbler);
             int exitVal = process.waitFor();
             if (exitVal == 0) {

@@ -121,6 +121,11 @@
             <version>1.10.3</version>
         </dependency>
         <!-- Clojure (end) -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
     </dependencies>
 
     <build>
