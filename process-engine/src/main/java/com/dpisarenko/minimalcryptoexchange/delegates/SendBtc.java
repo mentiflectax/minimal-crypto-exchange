@@ -11,16 +11,21 @@
 
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.logic.ShellCommandExecutor;
 import com.dpisarenko.minimalcryptoexchange.logic.btc.WalletObserver;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Component("SendBtc")
 public class SendBtc implements JavaDelegate {
+    @Value("${btc.send-btc-cli-command-pattern}")
+    private String sendBtcCliCommandPattern;
+
     @Autowired
     WalletObserver walletObserver;
 
@@ -28,9 +33,15 @@ public class SendBtc implements JavaDelegate {
     public void execute(final DelegateExecution delEx) throws Exception {
         final BigDecimal btcAmount = (BigDecimal) delEx.getVariable("BTC_AMOUNT");
         final String targetBtcAddress = (String) delEx.getVariable("TARGET_BTC_ADDRESS");
-        walletObserver.sendBtc(btcAmount, targetBtcAddress);
-        System.out.println("Test");
-        // walletObserver.
 
+        final String command = String.format(sendBtcCliCommandPattern, targetBtcAddress, btcAmount.doubleValue());
+
+        final ShellCommandExecutor shellCommandExecutor = new ShellCommandExecutor();
+        final String btcTxId = shellCommandExecutor.runShellCommand(command);
+        if (btcTxId == null) {
+            throw new RuntimeException(String.format("Could not send %f BTC to '%s' using '%s'", btcAmount.doubleValue(),
+                    targetBtcAddress, command));
+        }
+        delEx.setVariable("SEND_BTC_TX_ID", btcTxId);
     }
 }

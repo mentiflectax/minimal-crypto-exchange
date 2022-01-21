@@ -12,21 +12,11 @@
 package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
-import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.InsufficientMoneyException;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.crypto.DeterministicKey;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.utils.BriefLogFormatter;
 import org.bitcoinj.wallet.DeterministicSeed;
-import org.bitcoinj.wallet.Protos;
-import org.bitcoinj.wallet.SendRequest;
 import org.bitcoinj.wallet.Wallet;
-import org.bouncycastle.util.encoders.Hex;
-import org.camunda.bpm.engine.delegate.BpmnError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +26,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collections;
 
 @Component
 public class WalletObserver {
@@ -94,31 +82,5 @@ public class WalletObserver {
         DeterministicSeed seed = null;
         wak.restoreWalletFromSeed(seed);
         return wak;
-    }
-
-    public void sendBtc(BigDecimal btcAmount, String targetBtcAddress) {
-        byte[] privBytes = Hex.decode("ef235aacf90d9f4aadd8c92e4b2562e1d9eb97f0df9ba3b508258739cb013db2");
-        byte[] appendZeroByte = ArrayUtils.addAll(new byte[1], privBytes);
-        final ECKey ecKey = ECKey.fromPrivate(new BigInteger(appendZeroByte), false);
-
-        final Wallet sourceWallet = Wallet.fromKeys(netParams, Collections.singletonList(ecKey));
-        sourceWallet.upgradeToDeterministic(null);
-
-        final BigDecimal satoshisToSend = btcAmount.multiply(SATOSHIS_IN_BITCOIN);
-        final Coin coinToSend = Coin.valueOf(satoshisToSend.longValue());
-        final Address targetAddress = Address.fromString(netParams, targetBtcAddress);
-
-        final Transaction tx = new Transaction(netParams);
-        tx.addInput(kit.wallet().getUnspents().get(0));
-        tx.addOutput(coinToSend, targetAddress);
-
-        final SendRequest request = SendRequest.forTx(tx);
-        request.feePerKb = Coin.valueOf(1000);
-
-        try {
-            kit.wallet().sendCoins(request);
-        } catch (InsufficientMoneyException exception) {
-            throw new BpmnError("INSUFFICIENT_FUNDS");
-        }
     }
 }

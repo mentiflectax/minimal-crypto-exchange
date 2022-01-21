@@ -5,6 +5,8 @@ camunda.bpm:
     firstName: Demo
   filter:
     create: All tasks
+btc:
+  send-btc-cli-command-pattern: /usr/local/bin/docker exec  minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress %s %s
 accounts:
   btc:
     exchange:
