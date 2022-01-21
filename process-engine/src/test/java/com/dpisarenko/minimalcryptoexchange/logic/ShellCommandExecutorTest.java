@@ -17,7 +17,7 @@ public class ShellCommandExecutorTest {
     @Test
     public void manualTest() {
         final ShellCommandExecutor sut = new ShellCommandExecutor();
-        sut.runShellCommand("docker exec -it minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress \"2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs\" 0.1");
+        sut.runShellCommand("zsh -c 'docker exec -it minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress \"2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs\" 0.1'");
     }
 
 }
