@@ -144,7 +144,6 @@
         ]
     (.setVariable de "USD_AMOUNT" usd-amount)))
 
-; TODO: Test this
 (defn convert-usd-to-btc
   [de]
   (let [
