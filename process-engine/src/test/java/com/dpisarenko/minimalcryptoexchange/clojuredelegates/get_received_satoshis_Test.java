@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 public class get_received_satoshis_Test {
     @Test
     public void givenDelegateExecution_whenExecute_thenSetReceivedSatoshisVariable() {
+        // TODO: Fix this
         // Given
         final Logger logger = mock(Logger.class);
         final ClojureService backend = createClojureBackend();

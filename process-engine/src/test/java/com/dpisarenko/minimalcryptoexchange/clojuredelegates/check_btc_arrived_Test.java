@@ -49,6 +49,7 @@ public class check_btc_arrived_Test {
 
     @Test
     public void givenState_whenExecute_thenSetBtcArrivedToCorrectValue() {
+        // TODO: Fix this test
         // Given
         final Logger logger = mock(Logger.class);
         final ClojureService backend = createClojureBackend();

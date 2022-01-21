@@ -11,7 +11,6 @@ accounts:
   btc:
     exchange:
       address: '2N1akcbAa3oXJ7RNxrAWmL7ZuuU9iHg9tpG'
-      private-key: ''
   eth:
     exchange:
       address: '0x190FD61ED8fE0067f0f09EA992C1BF96209bab66'
