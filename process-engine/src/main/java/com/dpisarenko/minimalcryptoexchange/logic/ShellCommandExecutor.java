@@ -17,7 +17,9 @@ import org.apache.commons.exec.ExecuteWatchdog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 
 public class ShellCommandExecutor {
@@ -31,7 +33,32 @@ public class ShellCommandExecutor {
         this(LoggerFactory.getLogger(ShellCommandExecutor.class));
     }
 
-    public boolean runShellCommand(final String command) {
+    public String runShellCommand(final String command) {
+        try {
+            final Process process = Runtime.getRuntime().exec(command);
+            final int exitValue = process.waitFor();
+
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            final StringBuilder sb = new StringBuilder();
+            String line = reader.readLine();
+            sb.append(line);
+            while (line != null) {
+                line = reader.readLine();
+                sb.append(line);
+            }
+
+            return sb.toString();
+        } catch (IOException e) {
+            logger.error("", e);
+            return null;
+        } catch (InterruptedException e) {
+            logger.error("", e);
+            return null;
+        }
+    }
+
+    public boolean runShellCommandOld(final String command) {
         CommandLine cmdLine = CommandLine.parse(command);
         DefaultExecutor executor = new DefaultExecutor();
         executor.setExitValue(1);
