@@ -33,7 +33,7 @@ public class ShellCommandExecutor {
 
     public boolean runShellCommand(final String command) {
        // String line = "AcroRd32.exe /p /h \"" + file.getAbsolutePath() + "\"";
-        CommandLine cmdLine = CommandLine.parse(command);
+        CommandLine cmdLine = CommandLine.parse(String.format("zsh -c '%s'", command));
         DefaultExecutor executor = new DefaultExecutor();
         executor.setExitValue(1);
         ExecuteWatchdog watchdog = new ExecuteWatchdog(60000);
