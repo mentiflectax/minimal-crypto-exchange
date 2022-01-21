@@ -11,7 +11,6 @@
 
 package com.dpisarenko.minimalcryptoexchange.clojuredelegates;
 
-import clojure.java.api.Clojure;
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.Test;
@@ -19,8 +18,8 @@ import org.slf4j.Logger;
 
 import java.math.BigDecimal;
 
-import static com.dpisarenko.minimalcryptoexchange.clj.ClojureService.MAIN_CLOJURE_NAMESPACE;
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
+import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.initClojureBackend;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -35,12 +34,7 @@ public class convert_usd_to_btc_Test {
         // Given
         final Logger logger = mock(Logger.class);
         final ClojureService backend = createClojureBackend();
-        Clojure.var(MAIN_CLOJURE_NAMESPACE, "init")
-                .invoke(logger,
-                        "eth-network-url",
-                        "usdt-contract-address",
-                        "eth-exchange-address",
-                        "eth-private-key");
+        initClojureBackend(logger);
 
         final DelegateExecution delEx = mock(DelegateExecution.class);
 
@@ -58,4 +52,5 @@ public class convert_usd_to_btc_Test {
         // Then
         verify(delEx).setVariable(eq("BTC_AMOUNT"), any());
     }
+
 }

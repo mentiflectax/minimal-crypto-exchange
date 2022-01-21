@@ -23,8 +23,8 @@ import org.slf4j.Logger;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.dpisarenko.minimalcryptoexchange.clj.ClojureService.MAIN_CLOJURE_NAMESPACE;
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
+import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.initClojureBackend;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,12 +49,11 @@ public class check_btc_arrived_Test {
 
     @Test
     public void givenState_whenExecute_thenSetBtcArrivedToCorrectValue() {
-        // TODO: Fix this test
         // Given
         final Logger logger = mock(Logger.class);
         final ClojureService backend = createClojureBackend();
-        Clojure.var(MAIN_CLOJURE_NAMESPACE, "init")
-                .invoke(logger);
+        initClojureBackend(logger);
+
         if (addTx) {
             backend.btcTxReceived("txId", Coin.valueOf(1000L));
         }
