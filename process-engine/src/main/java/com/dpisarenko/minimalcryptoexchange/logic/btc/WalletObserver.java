@@ -79,8 +79,6 @@ public class WalletObserver {
 
     WalletAppKit createWalletAppKit(LocalTestNetParams netParams) {
         final WalletAppKit wak = new WalletAppKit(netParams, new File("."), "_minimalCryptoExchangeBtcWallet");
-        DeterministicSeed seed = null;
-        wak.restoreWalletFromSeed(seed);
         return wak;
     }
 }
