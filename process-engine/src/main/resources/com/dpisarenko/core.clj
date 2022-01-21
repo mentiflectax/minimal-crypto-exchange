@@ -139,7 +139,7 @@
   [de]
   (let [
         usdt-amount (new BigDecimal (.getVariable de "USDT_RECEIVED"))
-        conversion-factor (BigDecimal/valueOf  com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt/USD_TO_USDT_CONVERSION_FACTOR)
+        conversion-factor (BigDecimal/valueOf com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt/USD_TO_USDT_CONVERSION_FACTOR)
         usd-amount (.divide usdt-amount conversion-factor)
         ]
     (.setVariable de "USD_AMOUNT" usd-amount)))

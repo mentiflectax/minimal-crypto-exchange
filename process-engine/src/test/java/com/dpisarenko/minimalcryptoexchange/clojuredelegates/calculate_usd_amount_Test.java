@@ -35,6 +35,6 @@ public class calculate_usd_amount_Test {
         backend.runClojureCode(delEx, "calculate_usd_amount");
 
         // Then
-        verify(delEx).setVariable(eq("USD_AMOUNT"), AdditionalMatchers.eq(0.4916999, 1./1000000.));
+        verify(delEx).setVariable(eq("USD_AMOUNT"), AdditionalMatchers.eq(0.4916999, 1. / 1000000.));
     }
 }

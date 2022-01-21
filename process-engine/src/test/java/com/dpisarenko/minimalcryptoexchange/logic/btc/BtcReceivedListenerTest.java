@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class BtcReceivedListenerTest {
-    private static final String EXCHANGE_ADDRESS =  "2N1akcbAa3oXJ7RNxrAWmL7ZuuU9iHg9tpG";
+    private static final String EXCHANGE_ADDRESS = "2N1akcbAa3oXJ7RNxrAWmL7ZuuU9iHg9tpG";
 
     @Test
     public void givenIncomingBtcTxWithRightOutputs_whenOnCoinsReceived_thenCallBtcTxReceivedMethod() {
@@ -64,6 +64,7 @@ public class BtcReceivedListenerTest {
         verify(logger).info("Received 0.00000001 BTC");
         verifyNoMoreInteractions(sut, clojureService, logger);
     }
+
     @Test
     public void givenIncomingBtcTxWithoutRightOutputs_whenOnCoinsReceived_thenLogError() {
         // Given

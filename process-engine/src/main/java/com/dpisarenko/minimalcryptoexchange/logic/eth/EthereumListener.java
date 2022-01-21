@@ -37,7 +37,7 @@ public class EthereumListener {
 
     @PostConstruct
     public void init() {
-       logger.debug("1");
+        logger.debug("1");
         Web3j web3j = null;
     }
 }

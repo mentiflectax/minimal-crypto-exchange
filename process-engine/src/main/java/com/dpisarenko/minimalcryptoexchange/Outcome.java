@@ -30,6 +30,7 @@ public class Outcome {
         this.errorMessage = msg;
         return this;
     }
+
     public boolean isSuccess() {
         return success;
     }

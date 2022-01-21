@@ -27,7 +27,7 @@ public class ConvertUsdToUsdtTest {
         // Given
         final ConvertUsdToUsdt sut = new ConvertUsdToUsdt();
         final Double usdAmount = 4.39;
-        final long usdtAmountLong = (long)(4.39 * USD_TO_USDT_CONVERSION_FACTOR);
+        final long usdtAmountLong = (long) (4.39 * USD_TO_USDT_CONVERSION_FACTOR);
         final BigInteger usdtAmount = BigInteger.valueOf(usdtAmountLong);
 
         final DelegateExecution delEx = mock(DelegateExecution.class);

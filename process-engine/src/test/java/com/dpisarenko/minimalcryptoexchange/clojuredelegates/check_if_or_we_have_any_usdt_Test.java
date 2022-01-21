@@ -42,6 +42,7 @@ public class check_if_or_we_have_any_usdt_Test {
                 {1, true},
         });
     }
+
     @Test
     public void givenUsdtExchangeBalance_whenExecute_thenSetAnyUsdtAvailableVariableToCorrectValue() {
         // Given
