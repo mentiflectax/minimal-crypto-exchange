@@ -78,7 +78,6 @@ public class GetReceivedUsdt implements JavaDelegate {
         final Optional<TransactionReceipt> transactionReceiptOpt = web3.ethGetTransactionReceipt(incomingTxId).send().getTransactionReceipt();
 
         if (!transactionReceiptOpt.isPresent()) {
-            // TODO: Test this
             throw new RuntimeException("No transaction receipt found");
         }
 
