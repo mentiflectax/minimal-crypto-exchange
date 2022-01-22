@@ -24,16 +24,11 @@
 
 package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.Address;
-import org.bitcoinj.core.ECKey;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.wallet.Wallet;
-import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 import org.slf4j.Logger;
-
-import java.math.BigInteger;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
