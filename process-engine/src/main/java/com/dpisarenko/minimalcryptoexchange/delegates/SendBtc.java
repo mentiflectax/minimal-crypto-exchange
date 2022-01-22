@@ -59,7 +59,6 @@ public class SendBtc implements JavaDelegate {
         if (outcome.isSuccess()) {
             delEx.setVariable("SEND_BTC_TX_ID", outcome.getResult());
         } else {
-            // TODO: Test this
             throw new RuntimeException(String.format("Could not send %f BTC to '%s' using '%s' (details: '%s')", btcAmount.doubleValue(),
                     targetBtcAddress, command, outcome.getErrorMessage()));
         }

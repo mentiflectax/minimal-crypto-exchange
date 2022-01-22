@@ -27,17 +27,23 @@ package com.dpisarenko.minimalcryptoexchange.delegates;
 import com.dpisarenko.minimalcryptoexchange.Outcome;
 import com.dpisarenko.minimalcryptoexchange.logic.ShellCommandExecutor;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class SendBtcTest {
+    @Rule
+    public ExpectedException expectedEx = ExpectedException.none();
+
     @Test
     public void givenSuccessfulExecutionOfShellCommand_whenExecute_thenSetSendBtcTxIdVariable() throws Exception {
         // Given
@@ -65,4 +71,27 @@ public class SendBtcTest {
         verifyNoMoreInteractions(delEx, shellCommandExecutor);
     }
 
+    @Test
+    public void givenFailedExecutionOfShellCommand_whenExecute_thenThrowException() throws Exception {
+        // Given
+        final ShellCommandExecutor shellCommandExecutor = mock(ShellCommandExecutor.class);
+        final SendBtc sut = new SendBtc(shellCommandExecutor);
+        sut.sendBtcCliCommandPattern = "/usr/local/bin/docker exec minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress %s %.8f";
+
+        final DelegateExecution delEx = mock(DelegateExecution.class);
+
+        when(delEx.getVariable("BTC_AMOUNT")).thenReturn(BigDecimal.valueOf(3.5));
+        when(delEx.getVariable("TARGET_BTC_ADDRESS")).thenReturn("2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs");
+        when(shellCommandExecutor.runShellCommand(anyString())).thenReturn(
+                new Outcome()
+                        .withSuccess(false)
+                        .withErrorMessage("error message"));
+
+        // Then
+        expectedEx.expect(RuntimeException.class);
+        expectedEx.expectMessage("Could not send 3.500000 BTC to '2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs' using '/usr/local/bin/docker exec minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress 2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs 3.50000000' (details: 'error message')");
+
+        // When
+        sut.execute(delEx);
+    }
 }
