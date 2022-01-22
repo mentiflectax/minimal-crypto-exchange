@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1ag7jzs" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="exchange_usdt_for_btc_process" name="Exchange USDT for BTC Process" isExecutable="true">
+    <bpmn:startEvent id="start" camunda:asyncBefore="true">
+      <bpmn:outgoing>Flow_0d8y4ai</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0d8y4ai" sourceRef="start" targetRef="transfer_usdt_to_exchange" />
+    <bpmn:sequenceFlow id="Flow_0qja3gu" sourceRef="transfer_usdt_to_exchange" targetRef="wait_for_usdt_to_arrive" />
+    <bpmn:endEvent id="end" name="Successfully exchanged USDT for BTC" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_0dmodsa</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0dmodsa" sourceRef="wait" targetRef="end" />
+    <bpmn:userTask id="transfer_usdt_to_exchange" name="Transfer USDT to the exchange outside of the exchange" camunda:asyncBefore="true">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="INCOMING_TX_ID" label="ID of the incoming transaction (USDT sender to the exchange)" type="string" defaultValue="0x783bfb58b746f89fc72a7eac7ee49d22e8dd3741892f9316baffd8fec9d58c49" />
+          <camunda:formField id="TARGET_BTC_ADDRESS" label="Target BTC address" type="string" defaultValue="2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0d8y4ai</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qja3gu</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="wait" name="Wait" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_1rc47v1</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dmodsa</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_10b2ylu" sourceRef="wait_for_usdt_to_arrive" targetRef="has_usdt_arrived" />
+    <bpmn:callActivity id="wait_for_usdt_to_arrive" name="Wait for the USDT to arrive" camunda:asyncBefore="true" calledElement="detect_usdt_reception_process">
+      <bpmn:extensionElements>
+        <camunda:in source="INCOMING_TX_ID" target="INCOMING_TX_ID" />
+        <camunda:out source="USDT_ARRIVED" target="USDT_ARRIVED" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0qja3gu</bpmn:incoming>
+      <bpmn:outgoing>Flow_10b2ylu</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="has_usdt_arrived" name="Has USDT arrived?" camunda:asyncBefore="true" default="Flow_0dswpf2">
+      <bpmn:incoming>Flow_10b2ylu</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dswpf2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_08oawd7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0dswpf2" name="Yes" sourceRef="has_usdt_arrived" targetRef="get_received_usdt_amount" />
+    <bpmn:endEvent id="Event_0cep8lz" name="Error: USDT not arrived">
+      <bpmn:incoming>Flow_00sph3e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_08oawd7" name="No" sourceRef="has_usdt_arrived" targetRef="Activity_09m2a4o">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${USDT_ARRIVED == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_00sph3e" sourceRef="Activity_09m2a4o" targetRef="Event_0cep8lz" />
+    <bpmn:userTask id="Activity_09m2a4o" name="Wait">
+      <bpmn:incoming>Flow_08oawd7</bpmn:incoming>
+      <bpmn:outgoing>Flow_00sph3e</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0kqc0jl" sourceRef="get_received_usdt_amount" targetRef="convert-usdt-amount-to-usd" />
+    <bpmn:serviceTask id="get_received_usdt_amount" name="Get received USDT amount" camunda:asyncBefore="true" camunda:delegateExpression="${GetReceivedUsdt}">
+      <bpmn:incoming>Flow_0dswpf2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kqc0jl</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1k1ocwj" sourceRef="convert-usdt-amount-to-usd" targetRef="convert-usd-to-btc" />
+    <bpmn:serviceTask id="convert-usdt-amount-to-usd" name="Convert USDT amount to USD" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="cljfn">convert-usdt-amount-to-usd</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0kqc0jl</bpmn:incoming>
+      <bpmn:outgoing>Flow_1k1ocwj</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="convert-usd-to-btc" name="Convert USD to BTC" camunda:asyncBefore="true" camunda:delegateExpression="${ClojureDelegate}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="cljfn">convert-usd-to-btc</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1k1ocwj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0fgc439</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0fgc439" sourceRef="convert-usd-to-btc" targetRef="send_btc" />
+    <bpmn:sequenceFlow id="Flow_1rc47v1" sourceRef="send_btc" targetRef="wait" />
+    <bpmn:serviceTask id="send_btc" name="Send BTC" camunda:asyncBefore="true" camunda:delegateExpression="${SendBtc}">
+      <bpmn:incoming>Flow_0fgc439</bpmn:incoming>
+      <bpmn:outgoing>Flow_1rc47v1</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="exchange_usdt_for_btc_process">
+      <bpmndi:BPMNEdge id="Flow_1rc47v1_di" bpmnElement="Flow_1rc47v1">
+        <di:waypoint x="1260" y="147" />
+        <di:waypoint x="1330" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fgc439_di" bpmnElement="Flow_0fgc439">
+        <di:waypoint x="1110" y="147" />
+        <di:waypoint x="1160" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1k1ocwj_di" bpmnElement="Flow_1k1ocwj">
+        <di:waypoint x="930" y="147" />
+        <di:waypoint x="1010" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kqc0jl_di" bpmnElement="Flow_0kqc0jl">
+        <di:waypoint x="790" y="147" />
+        <di:waypoint x="830" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00sph3e_di" bpmnElement="Flow_00sph3e">
+        <di:waypoint x="930" y="260" />
+        <di:waypoint x="1042" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08oawd7_di" bpmnElement="Flow_08oawd7">
+        <di:waypoint x="610" y="172" />
+        <di:waypoint x="610" y="260" />
+        <di:waypoint x="830" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="618" y="213" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dswpf2_di" bpmnElement="Flow_0dswpf2">
+        <di:waypoint x="635" y="147" />
+        <di:waypoint x="690" y="147" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="649" y="129" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10b2ylu_di" bpmnElement="Flow_10b2ylu">
+        <di:waypoint x="510" y="147" />
+        <di:waypoint x="585" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dmodsa_di" bpmnElement="Flow_0dmodsa">
+        <di:waypoint x="1430" y="147" />
+        <di:waypoint x="1542" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qja3gu_di" bpmnElement="Flow_0qja3gu">
+        <di:waypoint x="350" y="147" />
+        <di:waypoint x="410" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0d8y4ai_di" bpmnElement="Flow_0d8y4ai">
+        <di:waypoint x="188" y="147" />
+        <di:waypoint x="250" y="147" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="start">
+        <dc:Bounds x="152" y="129" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0v8mekg_di" bpmnElement="end">
+        <dc:Bounds x="1542" y="129" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1517" y="172" width="87" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kpsja5_di" bpmnElement="transfer_usdt_to_exchange">
+        <dc:Bounds x="250" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mvk2mp_di" bpmnElement="wait">
+        <dc:Bounds x="1330" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vdo658_di" bpmnElement="wait_for_usdt_to_arrive">
+        <dc:Bounds x="410" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1lonikl_di" bpmnElement="has_usdt_arrived" isMarkerVisible="true">
+        <dc:Bounds x="585" y="122" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="583" y="85" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0cep8lz_di" bpmnElement="Event_0cep8lz">
+        <dc:Bounds x="1042" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1021" y="285" width="79" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c80osl_di" bpmnElement="Activity_09m2a4o">
+        <dc:Bounds x="830" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0otvdua_di" bpmnElement="get_received_usdt_amount">
+        <dc:Bounds x="690" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1tamr8o_di" bpmnElement="convert-usdt-amount-to-usd">
+        <dc:Bounds x="830" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ujdvfg_di" bpmnElement="convert-usd-to-btc">
+        <dc:Bounds x="1010" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0oj07z9_di" bpmnElement="send_btc">
+        <dc:Bounds x="1160" y="107" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

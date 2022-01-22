@@ -5,6 +5,8 @@ camunda.bpm:
     firstName: Demo
   filter:
     create: All tasks
+btc:
+  send-btc-cli-command-pattern: /usr/local/bin/docker exec minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress %s %.8f
 accounts:
   btc:
     exchange:
@@ -15,7 +17,7 @@ accounts:
       private-key: b07aedf303f832664eb7a5295be737776cb1ad17a277ec287b3b3c7bac154e5e
       password: a-turkey-is-a-chicken-designed-by-a-committee
     usdt:
-      contract-address: '0xB1B28aD1b852AecB9aB7CA47CA7E7460Eb8C501F'
+      contract-address: '0xa682a5972D1A8175E2431B26586F486bBa161A11'
 networks:
   eth:
     url: http://localhost:8178

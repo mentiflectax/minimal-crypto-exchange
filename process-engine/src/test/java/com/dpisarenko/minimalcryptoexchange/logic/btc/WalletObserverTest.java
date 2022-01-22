@@ -1,21 +1,39 @@
 /*
  * Copyright 2021, 2022 Dmitrii Pisarenko
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software, and
+ * to permit persons to whom the Software is furnished to do so, subject
+ * to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+ * KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+ * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 package com.dpisarenko.minimalcryptoexchange.logic.btc;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.Address;
+import org.bitcoinj.core.ECKey;
 import org.bitcoinj.kits.WalletAppKit;
 import org.bitcoinj.wallet.Wallet;
+import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 import org.slf4j.Logger;
+
+import java.math.BigInteger;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -69,5 +87,14 @@ public class WalletObserverTest {
         verify(sut).createBtcReceivedListener(NET_PARAMS);
         verify(wallet).addCoinsReceivedEventListener(btcReceivedListener);
         verifyNoMoreInteractions(sut, kit, logger);
+    }
+
+    @Test
+    public void manualTest() {
+        byte[] privBytes = Hex.decode("ef235aacf90d9f4aadd8c92e4b2562e1d9eb97f0df9ba3b508258739cb013db2");
+        byte[] appendZeroByte = ArrayUtils.addAll(new byte[1], privBytes);
+        final ECKey ecKey = ECKey.fromPrivate(new BigInteger(appendZeroByte), false);
+
+        System.out.println("Test");
     }
 }

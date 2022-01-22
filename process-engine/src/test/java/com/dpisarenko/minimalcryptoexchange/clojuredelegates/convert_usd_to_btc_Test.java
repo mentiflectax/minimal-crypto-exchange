@@ -25,35 +25,45 @@
 package com.dpisarenko.minimalcryptoexchange.clojuredelegates;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
-import org.bitcoinj.core.Coin;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import java.math.BigDecimal;
+
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.initClojureBackend;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class get_received_satoshis_Test {
+public class convert_usd_to_btc_Test {
     @Test
-    public void givenDelegateExecution_whenExecute_thenSetReceivedSatoshisVariable() {
+    public void givenUsdAmount_whenExecute_thenSetBtcAmountVariable() {
         // Given
         final Logger logger = mock(Logger.class);
         final ClojureService backend = createClojureBackend();
         initClojureBackend(logger);
 
-        backend.btcTxReceived("txId", Coin.valueOf(1000L));
-
         final DelegateExecution delEx = mock(DelegateExecution.class);
 
-        when(delEx.getVariable("INCOMING_TX_ID")).thenReturn("txId");
+        when(delEx.getVariable("USD_AMOUNT")).thenReturn(BigDecimal.valueOf(3.5));
+
+        doAnswer(invocationOnMock -> {
+            final BigDecimal actualBtcAmount = invocationOnMock.getArgument(1);
+            assertEquals(8.134294884458151E-5, actualBtcAmount.doubleValue(), 1/1000000.);
+            return null;
+        }).when(delEx).setVariable(eq("BTC_AMOUNT"), any());
 
         // When
-        backend.runClojureCode(delEx, "get_received_satoshis");
+        backend.runClojureCode(delEx, "convert-usd-to-btc");
 
         // Then
-        verify(delEx).setVariable("RECEIVED_SATOSHIS", 1000L);
+        verify(delEx).setVariable(eq("BTC_AMOUNT"), any());
     }
+
 }

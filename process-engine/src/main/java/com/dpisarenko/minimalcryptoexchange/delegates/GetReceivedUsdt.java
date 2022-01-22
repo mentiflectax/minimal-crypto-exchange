@@ -24,6 +24,7 @@
 
 package com.dpisarenko.minimalcryptoexchange.delegates;
 
+import com.dpisarenko.minimalcryptoexchange.logic.eth.CreateWeb3j;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -31,32 +32,36 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.web3j.contracts.eip20.generated.ERC20;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
-@Component("SendEthDelegate")
-public class SendEthDelegate implements JavaDelegate {
+@Component("GetReceivedUsdt")
+public class GetReceivedUsdt implements JavaDelegate {
     @Value("${networks.eth.url}")
     String ethNetworkUrl;
 
     @Value("${accounts.eth.usdt.contract-address}")
     String usdtContractAddress;
 
-    @Value("${accounts.eth.exchange.address}")
-    String exchangeAddress;
-
     @Value("${accounts.eth.exchange.private-key}")
     String privateKey;
 
     private final Function<LoadErc20ContractInput, ERC20> loadErc20Contract;
 
-    SendEthDelegate(final Function<LoadErc20ContractInput, ERC20> loadErc20Contract) {
+    private final Function<String, Web3j> createWeb3j;
+
+    GetReceivedUsdt(Function<LoadErc20ContractInput, ERC20> loadErc20Contract, Function<String, Web3j> createWeb3j) {
         this.loadErc20Contract = loadErc20Contract;
+        this.createWeb3j = createWeb3j;
     }
 
-    public SendEthDelegate() {
-        this(new LoadErc20Contract());
+    public GetReceivedUsdt() {
+        this(new LoadErc20Contract(), new CreateWeb3j());
     }
 
     @Override
@@ -66,9 +71,28 @@ public class SendEthDelegate implements JavaDelegate {
                         .withPrivateKey(privateKey)
                         .withUsdtContractAddress(usdtContractAddress)
                         .withEthNetworkUrl(ethNetworkUrl));
+        final String incomingTxId = (String) delEx.getVariable("INCOMING_TX_ID");
 
-        final String targetEthAddress = (String) delEx.getVariable("TARGET_ETH_ADDRESS");
-        final BigInteger usdtAmount = (BigInteger) delEx.getVariable("USDT_AMOUNT");
-        usdtContract.transferFrom(exchangeAddress, targetEthAddress, usdtAmount).send();
+        final Web3j web3 = createWeb3j.apply(ethNetworkUrl);
+
+        final Optional<TransactionReceipt> transactionReceiptOpt = web3.ethGetTransactionReceipt(incomingTxId).send().getTransactionReceipt();
+
+        if (!transactionReceiptOpt.isPresent()) {
+            throw new RuntimeException("No transaction receipt found");
+        }
+
+        final TransactionReceipt transactionReceipt = transactionReceiptOpt.get();
+
+        final List<ERC20.TransferEventResponse> transferEvents = usdtContract.getTransferEvents(transactionReceipt);
+
+        if (transferEvents.size() < 1) {
+            throw new RuntimeException("No transfer events found");
+        }
+
+        final ERC20.TransferEventResponse transferEvent = transferEvents.get(0);
+
+        final BigInteger usdtReceived = transferEvent._value;
+
+        delEx.setVariable("USDT_RECEIVED", usdtReceived);
     }
 }

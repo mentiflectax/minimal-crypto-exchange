@@ -22,31 +22,25 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.dpisarenko.minimalcryptoexchange.clojuredelegates;
+package com.dpisarenko.minimalcryptoexchange.logic;
 
-import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.junit.Test;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.function.Consumer;
 
-import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+public class StreamGobbler implements Runnable {
+    private InputStream inputStream;
+    private Consumer<String> consumer;
 
-public class increment_wait_counter_Test {
-    @Test
-    public void givenDelegateExecution_whenExecute_thenIncreaseRetryCounter() {
-        // Given
-        final ClojureService backend = createClojureBackend();
+    public StreamGobbler(InputStream inputStream, Consumer<String> consumer) {
+        this.inputStream = inputStream;
+        this.consumer = consumer;
+    }
 
-        final DelegateExecution delEx = mock(DelegateExecution.class);
-
-        when(delEx.getVariable("RETRY_COUNTER")).thenReturn(0L);
-
-        // When
-        backend.runClojureCode(delEx, "increment_wait_counter");
-
-        // Then
-        verify(delEx).setVariable("RETRY_COUNTER", 1L);
+    @Override
+    public void run() {
+        new BufferedReader(new InputStreamReader(inputStream)).lines()
+                .forEach(consumer);
     }
 }

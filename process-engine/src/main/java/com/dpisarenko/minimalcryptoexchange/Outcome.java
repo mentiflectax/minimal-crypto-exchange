@@ -22,31 +22,37 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.dpisarenko.minimalcryptoexchange.clojuredelegates;
+package com.dpisarenko.minimalcryptoexchange;
 
-import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.junit.Test;
+public class Outcome {
+    private boolean success;
+    private String errorMessage;
+    private String result;
 
-import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+    public Outcome withResult(final String result) {
+        this.result = result;
+        return this;
+    }
 
-public class increment_wait_counter_Test {
-    @Test
-    public void givenDelegateExecution_whenExecute_thenIncreaseRetryCounter() {
-        // Given
-        final ClojureService backend = createClojureBackend();
+    public Outcome withSuccess(final boolean success) {
+        this.success = success;
+        return this;
+    }
 
-        final DelegateExecution delEx = mock(DelegateExecution.class);
+    public Outcome withErrorMessage(final String msg) {
+        this.errorMessage = msg;
+        return this;
+    }
 
-        when(delEx.getVariable("RETRY_COUNTER")).thenReturn(0L);
+    public boolean isSuccess() {
+        return success;
+    }
 
-        // When
-        backend.runClojureCode(delEx, "increment_wait_counter");
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-        // Then
-        verify(delEx).setVariable("RETRY_COUNTER", 1L);
+    public String getResult() {
+        return result;
     }
 }

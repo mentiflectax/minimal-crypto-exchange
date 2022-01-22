@@ -1,12 +1,25 @@
 ;
 ; Copyright 2021, 2022 Dmitrii Pisarenko
 ;
-; Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+; Permission is hereby granted, free of charge, to any person obtaining a
+; copy of this software and associated documentation
+; files (the "Software"), to deal in the Software without restriction,
+; including without limitation the rights to use, copy, modify, merge,
+; publish, distribute, sublicense, and/or sell copies of the Software, and
+; to permit persons to whom the Software is furnished to do so, subject
+; to the following conditions:
 ;
-; The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+; The above copyright notice and this permission notice shall be included
+; in all copies or substantial portions of the Software.
 ;
-; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-;
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+; KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+; WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+; PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+; OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+; OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+; OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+; SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ;
 
 (ns com.dpisarenko.core
@@ -15,16 +28,33 @@
 
 (def SATOSHI_TO_USD_CONVERSION_FACTOR 0.0004917)
 
+(def USD_TO_BTC_CONVERSION_FACTOR (BigDecimal/valueOf (/ 1. 43027.70)))
+
 (defonce state
          (atom {
-                :txs []
+                :eth-private-key       nil
+                :eth-network-url       nil
+                :usdt-contract-address nil
+                :eth-exchange-address  nil
+                :txs                   []
                 }))
 
 (defn init
-  [logger]
+  [logger
+   eth-network-url
+   usdt-contract-address
+   eth-exchange-address
+   eth-private-key
+   ]
   (let [cur-time (now)]
     (defonce logger logger)
-    (swap! state assoc :start-time cur-time)
+    (swap! state assoc
+           :start-time cur-time
+           :eth-private-key eth-private-key
+           :eth-network-url eth-network-url
+           :usdt-contract-address usdt-contract-address
+           :eth-exchange-address eth-exchange-address
+           )
     (log-info "Clojure subsystem started.")
     ))
 
@@ -113,10 +143,51 @@
   [de]
   (let [available-eth (.getVariable de "EXCHANGE_ACCOUNT_BALANCE_WEI")]
     (.setVariable de "ANY_ETH_AVAILABLE" (> available-eth 0)))
-)
+  )
+
+(declare get_exchange_usdt_balance)
+
+(defn convert-usdt-amount-to-usd
+  [de]
+  (let [
+        usdt-amount (new BigDecimal (.getVariable de "USDT_RECEIVED"))
+        conversion-factor (BigDecimal/valueOf com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt/USD_TO_USDT_CONVERSION_FACTOR)
+        usd-amount (.divide usdt-amount conversion-factor)
+        ]
+    (.setVariable de "USD_AMOUNT" usd-amount)))
+
+(defn convert-usd-to-btc
+  [de]
+  (let [
+        usd-amount (.getVariable de "USD_AMOUNT")
+        btc-amount (.multiply usd-amount USD_TO_BTC_CONVERSION_FACTOR)
+        ]
+    (.setVariable de "BTC_AMOUNT" btc-amount)))
+
 
 ; Camunda stuff (end)
 ;; Low-level functions (start)
+(defn get_exchange_usdt_balance
+  []
+  (let [eth-network-url (:eth-network-url @state)
+        eth-private-key (:eth-private-key @state)
+        usdt-contract-address (:usdt-contract-address @state)
+        eth-exchange-address (:eth-exchange-address @state)
+        lc-input (-> (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput)
+                     (.withEthNetworkUrl eth-network-url)
+                     (.withPrivateKey eth-private-key)
+                     (.withUsdtContractAddress usdt-contract-address))
+        lc-fn (new com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20Contract)
+        usdt-contract (.apply lc-fn lc-input)
+        balance-of-response (.balanceOf usdt-contract eth-exchange-address)
+        usdt-balance-big-integer (.send balance-of-response)
+        usdt-balance-long (.longValue usdt-balance-big-integer)
+        ]
+    usdt-balance-long
+    )
+  )
+
+
 (defn create-btc-tx
   [tx-id amount]
   (let []

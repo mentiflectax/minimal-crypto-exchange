@@ -19,9 +19,6 @@ services:
     ports:
       - "51001:50001"
       - "51002:50002"
-#      - "19001:19001"
-#      - "19000:19000"
-#      - "28332:28332"
     environment:
       - NET=regtest
       - COIN=BitcoinSegwit
@@ -48,7 +45,7 @@ services:
 # ETH testnet setup (start)
 #
   geth:
-    image: mentiflectax/geth-poa-testnet:v3
+    image: mentiflectax/geth-poa-testnet:v4
     environment:
       - ETH_PASSWORD=QfdxTYxkwASj
       - ETH_PRIVATE_KEY=0d0b4c455973c883bb0fa584f0078178aa90c571a8f1d40f28d2339f4e757dde

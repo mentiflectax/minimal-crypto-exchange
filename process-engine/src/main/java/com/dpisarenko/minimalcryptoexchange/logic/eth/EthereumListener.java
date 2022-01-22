@@ -22,38 +22,35 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.dpisarenko.minimalcryptoexchange.clojuredelegates;
+package com.dpisarenko.minimalcryptoexchange.logic.eth;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
-import org.bitcoinj.core.Coin;
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.web3j.protocol.Web3j;
 
-import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
-import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.initClojureBackend;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import javax.annotation.PostConstruct;
 
-public class get_received_satoshis_Test {
-    @Test
-    public void givenDelegateExecution_whenExecute_thenSetReceivedSatoshisVariable() {
-        // Given
-        final Logger logger = mock(Logger.class);
-        final ClojureService backend = createClojureBackend();
-        initClojureBackend(logger);
+@Component
+public class EthereumListener {
+    @Autowired
+    ClojureService clojureService;
 
-        backend.btcTxReceived("txId", Coin.valueOf(1000L));
+    private final Logger logger;
 
-        final DelegateExecution delEx = mock(DelegateExecution.class);
+    EthereumListener(Logger logger) {
+        this.logger = logger;
+    }
 
-        when(delEx.getVariable("INCOMING_TX_ID")).thenReturn("txId");
+    public EthereumListener() {
+        this(LoggerFactory.getLogger(EthereumListener.class));
+    }
 
-        // When
-        backend.runClojureCode(delEx, "get_received_satoshis");
-
-        // Then
-        verify(delEx).setVariable("RECEIVED_SATOSHIS", 1000L);
+    @PostConstruct
+    public void init() {
+        logger.debug("1");
+        Web3j web3j = null;
     }
 }

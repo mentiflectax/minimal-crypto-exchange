@@ -25,10 +25,13 @@
 package com.dpisarenko.minimalcryptoexchange.clojuredelegates;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
-import org.bitcoinj.core.Coin;
+import com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.Test;
 import org.slf4j.Logger;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.initClojureBackend;
@@ -36,24 +39,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class get_received_satoshis_Test {
+public class convert_usdt_amount_to_usd_Test {
     @Test
-    public void givenDelegateExecution_whenExecute_thenSetReceivedSatoshisVariable() {
+    public void givenUsdtAmount_whenExecute_thenSetUsdAmount() {
         // Given
         final Logger logger = mock(Logger.class);
         final ClojureService backend = createClojureBackend();
         initClojureBackend(logger);
 
-        backend.btcTxReceived("txId", Coin.valueOf(1000L));
-
         final DelegateExecution delEx = mock(DelegateExecution.class);
-
-        when(delEx.getVariable("INCOMING_TX_ID")).thenReturn("txId");
+        when(delEx.getVariable("USDT_RECEIVED")).thenReturn(BigInteger.ONE);
 
         // When
-        backend.runClojureCode(delEx, "get_received_satoshis");
+        backend.runClojureCode(delEx, "convert-usdt-amount-to-usd");
 
         // Then
-        verify(delEx).setVariable("RECEIVED_SATOSHIS", 1000L);
+        final BigDecimal expectedUsdAmount = BigDecimal.ONE.divide(BigDecimal.valueOf(ConvertUsdToUsdt.USD_TO_USDT_CONVERSION_FACTOR));
+        verify(delEx).setVariable("USD_AMOUNT", expectedUsdAmount);
     }
 }
