@@ -31,15 +31,22 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.Request;
+import org.web3j.protocol.core.Response;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class GetReceivedUsdtTest {
     @Test
@@ -68,13 +75,30 @@ public class GetReceivedUsdtTest {
 
         final DelegateExecution delEx = mock(DelegateExecution.class);
 
+        when(delEx.getVariable("INCOMING_TX_ID")).thenReturn("incomingTxId");
+
+        final Web3j web3 = mock(Web3j.class);
+        when(createWeb3j.apply("ethNetworkUrl")).thenReturn(web3);
+
+        final Request<?, EthGetTransactionReceipt> request = mock(Request.class);
+        when(web3.ethGetTransactionReceipt("incomingTxId")).thenReturn((Request)request);
+
+        final EthGetTransactionReceipt response = mock(EthGetTransactionReceipt.class);
+        when(request.send()).thenReturn(response);
+
+        when(response.getTransactionReceipt()).thenReturn(Optional.empty());
+
         // When
         sut.execute(delEx);
 
         // Then
         verify(loadErc20Contract).apply(any());
-        verifyNoMoreInteractions(sut, createWeb3j, loadErc20Contract, usdtContract);
-
+        verify(delEx).getVariable("INCOMING_TX_ID");
+        verify(createWeb3j).apply("ethNetworkUrl");
+        verify(web3).ethGetTransactionReceipt("incomingTxId");
+        verify(request).send();
+        verify(response).getTransactionReceipt();
+        verifyNoMoreInteractions(sut, createWeb3j, loadErc20Contract, usdtContract, delEx, web3);
     }
 
 }
