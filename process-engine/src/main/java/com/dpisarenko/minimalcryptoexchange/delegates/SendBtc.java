@@ -36,7 +36,7 @@ import java.math.BigDecimal;
 @Component("SendBtc")
 public class SendBtc implements JavaDelegate {
     @Value("${btc.send-btc-cli-command-pattern}")
-    private String sendBtcCliCommandPattern;
+    String sendBtcCliCommandPattern;
 
     private final ShellCommandExecutor shellCommandExecutor;
 
@@ -57,7 +57,6 @@ public class SendBtc implements JavaDelegate {
 
         final Outcome outcome = shellCommandExecutor.runShellCommand(command);
         if (outcome.isSuccess()) {
-            // TODO: Test this
             delEx.setVariable("SEND_BTC_TX_ID", outcome.getResult());
         } else {
             // TODO: Test this
