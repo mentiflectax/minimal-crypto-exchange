@@ -88,13 +88,4 @@ public class WalletObserverTest {
         verify(wallet).addCoinsReceivedEventListener(btcReceivedListener);
         verifyNoMoreInteractions(sut, kit, logger);
     }
-
-    @Test
-    public void manualTest() {
-        byte[] privBytes = Hex.decode("ef235aacf90d9f4aadd8c92e4b2562e1d9eb97f0df9ba3b508258739cb013db2");
-        byte[] appendZeroByte = ArrayUtils.addAll(new byte[1], privBytes);
-        final ECKey ecKey = ECKey.fromPrivate(new BigInteger(appendZeroByte), false);
-
-        System.out.println("Test");
-    }
 }
