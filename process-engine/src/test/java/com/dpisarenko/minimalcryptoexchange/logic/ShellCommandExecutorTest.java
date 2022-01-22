@@ -38,8 +38,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ShellCommandExecutorTest {
@@ -87,4 +89,25 @@ public class ShellCommandExecutorTest {
         assertEquals("Some error", actualResult.getErrorMessage());
     }
 
+    @Test
+    public void givenException_whenRunShellCommand_thenReturnSuccessValue() throws IOException, InterruptedException {
+        // Given
+        final Logger logger = mock(Logger.class);
+        final ShellCommandExecutor sut = spy(new ShellCommandExecutor(logger));
+        final Process process = mock(Process.class);
+        final IOException exception = new IOException("Error");
+        doThrow(exception).when(sut).exec(COMMAND);
+
+        final InputStream inputStream = IOUtils.toInputStream("Some error", Charsets.UTF_8);
+        when(process.getInputStream()).thenReturn(inputStream);
+
+        // When
+        final Outcome actualResult = sut.runShellCommand(COMMAND);
+
+        // Then
+        assertFalse(actualResult.isSuccess());
+        assertNull(actualResult.getResult());
+        assertEquals("Error", actualResult.getErrorMessage());
+        verify(logger).error("Error ocurred while executing command '/usr/local/bin/docker exec minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress 2N1akcbAa3oXJ7RNxrAWmL7ZuuU9iHg9tpG 0.01'", exception);
+    }
 }

@@ -66,7 +66,6 @@ public class ShellCommandExecutor {
                     .withSuccess(false)
                     .withErrorMessage(sb.toString());
         } catch (final IOException | InterruptedException exception) {
-            // TODO: Test this
             logger.error(String.format("Error ocurred while executing command '%s'", command), exception);
             return new Outcome()
                     .withSuccess(false)
