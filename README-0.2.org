@@ -1,5 +1,10 @@
 * Minimal Crypto Exchange 0.2
 
+** Database Prefixes
+
+   * ~ACT~: Camunda-related tables
+   * ~MCE~: Tables related to the minimal cryptocurrency exchange
+  
 ** Miscellaneous
 
 *** Heroku
