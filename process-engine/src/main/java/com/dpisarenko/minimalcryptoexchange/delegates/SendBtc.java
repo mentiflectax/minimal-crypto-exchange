@@ -26,10 +26,8 @@ package com.dpisarenko.minimalcryptoexchange.delegates;
 
 import com.dpisarenko.minimalcryptoexchange.Outcome;
 import com.dpisarenko.minimalcryptoexchange.logic.ShellCommandExecutor;
-import com.dpisarenko.minimalcryptoexchange.logic.btc.WalletObserver;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -40,8 +38,15 @@ public class SendBtc implements JavaDelegate {
     @Value("${btc.send-btc-cli-command-pattern}")
     private String sendBtcCliCommandPattern;
 
-    @Autowired
-    WalletObserver walletObserver;
+    private final ShellCommandExecutor shellCommandExecutor;
+
+    SendBtc(ShellCommandExecutor shellCommandExecutor) {
+        this.shellCommandExecutor = shellCommandExecutor;
+    }
+
+    public SendBtc() {
+        this(new ShellCommandExecutor());
+    }
 
     @Override
     public void execute(final DelegateExecution delEx) throws Exception {
@@ -50,7 +55,6 @@ public class SendBtc implements JavaDelegate {
 
         final String command = String.format(sendBtcCliCommandPattern, targetBtcAddress, btcAmount.doubleValue());
 
-        final ShellCommandExecutor shellCommandExecutor = new ShellCommandExecutor();
         final Outcome outcome = shellCommandExecutor.runShellCommand(command);
         if (outcome.isSuccess()) {
             // TODO: Test this
