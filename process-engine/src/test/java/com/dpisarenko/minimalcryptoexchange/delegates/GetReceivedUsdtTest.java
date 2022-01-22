@@ -27,14 +27,10 @@ package com.dpisarenko.minimalcryptoexchange.delegates;
 import com.dpisarenko.minimalcryptoexchange.logic.eth.LoadErc20ContractInput;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.web3j.contracts.eip20.generated.ERC20;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.Request;
-import org.web3j.protocol.core.Response;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -42,7 +38,6 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -61,17 +56,13 @@ public class GetReceivedUsdtTest {
 
         final ERC20 usdtContract = mock(ERC20.class);
 
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(final InvocationOnMock iom) throws Throwable {
-                final LoadErc20ContractInput input = iom.getArgument(0);
-                assertEquals("ethNetworkUrl", input.getEthNetworkUrl());
-                assertEquals("privateKey", input.getPrivateKey());
-                assertEquals("usdtContractAddress", input.getUsdtContractAddress());
-                return usdtContract;
-            }
+        doAnswer(iom -> {
+            final LoadErc20ContractInput input = iom.getArgument(0);
+            assertEquals("ethNetworkUrl", input.getEthNetworkUrl());
+            assertEquals("privateKey", input.getPrivateKey());
+            assertEquals("usdtContractAddress", input.getUsdtContractAddress());
+            return usdtContract;
         }).when(loadErc20Contract).apply(any());
-
 
         final DelegateExecution delEx = mock(DelegateExecution.class);
 
@@ -100,5 +91,4 @@ public class GetReceivedUsdtTest {
         verify(response).getTransactionReceipt();
         verifyNoMoreInteractions(sut, createWeb3j, loadErc20Contract, usdtContract, delEx, web3);
     }
-
 }
