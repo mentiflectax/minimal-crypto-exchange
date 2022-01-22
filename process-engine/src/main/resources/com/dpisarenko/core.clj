@@ -147,7 +147,6 @@
 
 (declare get_exchange_usdt_balance)
 
-; TODO: Test this
 (defn convert-usdt-amount-to-usd
   [de]
   (let [
