@@ -45,7 +45,7 @@ public class ShellCommandExecutor {
 
     public Outcome runShellCommand(final String command) {
         try {
-            final Process process = Runtime.getRuntime().exec(command);
+            final Process process = exec(command);
             final int exitValue = process.waitFor();
 
             final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -58,7 +58,6 @@ public class ShellCommandExecutor {
             }
 
             if (exitValue == 0) {
-                // TODO: Test this
                 return new Outcome()
                         .withSuccess(true)
                         .withResult(sb.toString());
@@ -74,5 +73,9 @@ public class ShellCommandExecutor {
                     .withSuccess(false)
                     .withErrorMessage(exception.getMessage());
         }
+    }
+
+    Process exec(String command) throws IOException {
+        return Runtime.getRuntime().exec(command);
     }
 }

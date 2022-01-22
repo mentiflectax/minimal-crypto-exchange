@@ -24,13 +24,43 @@
 
 package com.dpisarenko.minimalcryptoexchange.logic;
 
+import com.dpisarenko.minimalcryptoexchange.Outcome;
+import kotlin.text.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.slf4j.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class ShellCommandExecutorTest {
-    @Test
-    public void manualTest() {
-        final ShellCommandExecutor sut = new ShellCommandExecutor();
-        sut.runShellCommand("/usr/local/bin/docker exec  minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress 2NDjv4EUtXxKpfHCMuTmNg4miU9QDqy8vKs 0.1");
-    }
+    private static final String COMMAND = "/usr/local/bin/docker exec minimal-crypto-exchange_node_1 bitcoin-cli sendtoaddress 2N1akcbAa3oXJ7RNxrAWmL7ZuuU9iHg9tpG 0.01";
+    private static final String TX_ID = "783bfb58b746f89fc72a7eac7ee49d22e8dd3741892f9316baffd8fec9d58c49";
 
+    @Test
+    public void givenSuccessfulExecutionOfCommandLineCommand_whenRunShellCommand_thenReturnSuccessValue() throws IOException, InterruptedException {
+        // Given
+        final Logger logger = mock(Logger.class);
+        final ShellCommandExecutor sut = spy(new ShellCommandExecutor(logger));
+        final Process process = mock(Process.class);
+        doReturn(process).when(sut).exec(COMMAND);
+        when(process.waitFor()).thenReturn(0);
+
+        final InputStream inputStream = IOUtils.toInputStream(TX_ID, Charsets.UTF_8);
+        when(process.getInputStream()).thenReturn(inputStream);
+
+        // When
+        final Outcome actualResult = sut.runShellCommand(COMMAND);
+
+        // Then
+        assertTrue(actualResult.isSuccess());
+        assertEquals(TX_ID, actualResult.getResult());
+    }
 }
