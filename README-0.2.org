@@ -2,4 +2,12 @@
 
 ** Miscellaneous
 
-   [[https://devcenter.heroku.com/articles/heroku-postgresql][Heroku Postgres]]
+*** How to run SQL commands against a Heroku Postgre database?
+
+TODO    
+   
+*** Heroku
+
+    * [[https://devcenter.heroku.com/articles/heroku-postgresql][Heroku Postgres]]
+    * [[https://devcenter.heroku.com/articles/managing-heroku-postgres-using-cli][Managing Heroku Postgres using the CLI]]
+    * [[https://devcenter.heroku.com/articles/connecting-heroku-postgres][Connecting to Heroku Postgres]]
