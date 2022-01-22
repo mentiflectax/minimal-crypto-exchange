@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -63,4 +65,26 @@ public class ShellCommandExecutorTest {
         assertTrue(actualResult.isSuccess());
         assertEquals(TX_ID, actualResult.getResult());
     }
+
+    @Test
+    public void givenFailedExecutionOfCommandLineCommand_whenRunShellCommand_thenReturnSuccessValue() throws IOException, InterruptedException {
+        // Given
+        final Logger logger = mock(Logger.class);
+        final ShellCommandExecutor sut = spy(new ShellCommandExecutor(logger));
+        final Process process = mock(Process.class);
+        doReturn(process).when(sut).exec(COMMAND);
+        when(process.waitFor()).thenReturn(1);
+
+        final InputStream inputStream = IOUtils.toInputStream("Some error", Charsets.UTF_8);
+        when(process.getInputStream()).thenReturn(inputStream);
+
+        // When
+        final Outcome actualResult = sut.runShellCommand(COMMAND);
+
+        // Then
+        assertFalse(actualResult.isSuccess());
+        assertNull(actualResult.getResult());
+        assertEquals("Some error", actualResult.getErrorMessage());
+    }
+
 }

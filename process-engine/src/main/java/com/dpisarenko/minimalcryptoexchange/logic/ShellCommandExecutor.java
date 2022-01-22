@@ -62,7 +62,6 @@ public class ShellCommandExecutor {
                         .withSuccess(true)
                         .withResult(sb.toString());
             }
-            // TODO: Test this
             return new Outcome()
                     .withSuccess(false)
                     .withErrorMessage(sb.toString());
