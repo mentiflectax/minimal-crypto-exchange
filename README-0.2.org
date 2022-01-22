@@ -2,4 +2,4 @@
 
 ** Miscellaneous
 
-   [[https://devcenter.heroku.com/articles/heroku-postgresql][Heroku Postgresl]]
+   [[https://devcenter.heroku.com/articles/heroku-postgresql][Heroku Postgres]]
