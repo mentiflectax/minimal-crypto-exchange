@@ -49,7 +49,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class GetReceivedUsdtTest {
-    @Test
+    @Test(expected = RuntimeException.class)
     public void givenNoTransactionReceipts_whenExecute_thenThrowRuntimeException() throws Exception {
         // Given
         final Function<LoadErc20ContractInput, ERC20> loadErc20Contract = mock(Function.class);
