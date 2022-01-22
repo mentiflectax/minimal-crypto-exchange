@@ -25,16 +25,19 @@
 package com.dpisarenko.minimalcryptoexchange.clojuredelegates;
 
 import com.dpisarenko.minimalcryptoexchange.clj.ClojureService;
+import com.dpisarenko.minimalcryptoexchange.delegates.ConvertUsdToUsdt;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.junit.Test;
 import org.slf4j.Logger;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.createClojureBackend;
 import static com.dpisarenko.minimalcryptoexchange.clojuredelegates.TestUtils.initClojureBackend;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class convert_usdt_amount_to_usd_Test {
     @Test
@@ -45,12 +48,13 @@ public class convert_usdt_amount_to_usd_Test {
         initClojureBackend(logger);
 
         final DelegateExecution delEx = mock(DelegateExecution.class);
-        delEx.setVariable("USDT_RECEIVED", BigDecimal.ONE);
+        when(delEx.getVariable("USDT_RECEIVED")).thenReturn(BigInteger.ONE);
 
         // When
         backend.runClojureCode(delEx, "convert-usdt-amount-to-usd");
 
         // Then
-        verify(delEx).setVariable("USD_AMOUNT", BigDecimal.ZERO);
+        final BigDecimal expectedUsdAmount = BigDecimal.ONE.divide(BigDecimal.valueOf(ConvertUsdToUsdt.USD_TO_USDT_CONVERSION_FACTOR));
+        verify(delEx).setVariable("USD_AMOUNT", expectedUsdAmount);
     }
 }
