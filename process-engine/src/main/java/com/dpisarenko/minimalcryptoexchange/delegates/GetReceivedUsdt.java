@@ -48,9 +48,6 @@ public class GetReceivedUsdt implements JavaDelegate {
     @Value("${accounts.eth.usdt.contract-address}")
     String usdtContractAddress;
 
-    @Value("${accounts.eth.exchange.address}")
-    String exchangeAddress;
-
     @Value("${accounts.eth.exchange.private-key}")
     String privateKey;
 
