@@ -94,6 +94,5 @@ public class GetReceivedUsdt implements JavaDelegate {
         final BigInteger usdtReceived = transferEvent._value;
 
         delEx.setVariable("USDT_RECEIVED", usdtReceived);
-        // TODO: Test this
     }
 }

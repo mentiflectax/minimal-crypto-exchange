@@ -33,6 +33,7 @@ import org.web3j.protocol.core.Request;
 import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Function;
@@ -143,5 +144,63 @@ public class GetReceivedUsdtTest {
         verify(response).getTransactionReceipt();
         verify(usdtContract).getTransferEvents(transactionReceipt);
         verifyNoMoreInteractions(sut, createWeb3j, loadErc20Contract, usdtContract, delEx, web3, transactionReceipt);
+    }
+
+    @Test
+    public void givenMatchinngTransferEvent_whenExecute_thenSetUsdtReceivedVariable() throws Exception {
+        // Given
+        final Function<LoadErc20ContractInput, ERC20> loadErc20Contract = mock(Function.class);
+        final Function<String, Web3j> createWeb3j = mock(Function.class);
+        final GetReceivedUsdt sut = new GetReceivedUsdt(loadErc20Contract, createWeb3j);
+        sut.privateKey = "privateKey";
+        sut.usdtContractAddress = "usdtContractAddress";
+        sut.ethNetworkUrl = "ethNetworkUrl";
+
+        final ERC20 usdtContract = mock(ERC20.class);
+
+        doAnswer(iom -> {
+            final LoadErc20ContractInput input = iom.getArgument(0);
+            assertEquals("ethNetworkUrl", input.getEthNetworkUrl());
+            assertEquals("privateKey", input.getPrivateKey());
+            assertEquals("usdtContractAddress", input.getUsdtContractAddress());
+            return usdtContract;
+        }).when(loadErc20Contract).apply(any());
+
+        final DelegateExecution delEx = mock(DelegateExecution.class);
+
+        when(delEx.getVariable("INCOMING_TX_ID")).thenReturn("incomingTxId");
+
+        final Web3j web3 = mock(Web3j.class);
+        when(createWeb3j.apply("ethNetworkUrl")).thenReturn(web3);
+
+        final Request<?, EthGetTransactionReceipt> request = mock(Request.class);
+        when(web3.ethGetTransactionReceipt("incomingTxId")).thenReturn((Request)request);
+
+        final EthGetTransactionReceipt response = mock(EthGetTransactionReceipt.class);
+        when(request.send()).thenReturn(response);
+
+        final TransactionReceipt transactionReceipt = mock(TransactionReceipt.class);
+        when(response.getTransactionReceipt()).thenReturn(Optional.of(transactionReceipt));
+
+        final BigInteger usdtReceived = BigInteger.valueOf(2230L);
+
+        final ERC20.TransferEventResponse transferEvent = new ERC20.TransferEventResponse();
+        transferEvent._value = usdtReceived;
+
+        when(usdtContract.getTransferEvents(transactionReceipt)).thenReturn(Collections.singletonList(transferEvent));
+
+        // When
+        sut.execute(delEx);
+
+        // Then
+        verify(loadErc20Contract).apply(any());
+        verify(delEx).getVariable("INCOMING_TX_ID");
+        verify(createWeb3j).apply("ethNetworkUrl");
+        verify(web3).ethGetTransactionReceipt("incomingTxId");
+        verify(request).send();
+        verify(response).getTransactionReceipt();
+        verify(usdtContract).getTransferEvents(transactionReceipt);
+        verify(delEx).setVariable("USDT_RECEIVED", usdtReceived);
+        verifyNoMoreInteractions(createWeb3j, loadErc20Contract, usdtContract, delEx, web3, transactionReceipt);
     }
 }
