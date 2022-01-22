@@ -86,7 +86,6 @@ public class GetReceivedUsdt implements JavaDelegate {
         final List<ERC20.TransferEventResponse> transferEvents = usdtContract.getTransferEvents(transactionReceipt);
 
         if (transferEvents.size() < 1) {
-            // TODO: Test this
             throw new RuntimeException("No transfer events found");
         }
 
